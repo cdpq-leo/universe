@@ -10,36 +10,6 @@
           "type": "string",
           "default": "grakn"
         },
-        "constraints": {
-          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "attribute": {
-                "type": "string"
-              },
-              "operator": {
-                "type": "string",
-                "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-              },
-              "value": {
-                "type": "string"
-              },
-              "last": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "default": []
-        }
-      }
-    },
-    "grakn": {
-      "type": "object",
-      "description": "Grakn instance configuration properties",
-      "properties": {
         "cpus": {
           "description": "CPU shares to allocate to the Grakn instance.",
           "type": "number",
@@ -55,21 +25,78 @@
         "disk": {
           "description": "Disk (MB) to allocate to the Grakn instance.",
           "type": "number",
-          "default": 65536,
-          "minimum": 2000
+          "default": 0
         },
-        "hostpath": {
-          "description": "Host path to store to the Grakn data.",
+        "constraints": {
+          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
           "type": "string",
-          "default": "/mnt/azurefileshare/data/grakn"
+          "default": "[]"
         }
-      },
-      "required": [
-        "cpus",
-        "mem",
-        "disk",
-        "hostpath"
-      ]
+      }
+    },
+    "storage": {
+      "type": "object",
+      "description": "Storage configuration properties",
+      "properties": {
+        "is_local": {
+          "description": "True to use local storage engine.",
+          "type": "boolean",
+          "default": true
+        },
+        "backend": {
+          "description": "Storage backend type (grakn-production, grakn-production-v2)",
+          "type": "string",
+          "default": "grakn-production"
+        },
+        "hostnames": {
+          "description": "Storage hostnames",
+          "type": "string",
+          "default": "0.0.0.0"
+        }
+      }
+    },
+    "index": {
+      "type": "object",
+      "description": "Elastic configuration properties",
+      "properties": {
+        "search_backend": {
+          "description": "Search backend.",
+          "type": "string",
+          "default": "elasticsearch"
+        },
+        "search_hostname": {
+          "description": "Search hostname",
+          "type": "string",
+          "default": "0.0.0.0"
+        }
+      }
+    },
+    "redis": {
+      "type": "object",
+      "description": "Redis configuration properties",
+      "properties": {
+        "is_local": {
+          "description": "True to use local queue engine.",
+          "type": "boolean",
+          "default": true
+        },
+        "hostname": {
+          "description": "Redis hostname",
+          "type": "string",
+          "default": "0.0.0.0:6379"
+        }
+      }
+    },
+    "spark": {
+      "type": "object",
+      "description": "Spark configuration properties",
+      "properties": {
+        "master": {
+          "description": "Spark master",
+          "type": "string",
+          "default": "local[*]"
+        }
+      }
     }
   }
 }
