@@ -6,7 +6,7 @@
       "description": "DC/OS quotes viewer service specifications",
       "properties": {
         "name": {
-          "default": "ui-quotes-viewer",
+          "default": "quotes-viewer",
           "type": "string",
           "description": "Name of quotes-viewer instance as seen in DCOS."
         },
@@ -48,6 +48,11 @@
                   "description": "API endpoint",
                   "type": "string",
                   "default": "http://ui-rdf-service.marathon.l4lb.thisdcos.directory:5000/service/ui-rdf-service"
+              },
+              "ELASTIC_ENDPOINT" : {
+                  "description": "Elastic endpoint",
+                  "type": "string",
+                  "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
               }
           }
         }

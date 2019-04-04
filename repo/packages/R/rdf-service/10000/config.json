@@ -62,7 +62,7 @@
               "ENDPOINT" : {
                   "description": "Database endpoint",
                   "type": "string",
-                  "default": ""
+                  "default": "http://dcos-leo-public.eastus.cloudapp.azure.com:10555/KnowledgeBase/query"
               }
           }
         }
