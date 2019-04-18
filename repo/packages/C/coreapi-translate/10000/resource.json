@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "coreapitranslate": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/coreapi_translate:1.0.1"
+        "coreapitranslate": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/coreapi_translate:1.0.2"
       }
     }
   }
