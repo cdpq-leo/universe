@@ -68,7 +68,7 @@
             "GOOGLE_APPLICATION_CREDENTIALS" : {
               "description": "Google service account credentials file location.",
               "type": "string",
-              "default": "/var/opt/data/google/loyal-rookery-222020-6a69b33e81bf.json"
+              "default": ""
             }
           }
         }
