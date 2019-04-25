@@ -70,11 +70,6 @@
               "type": "string",
               "default": ""
             },
-            "API_KEY" : {
-              "description": "search api key",
-              "type": "string",
-              "default": ""
-            },
             "SEARCH_LIMIT" : {
               "description": "max search results per query (1-10)",
               "type": "string",
@@ -94,6 +89,16 @@
               "description": "search date range",
               "type": "string",
               "default": "true"
+            },
+            "GOOGLE_APPLICATION_CREDENTIALS" : {
+              "description": "Google service account credentials file location.",
+              "type": "string",
+              "default": "/var/opt/data/google/loyal-rookery-222020-6a69b33e81bf.json"
+            },
+            "SCOPES" : {
+              "description": "Google auth scopes",
+              "type": "string",
+              "default": "https://www.googleapis.com/auth/cse"
             }
           }
         }
