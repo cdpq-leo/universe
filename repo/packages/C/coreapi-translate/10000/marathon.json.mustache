@@ -19,7 +19,13 @@
       }
     ],
     "type": "DOCKER",
-    "volumes": [],
+    "volumes": [
+        {
+            "containerPath": "{{service.data_volume.container_path}}",
+            "hostPath": "{{service.data_volume.host_path}}",
+            "mode": "RW"
+        }
+    ],
     "docker": {
       "image": "{{resource.assets.container.docker.coreapitranslate}}",
       "forcePullImage": true,
@@ -35,7 +41,8 @@
   "env": {
     "HTTP_HOSTNAME": "{{service.env.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{service.env.HTTP_PORT}}",
-    "SERVICE_PREFIX": "{{service.env.SERVICE_PREFIX}}"
+    "SERVICE_PREFIX": "{{service.env.SERVICE_PREFIX}}",
+    "GOOGLE_APPLICATION_CREDENTIALS": "{{service.env.GOOGLE_APPLICATION_CREDENTIALS}}"
   },
   "healthChecks": [
     {

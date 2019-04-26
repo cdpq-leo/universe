@@ -19,15 +19,9 @@
       }
     ],
     "type": "DOCKER",
-    "volumes": [
-        {
-            "containerPath": "{{service.data_volume.container_path}}",
-            "hostPath": "{{service.data_volume.host_path}}",
-            "mode": "RW"
-        }
-    ],
+    "volumes": [],
     "docker": {
-      "image": "{{resource.assets.container.docker.coreapisearch}}",
+      "image": "{{resource.assets.container.docker.rdf-service}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
@@ -42,13 +36,14 @@
     "HTTP_HOSTNAME": "{{service.env.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{service.env.HTTP_PORT}}",
     "SERVICE_PREFIX": "{{service.env.SERVICE_PREFIX}}",
-    "CUSTOM_SEARCH_ID": "{{service.env.CUSTOM_SEARCH_ID}}",
-    "SEARCH_LIMIT": "{{service.env.SEARCH_LIMIT}}",
-    "SEARCH_LANGUAGE": "{{service.env.SEARCH_LANGUAGE}}",
-    "SEARCH_QUERY_KEYWORDS": "{{service.env.SEARCH_QUERY_KEYWORDS}}",
-    "USE_SEARCH_DATE_PARAM": "{{service.env.USE_SEARCH_DATE_PARAM}}",
-    "SCOPES": "{{service.env.SCOPES}}",
-    "GOOGLE_APPLICATION_CREDENTIALS": "{{service.env.GOOGLE_APPLICATION_CREDENTIALS}}"
+    "USERNAME": "{{service.env.USERNAME}}",
+    "PASSWORD": "{{service.env.PASSWORD}}",
+    "ENDPOINT": "{{service.env.ENDPOINT}}"
+  },
+  "labels": {
+      "DCOS_SERVICE_NAME": "{{service.name}}",
+      "DCOS_SERVICE_PORT_INDEX": "0",
+      "DCOS_SERVICE_SCHEME": "http"
   },
   "healthChecks": [
     {
@@ -59,6 +54,7 @@
       "intervalSeconds": 30,
       "maxConsecutiveFailures": 3,
       "timeoutSeconds": 5
-  }]
+    }
+  ]
 }
 

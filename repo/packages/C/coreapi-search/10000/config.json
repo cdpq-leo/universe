@@ -30,6 +30,22 @@
           "type": "number",
           "default": 8080
         },
+        "data_volume": {
+          "type": "object",
+          "description": "coreapi-search data volume config",
+          "properties": {
+            "container_path": {
+              "description": "Container path",
+              "type": "string",
+              "default": "/var/opt/data/google"
+            },
+            "host_path": {
+              "description": "Host path",
+              "type": "string",
+              "default": "/mnt/azurefileshare/data/google"
+            }
+          }
+        },
         "env" : {
           "type": "object",
           "description": "environment variables",
@@ -54,11 +70,6 @@
               "type": "string",
               "default": ""
             },
-            "API_KEY" : {
-              "description": "search api key",
-              "type": "string",
-              "default": ""
-            },
             "SEARCH_LIMIT" : {
               "description": "max search results per query (1-10)",
               "type": "string",
@@ -78,6 +89,16 @@
               "description": "search date range",
               "type": "string",
               "default": "true"
+            },
+            "GOOGLE_APPLICATION_CREDENTIALS" : {
+              "description": "Google service account credentials file location.",
+              "type": "string",
+              "default": "/var/opt/data/google/loyal-rookery-222020-6a69b33e81bf.json"
+            },
+            "SCOPES" : {
+              "description": "Google auth scopes",
+              "type": "string",
+              "default": "https://www.googleapis.com/auth/cse"
             }
           }
         }
