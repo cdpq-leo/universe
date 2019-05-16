@@ -1,5 +1,5 @@
 {
-  "id":"{{service.name}}",
+  "id":"{{neo4j-core.name}}",
   "cpus":{{neo4j-core.cpus}},
   "mem":{{neo4j-core.mem}},
   "instances":{{neo4j-core.instances}},
@@ -34,17 +34,6 @@
   "ipAddress":{
     "networkName":"{{neo4j-core.network-name}}"
   },
-  {{#neo4j-core.constraints}}
-  "constraints": [
-    {{#.}}
-      [
-        "{{attribute}}"
-       ,"{{operator}}"
-       {{#value}},"{{value}}"{{/value}}
-      ]{{^last}},{{/last}}
-    {{/.}}
-  ],
-  {{/neo4j-core.constraints}}
   "healthChecks":[
     {
       "protocol":"HTTP",
