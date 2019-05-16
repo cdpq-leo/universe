@@ -1,0 +1,59 @@
+{
+   "id": "{{service.name}}",
+   "cpus": {{service.cpus}},
+   "mem": {{service.mem}},
+   "disk":{{service.disk}},
+   "env":{
+      "SERVICE_URL":"{{service.SERVICE_URL}}"
+   },
+   "cmd": "{{service.cmd}}",
+   "labels":{
+      "DCOS_SERVICE_NAME":"{{service.name}}",
+      "VIRTUAL_NETWORK_PLUGIN_LABELS": ""{{environment.labels}}{{key}}:{{value}}"
+   },
+   "container":{
+      "portMappings":[
+         {
+            "containerPort":{{service.container_port}},
+            "hostPort":0,
+            "protocol":"tcp"
+         }
+      ],
+      "type":"DOCKER",
+      "volumes":[
+      {
+        "containerPath": "",
+        "hostPath": "",
+        "mode": ""
+      }
+      ],
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":true,
+         "privileged": false
+      }
+   },
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
+   "healthChecks":[
+      {
+         "portIndex":0,
+         "protocol":"MESOS_HTTP",
+         "path":"{{env.health_url}}"
+      }
+   ],
+   "scheduling":{  
+      "placement":{  
+         "constraints":[  
+            {  
+               "fieldName":"nvb",
+               "operator":"CLUSTER",
+               "value":"vnb"
+            }
+         ]
+      }
+   }
+}

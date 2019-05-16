@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service specifications of YOUR APP",
+      "properties": {
+        "name": {
+          "description": "Name of YOUR APP instances as seen in DC/OS.",
+          "type": "string",
+          "default": ""
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 0.3
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 2048
+        },
+        "container_port": {
+          "description": "Container port",
+          "type": "number",
+          "default": 8080
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": ""
+        },
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "networkType": {
+          "description": "Choose container/bridge, host, or container networking. Refer to the ports documentation for more information.",
+          "type": "string",
+          "default": "bridge"
+        }
+      }
+    },
+    "healthChecks": {
+      "type": "object",
+      "description": "DC/OS service specifications of YOUR APP",
+      "properties": {
+        "health_url": {
+          "description": "Url for health checks",
+          "type": "string",
+          "default": "/"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Configure any environment values to be attached to each instance that is launched.",
+      "properties": {
+        "environmentVariables": {
+          "description": "Choose container/bridge, host, or container networking. Refer to the ports documentation for more information.",
+          "type": "string",
+          "default": ""
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "default": ""
+              },
+              "value": {
+                "type": "string",
+                "default": ""
+              }
+            }
+          },
+          "description": "Labels to pass to the virtual network plugin",
+          "default": []
+        }
+      }
+    }
+  }
+}
