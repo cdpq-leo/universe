@@ -3,7 +3,7 @@
     "name": "keycloak",
     "version": "leo-1.0.0-1.0.0",
     "maintainer": "leo@cdpq.com",
-    "description": "keycloak",
+    "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
     "minDcosReleaseVersion": "1.9.0",
     "tags": [
         "keycloak"

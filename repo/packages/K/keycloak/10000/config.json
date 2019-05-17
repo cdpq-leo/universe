@@ -7,7 +7,7 @@
             "description": "DC/OS service configuration properties",
             "properties": {
                 "name": {
-                    "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
+                    "description": "Name of this service instance as shown in DC/OS",
                     "type": "string",
                     "default": "keycloak"
                 },
@@ -27,7 +27,7 @@
                     "default": 1.0
                 },
                 "disk": {
-                    "description": "Number of disks allocated.",
+                    "description": "Number of disks to allocate to each service instance.",
                     "type": "number",
                     "default": 0
                 }
@@ -39,7 +39,35 @@
                 "instances"
             ]
         },
-        "env": {
+        "networking": {
+            "type": "object",
+            "description": "DC/OS Keycloak networking configuration properties",
+            "properties": {
+                "external_access": {
+                    "type": "object",
+                    "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
+                    "properties": {
+                        "enabled": {
+                            "description": "Enable or disable external access through a public node via Marathon-LB.",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "external_public_agent_hostname": {
+                            "description": "For external access, DNS to be used for Marathon-LB vHost: For example use your public slave ELB DNS.",
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    "if": {
+                        "properties": {
+                          "enabled": { "boolean": true }
+                        }
+                      },
+                      "then": { "required": ["external_public_agent_hostname"] }
+                }
+            }
+        },
+        "environment": {
             "type": "object",
             "description": "Additional configuration options for environment variables.",
             "properties": {
@@ -57,6 +85,21 @@
                     "description": "Keycloak password",
                     "type": "string",
                     "default": "admin"
+                },
+                "DB_VENDOR": {
+                    "description": "Database vendor",
+                    "type": "string",
+                    "default": "mysql"
+                },
+                "DB_ADDR": {
+                    "description": "Database address",
+                    "type": "string",
+                    "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
+                },
+                "DB_PORT": {
+                    "description": "Database port",
+                    "type": "string",
+                    "default": "3306"
                 },
                 "DB_NAME": {
                     "description": "Database name",

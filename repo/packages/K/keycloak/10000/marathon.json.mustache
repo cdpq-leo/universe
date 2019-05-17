@@ -32,23 +32,25 @@
        "KEYCLOAK_HOSTNAME": "{{env.KEYCLOAK_HOSTNAME}}",
        "KEYCLOAK_USER": "{{env.KEYCLOAK_USER}}",
        "KEYCLOAK_PASSWORD": "{{env.KEYCLOAK_PASSWORD}}",
-       "DB_VENDOR": "mysql",
-       "DB_ADDR": "{{service.name}}-mysql.marathon.l4lb.thisdcos.directory",
-       "DB_PORT": "3306",
-       "DB_NAME": "{{env.DB_DATABASE}}",
+       "DB_VENDOR": "{{env.DB_VENDOR}}",
+       "DB_ADDR": "{{env.DB_ADDR}}",
+       "DB_PORT": "{{env.DB_PORT}}",
+       "DB_NAME": "{{env.DB_NAME}}",
        "DB_USER": "{{env.DB_USER}}",
        "DB_PASSWORD": "{{env.DB_PASSWORD}}"
 
   },
   "labels": {
-    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_VHOST": "{{env.KEYCLOAK_HOSTNAME}}",
-    "HAPROXY_0_ENABLED": "true",
-    "HAPROXY_GROUP": "external",
-    "HAPROXY_0_PATH": "/{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0"
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    {{#networking.external_access.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.external_access.external_public_agent_hostname}}",
+    "HAPROXY_0_PATH": "/{{service.name}}",
+    {{/networking.external_access.enabled}}
   },
   "networks": [
     {
