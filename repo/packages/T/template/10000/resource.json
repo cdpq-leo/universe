@@ -1,14 +1,14 @@
 {
-    "images": {
-      "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR SMALL ICON",
-      "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR MEDIUM ICON",
-      "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR LARGE ICON"
-    },
-    "assets": {
-      "container": {
-        "docker": {
-          "image": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/YOUR IMAGE"
-        }
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR SMALL ICON",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR MEDIUM ICON",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR LARGE ICON"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "REPO/YOUR IMAGE"
       }
     }
   }
+}

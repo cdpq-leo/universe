@@ -41,9 +41,6 @@
 
   },
   "labels": {
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0",
     {{#networking.external_access.enabled}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
@@ -51,6 +48,9 @@
     "HAPROXY_0_VHOST": "{{networking.external_access.external_public_agent_hostname}}",
     "HAPROXY_0_PATH": "/{{service.name}}",
     {{/networking.external_access.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "networks": [
     {

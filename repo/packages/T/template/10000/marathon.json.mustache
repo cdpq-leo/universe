@@ -3,56 +3,34 @@
    "cpus": {{service.cpus}},
    "mem": {{service.mem}},
    "disk":{{service.disk}},
-   "env":{
-      "SERVICE_URL":"{{service.SERVICE_URL}}"
-   },
    "cmd": "{{service.cmd}}",
+
+   "env":{
+      "ENV_VAR":"{{environment.ENV_VAR}}"
+   },
    "labels":{
-      "DCOS_SERVICE_NAME":"{{service.name}}"
+      "DCOS_SERVICE_SCHEME": "http",
+      "DCOS_SERVICE_NAME": "{{service.name}}",
+      "DCOS_SERVICE_PORT_INDEX": "0"
    },
    "container":{
       "portMappings":[
          {
-            "containerPort":{{service.container_port}},
+            "containerPort":{{networking.container_port}},
             "hostPort":0,
             "protocol":"tcp"
          }
       ],
       "type":"DOCKER",
-      "volumes":[
-      {
-        "containerPath": "",
-        "hostPath": "",
-        "mode": ""
-      }
-      ],
       "docker":{
          "image":"{{resource.assets.container.docker.image}}",
-         "forcePullImage":true,
+         "forcePullImage":false,
          "privileged": false
       }
    },
    "networks":[
       {
-         "mode":"container/bridge"
+         "mode":"{{networking.network_type}}"
       }
    ],
-   "healthChecks":[
-      {
-         "portIndex":0,
-         "protocol":"MESOS_HTTP",
-         "path":"{{env.health_url}}"
-      }
-   ],
-   "scheduling":{  
-      "placement":{  
-         "constraints":[  
-            {  
-               "fieldName":"nvb",
-               "operator":"CLUSTER",
-               "value":"vnb"
-            }
-         ]
-      }
-   }
 }

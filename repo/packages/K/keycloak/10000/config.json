@@ -49,21 +49,16 @@
                     "properties": {
                         "enabled": {
                             "description": "Enable or disable external access through a public node via Marathon-LB.",
-                            "type": "boolean",
-                            "default": false
+                            "type": "boolean"
                         },
                         "external_public_agent_hostname": {
-                            "description": "For external access, DNS to be used for Marathon-LB vHost: For example use your public slave ELB DNS.",
-                            "type": "string",
-                            "default": ""
+                            "description": "For external access, Virtual Host URL to be used in the external load balancer.",
+                            "type": "string"
                         }
                     },
-                    "if": {
-                        "properties": {
-                          "enabled": { "boolean": true }
-                        }
-                      },
-                      "then": { "required": ["external_public_agent_hostname"] }
+                    "required": [
+                        "external_public_agent_hostname"
+                    ]
                 }
             }
         },
