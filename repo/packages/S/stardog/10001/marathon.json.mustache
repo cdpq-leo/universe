@@ -46,8 +46,8 @@
     ]
   },
   "env": {
-    "DEPLOYMENT_TYPE": "sandbox",
-    "DEPLOYMENT_NODE_TYPE": "sandbox"
+    "DEPLOYMENT_TYPE": "{{environment.DEPLOYMENT_TYPE}}",
+    "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}"
   },
   "labels": {
     {{#networking.external_access.enabled}}
