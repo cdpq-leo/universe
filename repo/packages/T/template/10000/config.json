@@ -25,6 +25,11 @@
           "type": "number",
           "default": 0
         },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        },
         "cmd": {
           "description": "A shell command for your container to execute.",
           "type": "string",
@@ -39,7 +44,10 @@
         "network_type": {
           "description": "Choose a container type. Refer to the ports documentation for more information.",
           "type": "string",
-          "enum": ["host", "bridge"],
+          "enum": [
+            "host",
+            "bridge"
+          ],
           "default": "bridge"
         },
         "container_port": {
