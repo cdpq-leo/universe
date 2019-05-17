@@ -1,0 +1,59 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "instances": {{service.instances}},
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": false,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "volumes": [],
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/{{service.name}}:8080"
+        },
+        "protocol": "tcp",
+        "servicePort": 10100
+      }
+    ]
+  },
+  "env": {
+       "KEYCLOAK_HOSTNAME": "{{env.KEYCLOAK_HOSTNAME}}",
+       "KEYCLOAK_USER": "{{env.KEYCLOAK_USER}}",
+       "KEYCLOAK_PASSWORD": "{{env.KEYCLOAK_PASSWORD}}",
+       "DB_VENDOR": "mysql",
+       "DB_ADDR": "{{service.name}}-mysql.marathon.l4lb.thisdcos.directory",
+       "DB_PORT": "3306",
+       "DB_NAME": "{{env.DB_DATABASE}}",
+       "DB_USER": "{{env.DB_USER}}",
+       "DB_PASSWORD": "{{env.DB_PASSWORD}}"
+
+  },
+  "labels": {
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{env.KEYCLOAK_HOSTNAME}}",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_PATH": "/{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "portDefinitions": []
+}

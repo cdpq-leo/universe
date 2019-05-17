@@ -1,0 +1,79 @@
+{
+    "type": "object",
+    "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
+    "properties": {
+        "service": {
+            "type": "object",
+            "description": "DC/OS service configuration properties",
+            "properties": {
+                "name": {
+                    "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
+                    "type": "string",
+                    "default": "keycloak"
+                },
+                "cpus": {
+                    "description": "Number of logical cores to allocate to each service instance.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "mem": {
+                    "description": "Memory in Mb to allocate to each service instance.",
+                    "type": "number",
+                    "default": 512
+                },
+                "instances": {
+                    "description": "Number of instances of your service.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "disk": {
+                    "description": "Number of disks allocated.",
+                    "type": "number",
+                    "default": 0
+                }
+            },
+            "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+            ]
+        },
+        "env": {
+            "type": "object",
+            "description": "Additional configuration options for environment variables.",
+            "properties": {
+                "KEYCLOAK_HOSTNAME": {
+                    "description": "Hostname of the service",
+                    "type": "string",
+                    "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+                },
+                "KEYCLOAK_USER": {
+                    "description": "Keycloak username",
+                    "type": "string",
+                    "default": "admin"
+                },
+                "KEYCLOAK_PASSWORD": {
+                    "description": "Keycloak password",
+                    "type": "string",
+                    "default": "admin"
+                },
+                "DB_NAME": {
+                    "description": "Database name",
+                    "type": "string",
+                    "default": "keycloak"
+                },
+                "DB_USER": {
+                    "description": "Database username",
+                    "type": "string",
+                    "default": "keycloak"
+                },
+                "DB_PASSWORD": {
+                    "description": "Database password",
+                    "type": "string",
+                    "default": "keycloak"
+                }
+            }
+        }
+    }
+}

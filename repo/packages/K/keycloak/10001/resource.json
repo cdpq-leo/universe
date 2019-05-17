@@ -1,0 +1,9 @@
+{
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "jboss/keycloak"
+      }
+    }
+  }
+}
