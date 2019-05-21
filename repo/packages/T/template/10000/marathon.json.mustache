@@ -4,10 +4,9 @@
    "mem": {{service.mem}},
    "disk":{{service.disk}},
    "cmd": "{{service.cmd}}",
-
-   "env":{
-      "ENV_VAR":"{{environment.ENV_VAR}}"
-   },
+   {{#service.region}}
+    "SERVICE_REGION": "{{service.region}}",
+    {{/service.region}}
    "labels":{
       "DCOS_SERVICE_SCHEME": "http",
       "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -33,4 +32,9 @@
          "mode":"{{networking.network_type}}"
       }
    ],
+   "env": {
+    {{#environment.variables}}
+    "{{key}}": "{{value}}"
+    {{/environment.variables}}
+  }
 }

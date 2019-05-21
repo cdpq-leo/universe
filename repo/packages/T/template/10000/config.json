@@ -33,7 +33,30 @@
         "cmd": {
           "description": "A shell command for your container to execute.",
           "type": "string",
-          "default": ""
+          "default": "",
+          "minLength": 0
+        },
+        "region": {
+          "description": "The region that the service's tasks should run in.",
+          "type": "string",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\", \"MAX_PER\", \"1\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
         }
       }
     },
@@ -58,13 +81,27 @@
       }
     },
     "environment": {
+      "description": "The list of environment variables [{key:key_1, value:value_1}, {key:key_2, value:value_2} ...]",
       "type": "object",
-      "description": "Configure any environment values to be attached to each instance that is launched.",
       "properties": {
-        "ENV_VAR": {
-          "description": "Any variable",
-          "type": "string",
-          "default": ""
+        "variables": {
+          "type": "array",
+          "additionalProperties": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
         }
       }
     }
