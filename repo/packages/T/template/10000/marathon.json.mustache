@@ -4,37 +4,38 @@
    "mem": {{service.mem}},
    "disk":{{service.disk}},
    "cmd": "{{service.cmd}}",
-   {{#service.region}}
-    "SERVICE_REGION": "{{service.region}}",
-    {{/service.region}}
+   "container":{
+      "type":"DOCKER",
+      "portMappings":[
+         {
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}",
+            "name": "{{networking.service_endpoints.name}}",
+            {{#networking.service_endpoints.enable_load_balanced_service_address}}   
+            "labels": { "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}" }
+            {{/networking.service_endpoints.enable_load_balanced_service_address}}
+         }
+      ],
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":false,
+         "privileged": false
+      }  
+   },
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
    "labels":{
       "DCOS_SERVICE_SCHEME": "http",
       "DCOS_SERVICE_NAME": "{{service.name}}",
       "DCOS_SERVICE_PORT_INDEX": "0"
    },
-   "container":{
-      "portMappings":[
-         {
-            "containerPort":{{networking.container_port}},
-            "hostPort":0,
-            "protocol":"tcp"
-         }
-      ],
-      "type":"DOCKER",
-      "docker":{
-         "image":"{{resource.assets.container.docker.image}}",
-         "forcePullImage":false,
-         "privileged": false
-      }
-   },
-   "networks":[
-      {
-         "mode":"{{networking.network_type}}"
-      }
-   ],
-   "env": {
-    {{#environment.variables}}
-    "{{key}}": "{{value}}"
-    {{/environment.variables}}
+   "environment": {
+      {{#service.region}}
+      "SERVICE_REGION": "{{service.region}}"
+      {{/service.region}}
   }
 }

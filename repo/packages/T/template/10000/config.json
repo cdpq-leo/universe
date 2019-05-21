@@ -6,7 +6,7 @@
       "description": "DC/OS service specifications of YOUR APP",
       "properties": {
         "name": {
-          "description": "Name of YOUR APP instances as seen in DC/OS.",
+          "description": "Name of application instance as seen in DC/OS.",
           "type": "string",
           "default": ""
         },
@@ -44,7 +44,10 @@
             "type": "application/x-region+string"
           }
         }
-      }
+      },
+      "required": [
+        "name"
+      ]
     },
     "placement": {
       "type": "object",
@@ -64,19 +67,40 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "network_type": {
-          "description": "Choose a container type. Refer to the ports documentation for more information.",
-          "type": "string",
-          "enum": [
-            "host",
-            "bridge"
-          ],
-          "default": "bridge"
-        },
-        "container_port": {
-          "description": "Container port number",
-          "type": "number",
-          "default": 8080
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8080
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "default": "tcp"
+            },
+            "enable_load_balanced_service_address": {
+              "type": "boolean",
+              "description": "Load balance the service internally (layer 4), and create a service address. For external (layer 7) load balancing, create an external load balancer and attach this service.",
+              "default": false
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 0
+            }
+          }
         }
       }
     },
@@ -84,9 +108,30 @@
       "description": "The list of environment variables [{key:key_1, value:value_1}, {key:key_2, value:value_2} ...]",
       "type": "object",
       "properties": {
-        "variables": {
+        "environment_variables": {
           "type": "array",
           "additionalProperties": false,
+          "description": "DC/OS also exposes environment variables for host ports and metdata",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        },
+        "labels": {
+          "type": "array",
+          "additionalProperties": false,
+          "description": "Attach metadata to expose additional information to other services.",
           "items": {
             "type": "object",
             "properties": {
