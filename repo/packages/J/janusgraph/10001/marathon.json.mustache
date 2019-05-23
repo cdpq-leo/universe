@@ -3,12 +3,6 @@
   "cpus": {{service.cpus}},
   "disk": {{service.disk}},
   "mem": {{service.mem}},
-  "env": {
-    "CASSANDRA_HOSTNAMES": "{{service.cassandra_hostnames}}",
-    "ELASTIC_HOSTNAME": "{{service.elastic_hostname}}",
-    "KEYSPACE": "{{service.keyspace}}",
-    "READ_ONLY": "{{service.read_only}}"
-  },
   "container": {
     "portMappings": [
       {
@@ -23,7 +17,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "{{resource.assets.container.docker.janusgraphimage}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true
     }
   },
@@ -32,5 +26,11 @@
       "mode": "container/bridge"
     }
   ],
-  "healthChecks": []
+  "healthChecks": [],
+  "env": {
+    "CASSANDRA_HOSTNAMES": "{{environment.cassandra_hostnames}}",
+    "ELASTIC_HOSTNAME": "{{environment.elastic_hostname}}",
+    "KEYSPACE": "{{environment.keyspace}}",
+    "READ_ONLY": "{{environment.read_only}}"
+  }
 }

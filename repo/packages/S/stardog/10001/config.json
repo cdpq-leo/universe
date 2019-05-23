@@ -57,7 +57,8 @@
           "properties": {
             "enabled": {
               "description": "Enable or disable external access through a public node via Marathon-LB.",
-              "type": "boolean"
+              "type": "boolean",
+              "default": false
             },
             "external_public_agent_hostname": {
               "description": "For external access, Virtual Host URL to be used in the external load balancer.",
@@ -65,7 +66,7 @@
             }
           },
           "required": [
-            "external_public_agent_hostname"
+            "enabled"
           ]
         }
       }
