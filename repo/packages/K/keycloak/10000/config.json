@@ -43,24 +43,36 @@
             "type": "object",
             "description": "DC/OS Keycloak networking configuration properties",
             "properties": {
+                "name": {
+                    "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+                    "type": "string",
+                    "default": "name"
+                },
+                "container_port": {
+                    "description": "Container port number",
+                    "type": "number",
+                    "default": 8080
+                },
+                "host_port": {
+                    "description": "Host port number",
+                    "type": "number",
+                    "default": 0
+                },
+                "service_port": {
+                    "description": "Service port number",
+                    "type": "number",
+                    "default": 10100
+                },
                 "external_access": {
-                    "type": "object",
-                    "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
-                    "properties": {
-                        "enabled": {
-                            "description": "Enable or disable external access through a public node via Marathon-LB.",
-                            "type": "boolean"
-                        },
-                        "external_public_agent_hostname": {
-                            "description": "For external access, Virtual Host URL to be used in the external load balancer.",
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "external_public_agent_hostname"
-                    ]
+                    "type": "string",
+                    "description": "(Optional) For external access, Virtual Host URL to be used in the external load balancer."
                 }
-            }
+            },
+            "required": [
+                "container_port",
+                "host_port",
+                "service_port"
+            ]
         },
         "environment": {
             "type": "object",

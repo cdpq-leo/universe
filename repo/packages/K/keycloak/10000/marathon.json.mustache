@@ -7,6 +7,12 @@
   "acceptedResourceRoles": [
     "*"
   ],
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "portDefinitions": [],
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -15,47 +21,38 @@
       "parameters": [],
       "privileged": false
     },
-    "volumes": [],
     "portMappings": [
       {
-        "containerPort": 8080,
-        "hostPort": 0,
-        "labels": {
-          "VIP_0": "/{{service.name}}:8080"
-        },
+        "containerPort": {{networking.container_port}},
+        "hostPort": {{networking.host_port}},
         "protocol": "tcp",
-        "servicePort": 10100
+        "name": "{{networking.name}}"            
       }
     ]
   },
   "env": {
-       "KEYCLOAK_HOSTNAME": "{{env.KEYCLOAK_HOSTNAME}}",
-       "KEYCLOAK_USER": "{{env.KEYCLOAK_USER}}",
-       "KEYCLOAK_PASSWORD": "{{env.KEYCLOAK_PASSWORD}}",
-       "DB_VENDOR": "{{env.DB_VENDOR}}",
-       "DB_ADDR": "{{env.DB_ADDR}}",
-       "DB_PORT": "{{env.DB_PORT}}",
-       "DB_NAME": "{{env.DB_NAME}}",
-       "DB_USER": "{{env.DB_USER}}",
-       "DB_PASSWORD": "{{env.DB_PASSWORD}}"
+       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
+       "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
+       "KEYCLOAK_PASSWORD": "{{environment.KEYCLOAK_PASSWORD}}",
+       "DB_VENDOR": "{{environment.DB_VENDOR}}",
+       "DB_ADDR": "{{environment.DB_ADDR}}",
+       "DB_PORT": "{{environment.DB_PORT}}",
+       "DB_NAME": "{{environment.DB_NAME}}",
+       "DB_USER": "{{environment.DB_USER}}",
+       "DB_PASSWORD": "{{environment.DB_PASSWORD}}"
 
   },
   "labels": {
-    {{#networking.external_access.enabled}}
+    {{#networking.external_access}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_VHOST": "{{networking.external_access.external_public_agent_hostname}}",
+    "HAPROXY_0_VHOST": "{{networking.external_access}}",
     "HAPROXY_0_PATH": "/{{service.name}}",
-    {{/networking.external_access.enabled}}
+    "VIP_0": "/{{service.name}}:8080"
+    {{/networking.external_access}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
-  },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
-  "portDefinitions": []
+  }
 }
