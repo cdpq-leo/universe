@@ -1,6 +1,6 @@
 {
   "packagingVersion": "4.0",
-  "name": "template",
+  "name": "template-docker",
   "version": "leo-1.0.0-1.0.3",
   "maintainer": "leo@cdpq.com",
   "description": "template",
