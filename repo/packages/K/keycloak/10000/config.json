@@ -43,11 +43,6 @@
             "type": "object",
             "description": "DC/OS Keycloak networking configuration properties",
             "properties": {
-                "name": {
-                    "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-                    "type": "string",
-                    "default": "name"
-                },
                 "container_port": {
                     "description": "Container port number",
                     "type": "number",
@@ -65,7 +60,8 @@
                 },
                 "external_access": {
                     "type": "string",
-                    "description": "(Optional) For external access, Virtual Host URL to be used in the external load balancer."
+                    "description": "(Optional) For external access, Virtual Host URL to be used in the external load balancer.",
+                    "default": "dcos-leo-public.eastus.cloudapp.azure.com"
                 }
             },
             "required": [
@@ -101,7 +97,7 @@
                 "DB_ADDR": {
                     "description": "Database address",
                     "type": "string",
-                    "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
+                    "default": "systemkeycloak-mysql.marathon.l4lb.thisdcos.directory"
                 },
                 "DB_PORT": {
                     "description": "Database port",

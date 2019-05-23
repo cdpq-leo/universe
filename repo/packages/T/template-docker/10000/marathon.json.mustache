@@ -3,17 +3,13 @@
    "cpus": {{service.cpus}},
    "mem": {{service.mem}},
    "disk":{{service.disk}},
+   "instances": {{service.instances}},
    {{#service.cmd}}
    "cmd": "{{service.cmd}}",
    {{/service.cmd}}
-   {{#service.region}}
-   "region": "{{service.region}}",
-   {{/service.region}}
-   "instances": {{service.instances}},
    "container":{
       "type": "DOCKER",
       "volumes": [
-      {{#volumes.local_persistant_volume.container_path}}
       {  {{! local_persistant_volume type}}
          "persistent": {
              "size": {{volumes.local_persistant_volume.size_MiB}}
@@ -21,8 +17,6 @@
          "mode": "RW",
          "containerPath": "{{volumes.local_persistant_volume.container_path}}"
       }
-      {{/volumes.local_persistant_volume.container_path}}
-      {{#volumes.external_persistant_volume.name}}
       { {{! external_persistant_volume type}}
          "external": {
             "name": "{{volumes.external_persistant_volume.name}}",
@@ -34,14 +28,11 @@
          "mode": "RW",
          "containerPath": "{{volumes.external_persistant_volume.container_path}}"
       }
-      {{/volumes.external_persistant_volume.name}}
-      {{#volumes.host_volume.container_path}}
       { {{! host_volume type}}
         "containerPath": "{{volumes.host_volume.container_path}}",
         "hostPath": "{{volumes.host_volume.host_path}}",
         "mode": "{{volumes.host_volume.mode}}"
       }
-      {{/volumes.host_volume.container_path}}
       ],
       "portMappings":[
          {
