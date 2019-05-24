@@ -3,24 +3,6 @@
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "labels": {
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    "DCOS_SERVICE_SCHEME": "http"
-  },
-  "env": {
-    "GREMLIN_GRAPH_READER": "{{grakn.gremlin_graph_reader}}",
-    "START_LOCAL_STORAGE": "{{grakn.start_local_storage}}",
-    "STORAGE_HOSTNAME": "{{grakn.storage_hostname}}",
-    "KEYSPACE": "{{grakn.keyspace}}",
-    "START_LOCAL_QUEUE": "{{grakn.start_local_queue}}",
-    "QUEUE_HOST": "{{grakn.queue_host}}",
-    "INDEX_SEARCH_BACKEND": "{{grakn.index_search_backend}}",
-    "INDEX_SEARCH_HOSTNAME": "{{grakn.index_search_hostname}}",
-    "SPARK_MASTER": "{{grakn.spark_master}}",
-    "BACKGROUND_TASKS_THREADS" : "{{grakn.background_tasks_threads}}",
-    "LOG_LEVEL": "{{grakn.log_level}}"
-  },
   "container": {
     "type": "DOCKER",
     "portMappings": [
@@ -31,7 +13,8 @@
           "VIP_0": "/{{service.name}}:4567"
         },
         "protocol": "tcp"
-      }, {
+      }, 
+      {
         "containerPort": 48555,
         "hostPort": 0,
         "labels": {
@@ -40,32 +23,50 @@
         "protocol": "tcp"
       }
     ],
-    {{#service.volume.enabled}}
+    {{#volumes.enabled}}
     "volumes": [
       {
-        "containerPath": "{{service.volume.container_path}}",
-        "hostPath": "{{service.volume.host_path}}",
-        "mode": "{{service.volume.mode}}"
+        "containerPath": "{{volumes.container_path}}",
+        "hostPath": "{{volumes.host_path}}",
+        "mode": "{{volumes.mode}}"
       }
     ],
-    {{/service.volume.enabled}}
+    {{/volumes.enabled}}
     "docker": {
-      "image": "{{resource.assets.container.docker.grakn}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "network": "BRIDGE",
       "privileged": false,
       "parameters": []
     }
   },
-  "healthChecks": [
+  "healthChecks":[
     {
-      "protocol": "HTTP",
-      "portIndex": 0,
-      "path": "/",
-      "gracePeriodSeconds": 120,
-      "intervalSeconds": 30,
-      "maxConsecutiveFailures": 3,
-      "timeoutSeconds": 5
+      "protocol":"HTTP",
+      "path":"{{health_checks.HTTP_protocol.path}}",
+      "port":{{health_checks.HTTP_protocol.port}},
+      "timeoutSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "gracePeriodSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "maxConsecutiveFailures":{{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
     }
-  ]
+  ],
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "DCOS_SERVICE_SCHEME": "http"
+  },
+  "env": {
+    "GREMLIN_GRAPH_READER": "{{environment.gremlin_graph_reader}}",
+    "START_LOCAL_STORAGE": "{{environment.start_local_storage}}",
+    "STORAGE_HOSTNAME": "{{environment.storage_hostname}}",
+    "KEYSPACE": "{{environment.keyspace}}",
+    "START_LOCAL_QUEUE": "{{environment.start_local_queue}}",
+    "QUEUE_HOST": "{{environment.queue_host}}",
+    "INDEX_SEARCH_BACKEND": "{{environment.index_search_backend}}",
+    "INDEX_SEARCH_HOSTNAME": "{{environment.index_search_hostname}}",
+    "SPARK_MASTER": "{{environment.spark_master}}",
+    "BACKGROUND_TASKS_THREADS" : "{{environment.background_tasks_threads}}",
+    "LOG_LEVEL": "{{environment.log_level}}"
+  }
 }

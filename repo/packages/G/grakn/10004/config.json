@@ -27,36 +27,85 @@
           "type": "number",
           "default": 65536,
           "minimum": 2000
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Docker volume properties",
+      "properties": {
+        "enabled": {
+          "description": "Enable host volume or not",
+          "type": "boolean",
+          "default": false
         },
-        "volume": {
+        "host_path": {
+          "description": "Host path",
+          "type": "string",
+          "default": ""
+        },
+        "container_path": {
+          "description": "Container path",
+          "type": "string",
+          "default": ""
+        },
+        "mode": {
+          "description": "Mode",
+          "type": "string",
+          "default": "RO",
+          "enum": [
+            "RW",
+            "RO"
+          ]
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "HTTP_protocol": {
           "type": "object",
-          "description": "Docker volume properties",
           "properties": {
-            "enabled": {
-              "description": "Enable volume or not",
-              "type": "boolean",
-              "default": false
+            "port": {
+              "type": "number",
+              "default": 0
             },
-            "host_path": {
-              "description": "Host path",
+            "path": {
               "type": "string",
-              "default": ""
+              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
+              "default": "/"
             },
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": ""
-            },
-            "mode": {
-              "description": "Mode",
-              "type": "string",
-              "default": "RO"
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 5
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
             }
           }
         }
       }
     },
-    "grakn": {
+    "environment": {
       "type": "object",
       "description": "Grakn instance configuration properties",
       "properties": {
@@ -108,9 +157,19 @@
         "log_level": {
           "description": "Log level",
           "type": "string",
-          "default": "INFO"
+          "default": "INFO",
+          "enum": [
+            "OFF",
+            "FATAL",
+            "ERROR",
+            "WARN",
+            "INFO",
+            "DEBUG",
+            "TRACE",
+            "ALL"
+          ]
         },
-        "background_tasks_threads":{
+        "background_tasks_threads": {
           "description": "threads to dedicate to background processes",
           "type": "string",
           "default": "1"

@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "grakn": "cdpqleo/grakn:1.5.3"
+        "image": "cdpqleo/grakn:1.5.3"
       }
     }
   }
