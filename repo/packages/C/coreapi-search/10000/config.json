@@ -16,91 +16,151 @@
           "default": 0.2
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 256
-        },
-        "health_url": {
-          "description": "Url for health checks",
-          "type": "string",
-          "default": "/service/ui-coreapi-search/api/health"
-        },
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
         "container_port": {
-          "description": "Container port",
+          "description": "Container port number",
           "type": "number",
           "default": 8080
-        },
-        "data_volume": {
+        }
+      }
+    },
+    "volumes": {
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "type": "object",
+      "properties": {
+        "data_host_volume": {
           "type": "object",
-          "description": "coreapi-search data volume config",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "container_path": {
-              "description": "Container path",
+            "host_path": {
               "type": "string",
+              "description": "Host path",
+              "default": "/mnt/azurefileshare/data/google"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "Container path",
               "default": "/var/opt/data/google"
             },
-            "host_path": {
-              "description": "Host path",
+            "mode": {
               "type": "string",
-              "default": "/mnt/azurefileshare/data/google"
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
             }
           }
-        },
-        "env" : {
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "HTTP_protocol": {
           "type": "object",
-          "description": "environment variables",
           "properties": {
-            "HTTP_HOSTNAME" : {
-              "description": "Hostname",
-              "type": "string",
-              "default": "0.0.0.0"
+            "port_index": {
+              "type": "number",
+              "default": 0
             },
-            "HTTP_PORT" : {
-              "description": "HTTP_PORT",
+            "path": {
               "type": "string",
-              "default": "8080"
+              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
+              "default": "/service/ui-coreapi-search/api/health"
             },
-            "SERVICE_PREFIX" : {
-              "description": "service prefix url",
-              "type": "string",
-              "default": "/service/ui-coreapi-search"
-            },
-            "CUSTOM_SEARCH_ID" : {
-              "description": "custom search id",
-              "type": "string",
-              "default": ""
-            },
-            "SEARCH_LIMIT" : {
-              "description": "max search results per query (1-10)",
-              "type": "string",
-              "default": "10"
-            },
-            "SEARCH_LANGUAGE" : {
-              "description": "search language",
-              "type": "string",
-              "default": "lang_en"
-            },
-            "SEARCH_QUERY_KEYWORDS" : {
-              "description": "search keyword to get more precise results",
-              "type": "string",
-              "default": ""
-            },
-            "USE_SEARCH_DATE_PARAM" : {
-              "description": "search date range",
-              "type": "string",
-              "default": "true"
-            },
-            "GOOGLE_APPLICATION_CREDENTIALS" : {
-              "description": "Google service account credentials file location.",
-              "type": "string",
-              "default": "/var/opt/data/google/loyal-rookery-222020-6a69b33e81bf.json"
-            },
-            "SCOPES" : {
-              "description": "Google auth scopes",
-              "type": "string",
-              "default": "https://www.googleapis.com/auth/cse"
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 3
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 5
+                }
+              }
             }
           }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "environment variables",
+      "properties": {
+        "HTTP_HOSTNAME": {
+          "description": "Hostname",
+          "type": "string",
+          "default": "0.0.0.0"
+        },
+        "HTTP_PORT": {
+          "description": "HTTP_PORT",
+          "type": "string",
+          "default": "8080"
+        },
+        "SERVICE_PREFIX": {
+          "description": "service prefix url",
+          "type": "string",
+          "default": "/service/ui-coreapi-search"
+        },
+        "CUSTOM_SEARCH_ID": {
+          "description": "custom search id",
+          "type": "string",
+          "default": ""
+        },
+        "SEARCH_LIMIT": {
+          "description": "max search results per query (1-10)",
+          "type": "string",
+          "default": "10"
+        },
+        "SEARCH_LANGUAGE": {
+          "description": "search language",
+          "type": "string",
+          "default": "lang_en"
+        },
+        "SEARCH_QUERY_KEYWORDS": {
+          "description": "search keyword to get more precise results",
+          "type": "string",
+          "default": ""
+        },
+        "USE_SEARCH_DATE_PARAM": {
+          "description": "search date range",
+          "type": "string",
+          "default": "true"
+        },
+        "GOOGLE_APPLICATION_CREDENTIALS": {
+          "description": "Google service account credentials file location.",
+          "type": "string",
+          "default": "/var/opt/data/google/loyal-rookery-222020-6a69b33e81bf.json"
+        },
+        "SCOPES": {
+          "description": "Google auth scopes",
+          "type": "string",
+          "default": "https://www.googleapis.com/auth/cse"
         }
       }
     }
