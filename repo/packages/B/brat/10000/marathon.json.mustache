@@ -1,70 +1,68 @@
 {
   "id": "/{{service.name}}",
-  "instances": 1,
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
-  "gpus": 0,
+  "gpus": {{service.gpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "backoffFactor": 1.15,
-  "backoffSeconds": 1,
-  "cmd": "/usr/bin/supervisord",
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "cmd": "{{service.cmd}}",
   "container": {
     "portMappings": [
       {
-        "containerPort": 80,
-        "hostPort": 0,
+        "containerPort": {{networking.container_port}},
+        "hostPort": {{networking.host_port}},
         "protocol": "tcp",
-        "servicePort": 0
+        "servicePort": {{networking.service_port}}
       }
     ],
     "type": "DOCKER",
     "volumes": [
       {
-        "containerPath": "/bratdata",
-        "hostPath": "{{brat.data-path}}",
-        "mode": "RW"
+        "containerPath": "{{volumes.data_host_volume.container_path}}",
+        "hostPath": "{{volumes.data_host_volume.host_path}}",
+        "mode": "{{volumes.data_host_volume.mode}}"
       },
       {
-        "containerPath": "/bratcfg",
-        "hostPath": "{{brat.config-path}}",
-        "mode": "RW"
+        "containerPath": "{{volumes.config_host_volume.container_path}}",
+        "hostPath": "{{volumes.config_host_volume.host_path}}",
+        "mode": "{{volumes.config_host_volume.mode}}"
       }
     ],
     "docker": {
-      "image": "{{service.docker-image}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
     }
   },
   "env": {
-    "BRAT_USERNAME": "{{brat.username}}",
-    "BRAT_PASSWORD": "{{brat.password}}",
-    "BRAT_EMAIL": "{{brat.email}}"
+    "BRAT_USERNAME": "{{environment.username}}",
+    "BRAT_PASSWORD": "{{environment.password}}",
+    "BRAT_EMAIL": "{{environment.email}}"
   },
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_ENABLED": "true",
-    "HAPROXY_0_VHOST": "dcos-leo-public.eastus.cloudapp.azure.com",
+    "HAPROXY_0_VHOST": "{{environment.HAPROXY_0_VHOST}}",
     "HAPROXY_0_PATH": "/brat",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http"
   },
   "healthChecks": [
     {
-      "gracePeriodSeconds": 300,
-      "intervalSeconds": 60,
-      "maxConsecutiveFailures": 3,
-      "portIndex": 0,
-      "timeoutSeconds": 20,
-      "delaySeconds": 15,
-      "protocol": "TCP",
-      "ipProtocol": "IPv4"
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
     }
   ],
-  "maxLaunchDelaySeconds": 3600,
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
   "networks": [
     {
       "mode": "container/bridge"

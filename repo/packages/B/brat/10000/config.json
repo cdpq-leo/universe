@@ -6,46 +6,176 @@
       "description": "Brat service configuration properties.",
       "properties": {
         "name": {
-          "description": "Name of the service instance.",
+          "description": "Name of the service.",
           "type": "string",
           "default": "brat"
         },
         "cpus": {
-          "description": "CPU shares to allocate to the Brat instance.",
+          "description": "CPU shares to allocate to the Alluxio instance.",
           "type": "number",
           "default": 1
         },
+        "gpus": {
+          "description": "GPU shares to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 0
+        },
         "mem": {
-          "description": "Memory to allocate to the Brat instance.",
+          "description": "Memory to allocate to the Alluxio instance.",
           "type": "number",
           "default": 2048
         },
         "disk": {
-          "description": "Disk (MB) to allocate to the Brat instance.",
+          "description": "Disk (MB) to allocate to the Alluxio instance.",
           "type": "number",
           "default": 16384
         },
-        "docker-image": {
-          "description": "Docker image for Brat",
+        "instances": {
+          "description": "Number of instances of Alluxio.",
+          "type": "number",
+          "default": 1,
+          "minimum": 1
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
           "type": "string",
-          "default": "cassj/brat"
+          "default": "/usr/bin/supervisord"
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
         }
       }
     },
-    "brat": {
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "container_port": {
+          "description": "Container port number",
+          "type": "number",
+          "default": 80
+        },
+        "host_port": {
+          "description": "Host port number",
+          "type": "number",
+          "default": 0
+        },
+        "service_port": {
+          "description": "Service port number",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "volumes": {
+      "description": "The volumes accessible to the container.",
+      "type": "object",
+      "properties": {
+        "data_host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "host_path": {
+              "type": "string",
+              "description": "path on the host to the brat data",
+              "default": "/mnt/azurefileshare/hdfs/app/brat/brat-data"
+            },
+            "container_path": {
+              "type": "string",
+              "default": "/bratdata"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        },
+        "config_host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "host_path": {
+              "type": "string",
+              "description": "path on the host to the brat config",
+              "default": "/mnt/azurefileshare/hdfs/app/brat/brat-cfg"
+            },
+            "container_path": {
+              "type": "string",
+              "default": "/bratcfg"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "TCP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "description": "Specifies the port index in the ports array that is used for health requests.",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
       "type": "object",
       "description": "brat parameters",
       "properties": {
-        "data-path": {
-          "description": "path on the host to the brat data",
-          "type": "string",
-          "default": "/mnt/azurefileshare/hdfs/app/brat/brat-data"
-        },
-        "config-path": {
-          "description": "path on the host to the brat config",
-          "type": "string",
-          "default": "/mnt/azurefileshare/hdfs/app/brat/brat-cfg"
-        },
         "username": {
           "description": "brat username",
           "type": "string",
@@ -60,8 +190,23 @@
           "description": "brat user email",
           "type": "string",
           "default": "brat@example.com"
+        },
+        "HAPROXY_0_VHOST": {
+          "type": "string",
+          "description": "Exposed endpoint to the application",
+          "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+        },
+        "HAPROXY_0_PATH": {
+          "type": "string",
+          "default": "/brat"
         }
-      }
+      },
+      "required": [
+        "username",
+        "password",
+        "HAPROXY_0_VHOST",
+        "HAPROXY_0_PATH"
+      ]
     }
   }
 }
