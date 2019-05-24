@@ -2,29 +2,19 @@
    "id": "{{service.name}}",
    "cpus": {{service.cpus}},
    "mem": {{service.mem}},
-   "disk":0,
-   "env":{
-      "SMART_SEARCH_URL":"{{service.env.SMART_SEARCH_URL}}"
-   },
-   "labels":{
-      "DCOS_SERVICE_PORT_INDEX":"0",
-      "DCOS_SERVICE_SCHEME":"http",
-      "DCOS_SERVICE_NAME":"{{service.name}}"
-   },
+   "disk":{{service.disk}},
    "container":{
       "portMappings":[
          {
-            "containerPort":{{service.container_port}},
-            "hostPort":0,
+            "containerPort":{{networking.container_port}},
+            "hostPort":{{networking.host_port}},
             "protocol":"tcp"
          }
       ],
       "type":"DOCKER",
-      "volumes":[
-
-      ],
+      "volumes":[],
       "docker":{
-         "image":"{{resource.assets.container.docker.ss-ui}}",
+         "image":"{{resource.assets.container.docker.image}}",
          "forcePullImage":true
       }
    },
@@ -37,7 +27,15 @@
       {
          "portIndex":0,
          "protocol":"MESOS_HTTP",
-         "path":"{{service.health_url}}"
+         "path":"{{health_checks.MESOS_HTTP.path}}"
       }
-   ]
+   ],
+   "env":{
+      "SMART_SEARCH_URL":"{{environment.SMART_SEARCH_URL}}"
+   },
+   "labels":{
+      "DCOS_SERVICE_PORT_INDEX":"0",
+      "DCOS_SERVICE_SCHEME":"http",
+      "DCOS_SERVICE_NAME":"{{service.name}}"
+   }
 }

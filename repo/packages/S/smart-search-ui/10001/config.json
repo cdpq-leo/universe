@@ -16,30 +16,57 @@
           "default": 0.3
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 2048
         },
-        "health_url": {
-          "description": "Url for health checks",
-          "type": "string",
-          "default": "/"
-        },
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
         "container_port": {
-          "description": "Container port",
+          "description": "Container port number",
           "type": "number",
           "default": 8080
         },
-        "env" : {
+        "host_port": {
+          "description": "host port number",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "MESOS_HTTP": {
           "type": "object",
-          "description": "environment variables",
           "properties": {
-            "SMART_SEARCH_URL" : {
-              "description": "Smart search service url.",
+            "path": {
               "type": "string",
-              "default": "http://smart-search-service.marathon.l4lb.thisdcos.directory:8080/smart-search-service/api/search/smart"
+              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
+              "default": "/"
             }
           }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "environment variables",
+      "properties": {
+        "SMART_SEARCH_URL": {
+          "description": "Smart search service url.",
+          "type": "string",
+          "default": "http://smart-search-service.marathon.l4lb.thisdcos.directory:8080/smart-search-service/api/search/smart"
         }
       }
     }
