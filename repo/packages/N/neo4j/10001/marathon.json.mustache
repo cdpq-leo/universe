@@ -1,48 +1,48 @@
 {
-  "id":"{{neo4j-core.name}}",
-  "cpus":{{neo4j-core.cpus}},
-  "mem":{{neo4j-core.mem}},
-  "instances":{{neo4j-core.instances}},
-  "disk": {{neo4j-core.disk}},
+  "id":"{{service.name}}",
+  "cpus":{{service.cpus}},
+  "mem":{{service.mem}},
+  "instances":{{service.instances}},
+  "disk": {{service.disk}},
   "container":{
     "type":"DOCKER",
     "volumes":[
       {
-        "containerPath":"data",
+        "containerPath":"{{volumes.local_persistant_volume.container_path}}",
         "mode":"RW",
         "persistent":{
           "type":"root",
-          "size":{{neo4j-core.disk}}
+          "size":{{volumes.local_persistant_volume.size_MiB}}
         }
       },
       {
-        "containerPath":"/data",
-        "hostPath":"data",
-        "mode":"RW"
+        "containerPath":"{{volumes.host_volume.host_path}}",
+        "hostPath":"{{volumes.host_volume.container_path}}",
+        "mode":"{{volumes.host_volume.mode}}"
       }
     ],
     "docker":{
-      "image":"{{resource.assets.container.docker.dcos-neo4j}}",
+      "image":"{{resource.assets.container.docker.image}}",
       "network":"USER"
     }
   },
   "env":{
-    "NEO4J_AUTH":"{{neo4j-core.auth-username}}/{{neo4j-core.auth-password}}",
+    "NEO4J_AUTH":"{{environment.auth_username}}/{{environment.auth_password}}",
     "NEO4J_dbms_mode":"CORE",
-    "NEO4J_causalClustering_expectedCoreClusterSize":"{{neo4j-core.expected-cluster-size}}"
+    "NEO4J_causalClustering_expectedCoreClusterSize":"{{environment.expected_cluster_size}}"
   },
   "ipAddress":{
-    "networkName":"{{neo4j-core.network-name}}"
+    "networkName":"{{environment.network_name}}"
   },
   "healthChecks":[
     {
       "protocol":"HTTP",
-      "path":"/",
-      "port":7474,
-      "timeoutSeconds":10,
-      "gracePeriodSeconds":240,
-      "intervalSeconds":10,
-      "maxConsecutiveFailures":10
+      "path":"{{health_checks.HTTP_protocol.path}}",
+      "port":{{health_checks.HTTP_protocol.port}},
+      "timeoutSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "gracePeriodSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "maxConsecutiveFailures":{{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
     }
   ]
 }
