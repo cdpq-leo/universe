@@ -11,36 +11,6 @@
           "type": "string",
           "default": "rq-dashboard"
         },
-        "constraints": {
-          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "attribute": {
-                "type": "string"
-              },
-              "operator": {
-                "type": "string",
-                "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-              },
-              "value": {
-                "type": "string"
-              },
-              "last": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "default": []
-        }
-      }
-    },
-    "rq": {
-      "type": "object",
-      "description": "RQ Dashboard instance configuration properties",
-      "properties": {
         "cpus": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "number",
@@ -59,6 +29,72 @@
           "default": 1000,
           "minimum": 1000
         },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1,
+          "minimum": 1
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "TCP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 60
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 5
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 5
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "RQ Dashboard instance configuration properties",
+      "properties": {
         "redis_host": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "string",
@@ -76,11 +112,9 @@
         }
       },
       "required": [
-        "cpus",
-        "mem",
-        "disk",
         "redis_host",
-        "redis_port"
+        "redis_port",
+        "url_prefix"
       ]
     }
   }

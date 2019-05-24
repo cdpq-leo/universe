@@ -10,7 +10,7 @@
   "assets": {
     "container": {
       "docker": {
-        "rq-dashboard": "cdpqleo/rq-dashboard"
+        "image": "cdpqleo/rq-dashboard"
       }
     }
   }
