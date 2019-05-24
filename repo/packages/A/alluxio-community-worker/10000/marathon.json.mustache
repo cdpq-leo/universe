@@ -2,12 +2,12 @@
   "id": "/{{service.name}}",
   "instances": {{service.instances}},
   "cpus": {{service.cpus}},
-  "gpus": 0,
+  "gpus": {{service.gpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "backoffFactor": 1.15,
-  "backoffSeconds": 1,
-  "cmd": "/entrypoint.sh worker --no-format",
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "cmd": "{{service.cmd}}",
   "container": {
     "portMappings": [
       {
@@ -17,16 +17,16 @@
         "servicePort": 10104
       },
       {
-        "containerPort": {{alluxio.worker-data-port}},
-        "hostPort": {{alluxio.worker-data-port}},
+        "containerPort": {{networking.worker_data_port}},
+        "hostPort": {{networking.worker_data_port}},
         "protocol": "tcp",
-        "servicePort": {{alluxio.worker-data-port}}
+        "servicePort": {{networking.worker_data_port}}
       },
       {
-        "containerPort": {{alluxio.worker-port}},
-        "hostPort": {{alluxio.worker-port}},
+        "containerPort": {{networking.worker_port}},
+        "hostPort": {{networking.worker_port}},
         "protocol": "tcp",
-        "servicePort": {{alluxio.worker-port}}
+        "servicePort": {{networking.worker_port}}
       },
       {
         "containerPort": 39999,
@@ -37,59 +37,59 @@
     ],
     "type": "DOCKER",
     "volumes": [
-      {{#alluxio.tier1}}
+      {{#volumes.tier1_host_volume.enable_tier1}}
       {
-        "containerPath": "{{alluxio.tier1-dirs-path}}",
-        "hostPath": "{{alluxio.tier1-host-path}}",
-        "mode": "RW"
+        "containerPath": "{{volumes.tier1_host_volume.container_path}}",
+        "hostPath": "{{volumes.tier1_host_volume.host_path}}",
+        "mode": "{{volumes.tier1_host_volume.mode}}"
       },
-      {{/alluxio.tier1}}
+      {{/volumes.tier1_host_volume.enable_tier1}}
       {
-        "containerPath": "/opt/ramdisk",
-        "hostPath": "/mnt/ramdisk",
-        "mode": "RW"
+        "containerPath": "{{volumes.tier0_host_volume.container_path}}",
+        "hostPath": "{{volumes.tier0_host_volume.host_path}}",
+        "mode": "{{volumes.tier0_host_volume.mode}}"
       }
-      {{#alluxio.tier2}},
+       {{#volumes.tier2_host_volume.enable_tier2}}
       {
-        "containerPath": "{{alluxio.tier2-dirs-path}}",
-        "hostPath": "{{alluxio.tier2-host-path}}",
-        "mode": "RW"
+        "containerPath": "{{volumes.tier2_host_volume.container_path}}",
+        "hostPath": "{{volumes.tier2_host_volume.host_path}}",
+        "mode": "{{volumes.tier2_host_volume.mode}}"
       }
-      {{/alluxio.tier2}}
+       {{/volumes.tier2_host_volume.enable_tier2}}
     ],
     "docker": {
-      "image": "{{service.docker-image}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
     }
   },
   "env": {
-    "ALLUXIO_WORKER_PORT": "{{alluxio.worker-port}}",
-    "ALLUXIO_WORKER_DATA_PORT": "{{alluxio.worker-data-port}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVELS": "{{alluxio.tier-levels}}",
+    "ALLUXIO_WORKER_PORT": "{{networking.worker_port}}",
+    "ALLUXIO_WORKER_DATA_PORT": "{{networking.worker_data_port}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVELS": "{{environment.tier_levels}}",
     "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_ALIAS": "MEM",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_PATH": "{{alluxio.tier0-dirs-path}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_QUOTA": "{{alluxio.tier0-quota}}GB",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_WATERMARK_HIGH_RATIO": "{{alluxio.tier0-watermark-high-ratio}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_WATERMARK_LOW_RATIO": "{{alluxio.tier0-watermark-low-ratio}}",
-    {{#alluxio.tier1}}
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_ALIAS": "{{alluxio.tier1-alias}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_DIRS_PATH": "{{alluxio.tier1-dirs-path}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_DIRS_QUOTA": "{{alluxio.tier1-quota}}GB",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_WATERMARK_HIGH_RATIO": "{{alluxio.tier1-watermark-high-ratio}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_WATERMARK_LOW_RATIO": "{{alluxio.tier1-watermark-low-ratio}}",
-    {{/alluxio.tier1}}
-    {{#alluxio.tier2}}
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_ALIAS": "{{alluxio.tier2-alias}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_DIRS_PATH": "{{alluxio.tier2-dirs-path}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_DIRS_QUOTA": "{{alluxio.tier2-quota}}GB",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_WATERMARK_HIGH_RATIO": "{{alluxio.tier2-watermark-high-ratio}}",
-    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_WATERMARK_LOW_RATIO": "{{alluxio.tier2-watermark-low-ratio}}",
-    {{/alluxio.tier2}}
-    "ALLUXIO_UNDERFS_ADDRESS": "{{alluxio.underfs-address}}",
-    "ALLUXIO_MASTER_HOSTNAME": "{{alluxio.master-hostname}}",
-    "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{alluxio.underfs-hdfs-configuration}}"
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_PATH": "{{volumes.tier0_host_volume.container_path}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_DIRS_QUOTA": "{{environment.tier0_quota}}GB",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_WATERMARK_HIGH_RATIO": "{{environment.tier0_watermark_high_ratio}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL0_WATERMARK_LOW_RATIO": "{{environment.tier0_watermark_low_ratio}}",
+    {{#volumes.tier1_host_volume.enable_tier1}}
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_ALIAS": "{{environment.tier1_alias}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_DIRS_PATH": "{{environment.volumes.tier1_host_volume.container_path}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_DIRS_QUOTA": "{{environment.tier1_quota}}GB",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_WATERMARK_HIGH_RATIO": "{{environment.tier1_watermark_high_ratio}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL1_WATERMARK_LOW_RATIO": "{{environment.tier1_watermark_low_ratio}}",
+    {{/volumes.tier1_host_volume.enable_tier1}}
+    {{#volumes.tier2_host_volume.enable_tier2}}
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_ALIAS": "{{environment.tier2_alias}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_DIRS_PATH": "{{environment.tier2-dirs-path}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_DIRS_QUOTA": "{{environment.tier2_quota}}GB",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_WATERMARK_HIGH_RATIO": "{{environment.tier2_watermark_high_ratio}}",
+    "ALLUXIO_WORKER_TIEREDSTORE_LEVEL2_WATERMARK_LOW_RATIO": "{{environment.tier2_watermark_low_ratio}}",
+    {{/volumes.tier2_host_volume.enable_tier2}}
+    "ALLUXIO_UNDERFS_ADDRESS": "{{environment.underfs_address}}",
+    "ALLUXIO_MASTER_HOSTNAME": "{{environment.master_hostname}}",
+    "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{environment.underfs_hdfs_configuration}}"
   },
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
@@ -99,17 +99,15 @@
   },
   "healthChecks": [
     {
-      "gracePeriodSeconds": 300,
-      "intervalSeconds": 60,
-      "maxConsecutiveFailures": 3,
-      "portIndex": 0,
-      "timeoutSeconds": 20,
-      "delaySeconds": 15,
-      "protocol": "TCP",
-      "ipProtocol": "IPv4"
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
     }
   ],
-  "maxLaunchDelaySeconds": 3600,
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
   "networks": [
     {
       "mode": "container/bridge"

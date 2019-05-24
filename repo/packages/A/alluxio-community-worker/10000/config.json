@@ -6,7 +6,7 @@
       "description": "Alluxio service configuration properties.",
       "properties": {
         "name": {
-          "description": "Name of the service instance. If deploying multiple Alluxio clusters, each instance must have a unique service name.",
+          "description": "Name of the service.",
           "type": "string",
           "default": "alluxio-worker"
         },
@@ -14,6 +14,11 @@
           "description": "CPU shares to allocate to the Alluxio instance.",
           "type": "number",
           "default": 1
+        },
+        "gpus": {
+          "description": "GPU shares to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 0
         },
         "mem": {
           "description": "Memory to allocate to the Alluxio instance.",
@@ -26,150 +31,271 @@
           "default": 16384
         },
         "instances": {
-          "description": "Number of worker instances.",
+          "description": "Number of instances of Alluxio.",
           "type": "number",
           "default": 1,
           "minimum": 1
         },
-        "docker-image": {
-          "description": "Docker image of the alluxio worker",
+        "cmd": {
+          "description": "A shell command for your container to execute.",
           "type": "string",
-          "default": "cdpqleo/alluxio:worker-1.8.1"
+          "default": "/entrypoint.sh worker --no-format"
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
         }
       }
     },
-    "alluxio": {
+    "networking": {
       "type": "object",
-      "description": "Alluxio parameters",
+      "description": "Configure the networking for your service.",
       "properties": {
-        "underfs-address": {
+        "worker_port": {
+          "description": "Worker port",
+          "type": "number",
+          "default": 10105
+        },
+        "worker_data_port": {
+          "description": "Worker data port",
+          "type": "number",
+          "default": 10103
+        }
+      }
+    },
+    "volumes": {
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "type": "object",
+      "properties": {
+        "tier0_host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "host_path": {
+              "type": "string",
+              "description": "The host path of the storage directory for the top storage tier",
+              "default": "/mnt/ramdisk"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "The path of storage directory for the top storage tier",
+              "default": "/opt/ramdisk"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        },
+        "tier1_host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "enable_tier1": {
+              "description": "Indicate whether a second storage tier is used",
+              "type": "boolean",
+              "default": true
+            },
+            "host_path": {
+              "type": "string",
+              "description": "The host path of the storage directory for the second storage tier",
+              "default": "/var/lib/docker/alluxio-storage-ssd"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "The path of storage directory for the second storage tier",
+              "default": "/opt/drive-ssd"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        },
+        "tier2_host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "enable_tier2": {
+              "description": "Indicate whether a third storage tier is used",
+              "type": "boolean",
+              "default": false
+            },
+            "host_path": {
+              "type": "string",
+              "description": "The host path of the storage directory for the third storage tier",
+              "default": "/var/lib/docker/alluxio-storage-hdd"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "The path of storage directory for the third storage tier",
+              "default": "/opt/drive-hdd"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "TCP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "description": "Specifies the port index in the ports array that is used for health requests.",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Alluxio environment variables configuration",
+      "properties": {
+        "underfs_address": {
           "description": "address for understorage filesystem",
           "type": "string",
           "default": "hdfs://hdfs/"
         },
-        "master-hostname": {
+        "master_hostname": {
           "description": "alluxio master hostname",
           "type": "string",
           "default": "alluxio-master.marathon.mesos"
         },
-        "underfs-hdfs-configuration": {
+        "underfs_hdfs_configuration": {
           "description": "location of hdfs configuration files",
           "type": "string",
           "default": "/opt/alluxio/conf/core-site.xml:/opt/alluxio/conf/hdfs-site.xml"
         },
-        "worker-port": {
-          "description": "worker port",
-          "type": "number",
-          "default": 10105
-        },
-        "worker-data-port": {
-          "description": "worker data port",
-          "type": "number",
-          "default": 10103
-        },
-        "tier-levels": {
+        "tier_levels": {
           "description": "The number of storage tiers on the worker",
           "type": "number",
           "default": 2
         },
-        "tier0-quota": {
+        "tier0_quota": {
           "description": "Capacity (GB) for the tier 0 storage",
           "type": "number",
           "default": 7
         },
-        "tier0-dirs-path": {
-          "description": "The path of storage directory for the top storage tier",
-          "type": "string",
-          "default": "/opt/ramdisk"
-        },
-        "tier0-watermark-high-ratio": {
+        "tier0_watermark_high_ratio": {
           "description": "The high watermark of the space in the top storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.9,
           "maximum": 1,
           "minimum": 0
         },
-        "tier0-watermark-low-ratio": {
+        "tier0_watermark_low_ratio": {
           "description": "The low watermark of the space in the top storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.7,
           "maximum": 1,
           "minimum": 0
         },
-        "tier1": {
-          "description": "Indicate whether a second storage tier is used",
-          "type": "boolean",
-          "default": true
-        },
-        "tier1-alias": {
+        "tier1_alias": {
           "description": "alias for the tier 1 storage",
           "type": "string",
           "default": "SSD",
-          "enum": ["HDD", "SSD"]
+          "enum": [
+            "HDD",
+            "SSD"
+          ]
         },
-        "tier1-quota": {
+        "tier1_quota": {
           "description": "Capacity (GB) for the tier 1 storage",
           "type": "number",
           "default": 59
         },
-        "tier1-dirs-path": {
-          "description": "The path of storage directory for the second storage tier",
-          "type": "string",
-          "default": "/opt/drive-ssd"
-        },
-        "tier1-host-path":{
-          "description": "The host path of the storage directory for the second storage tier",
-          "type": "string",
-          "default": "/var/lib/docker/alluxio-storage-ssd"
-        },
-        "tier1-watermark-high-ratio": {
+        "tier1_watermark_high_ratio": {
           "description": "The high watermark of the space in the second storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.9,
           "maximum": 1,
           "minimum": 0
         },
-        "tier1-watermark-low-ratio": {
+        "tier1_watermark_low_ratio": {
           "description": "The low watermark of the space in the second storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.7,
           "maximum": 1,
           "minimum": 0
         },
-        "tier2": {
-          "description": "Indicate whether a third storage tier is used",
-          "type": "boolean",
-          "default": false
-        },
-        "tier2-alias": {
+        "tier2_alias": {
           "description": "alias for the tier 2 storage",
           "type": "string",
           "default": "HDD",
-          "enum": ["HDD", "SSD"]
+          "enum": [
+            "HDD",
+            "SSD"
+          ]
         },
-        "tier2-quota": {
+        "tier2_quota": {
           "description": "Capacity (GB) for the tier 2 storage",
           "type": "number",
           "default": 59
         },
-        "tier2-dirs-path": {
-          "description": "The path of storage directory for the third storage tier",
-          "type": "string",
-          "default": "/opt/drive-hdd"
-        },
-        "tier2-host-path":{
-          "description": "The host path of the storage directory for the third storage tier",
-          "type": "string",
-          "default": "/var/lib/docker/alluxio-storage-hdd"
-        },
-        "tier2-watermark-high-ratio": {
+        "tier2_watermark_high_ratio": {
           "description": "The high watermark of the space in the third storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.9,
           "maximum": 1,
           "minimum": 0
         },
-        "tier2-watermark-low-ratio": {
+        "tier2_watermark_low_ratio": {
           "description": "The low watermark of the space in the third storage tier (a value between 0 and 1)",
           "type": "number",
           "default": 0.7,
