@@ -21,10 +21,72 @@
           "default": 0
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 4096
-        },
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "marathon_lb": {
+          "type": "object",
+          "description": "Marathon-lb ports config",
+          "properties": {
+            "vhost": {
+              "description": "Virtual host.",
+              "type": "string",
+              "default": ""
+            },
+            "port0": {
+              "description": "Health check",
+              "type": "number",
+              "default": 10195
+            },
+            "port1": {
+              "description": "Foreign bind port",
+              "type": "number",
+              "default": 10196
+            },
+            "port2": {
+              "description": "Bind port",
+              "type": "number",
+              "default": 10197
+            },
+            "port3": {
+              "description": "App-Services (Documents)",
+              "type": "number",
+              "default": 10198
+            },
+            "port4": {
+              "description": "Admin",
+              "type": "number",
+              "default": 10199
+            },
+            "port5": {
+              "description": "Manage",
+              "type": "number",
+              "default": 10200
+            },
+            "port6": {
+              "description": "App-Services (Development)",
+              "type": "number",
+              "default": 10201
+            },
+            "port7": {
+              "description": "App-Services (Production)",
+              "type": "number",
+              "default": 10202
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "properties": {
         "backup_volume": {
           "type": "object",
           "description": "Marklogic backup volume config",
@@ -75,95 +137,50 @@
         }
       }
     },
-    "marklogic" : {
+    "environment": {
       "type": "object",
-      "description": "Marklogic config",
-      "required": [
-        "username",
-        "password"
-      ],
+      "description": "Environment configuration",
       "properties": {
-        "username": {
-          "description": "Admin username",
-          "type": "string",
-          "default": ""
+        "marklogic": {
+          "type": "object",
+          "description": "Marklogic configuration",
+          "properties": {
+            "username": {
+              "description": "Admin username",
+              "type": "string",
+              "default": "admin"
+            },
+            "password": {
+              "description": "Admin password",
+              "type": "string",
+              "default": "dcos"
+            },
+            "auth_mode": {
+              "description": "Auth mode",
+              "type": "string",
+              "default": "digest"
+            },
+            "realm": {
+              "description": "Realm",
+              "type": "string",
+              "default": "public"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ]
         },
-        "password": {
-          "description": "Admin password",
-          "type": "string",
-          "default": ""
-        },
-        "auth_mode": {
-          "description": "Auth mode",
-          "type": "string",
-          "default": "digest"
-        },
-        "realm": {
-          "description": "Realm",
-          "type": "string",
-          "default": "public"
-        }
-      }
-    },
-    "hdfs" : {
-      "type": "object",
-      "description": "HDFS config",
-      "properties": {
-        "config_url": {
-          "description": "Base URL that serves HDFS config files (core-site.xml and hdfs-site.xml)",
-          "type": "string",
-          "default": ""
-        }
-      }
-    },
-    "marathon-lb" : {
-      "type": "object",
-      "description": "Marathon-lb ports config",
-      "properties": {
-        "vhost": {
-          "description":  "Virtual host.",
-          "type": "string",
-          "default": ""
-        },
-        "port0": {
-          "description": "Health check",
-          "type": "number",
-          "default": 10195
-        },
-        "port1": {
-          "description": "Foreign bind port",
-          "type": "number",
-          "default": 10196
-        },
-        "port2": {
-          "description": "Bind port",
-          "type": "number",
-          "default": 10197
-        },
-        "port3": {
-          "description": "App-Services (Documents)",
-          "type": "number",
-          "default": 10198
-        },
-        "port4": {
-          "description": "Admin",
-          "type": "number",
-          "default": 10199
-        },
-        "port5": {
-          "description": "Manage",
-          "type": "number",
-          "default": 10200
-        },
-        "port6": {
-          "description": "App-Services (Development)",
-          "type": "number",
-          "default": 10201
-        },
-        "port7": {
-          "description": "App-Services (Production)",
-          "type": "number",
-          "default": 10202
+        "hdfs": {
+          "type": "object",
+          "description": "HDFS config",
+          "properties": {
+            "config_url": {
+              "description": "Base URL that serves HDFS config files (core-site.xml and hdfs-site.xml)",
+              "type": "string",
+              "default": ""
+            }
+          }
         }
       }
     }

@@ -3,29 +3,10 @@
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "labels": {
-    "HAPROXY_3_GROUP": "external",
-    "HAPROXY_3_VHOST": "{{marathon-lb.vhost}}",
-    "HAPROXY_3_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
-    "HAPROXY_3_STICKY": "true",
-    "HAPROXY_4_GROUP": "external",
-    "HAPROXY_4_VHOST": "{{marathon-lb.vhost}}",
-    "HAPROXY_4_STICKY": "true",
-    "HAPROXY_5_GROUP": "external",
-    "HAPROXY_5_VHOST": "{{marathon-lb.vhost}}",
-    "HAPROXY_5_STICKY": "true"
-  },
-  "env": {
-    "MARKLOGIC_USR": "{{marklogic.username}}",
-    "MARKLOGIC_PWD": "{{marklogic.password}}",
-    "MARKLOGIC_AUTH_MODE": "{{marklogic.auth_mode}}",
-    "MARKLOGIC_SEC_REALM": "{{marklogic.realm}}",
-    "HDFS_CONFIG_URL": "{{hdfs.config_url}}"
-  },
   "container": {
     "portMappings": [
       {
-        "servicePort": {{marathon-lb.port0}},
+        "servicePort": {{networking.marathon_lb.port0}},
         "containerPort": 7997,
         "hostPort": 0,
         "labels": {
@@ -34,7 +15,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port1}},
+        "servicePort": {{networking.marathon_lb.port1}},
         "containerPort": 7998,
         "hostPort": 0,
         "labels": {
@@ -43,7 +24,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port2}},
+        "servicePort": {{networking.marathon_lb.port2}},
         "containerPort": 7999,
         "hostPort": 0,
         "labels": {
@@ -52,7 +33,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port3}},
+        "servicePort": {{networking.marathon_lb.port3}},
         "containerPort": 8000,
         "hostPort": 0,
         "labels": {
@@ -61,7 +42,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port4}},
+        "servicePort": {{networking.marathon_lb.port4}},
         "containerPort": 8001,
         "hostPort": 0,
         "labels": {
@@ -70,7 +51,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port5}},
+        "servicePort": {{networking.marathon_lb.port5}},
         "containerPort": 8002,
         "hostPort": 0,
         "labels": {
@@ -79,7 +60,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port6}},
+        "servicePort": {{networking.marathon_lb.port6}},
         "containerPort": 8003,
         "hostPort": 0,
         "labels": {
@@ -88,7 +69,7 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{marathon-lb.port7}},
+        "servicePort": {{networking.marathon_lb.port7}},
         "containerPort": 8004,
         "hostPort": 0,
         "labels": {
@@ -100,23 +81,23 @@
     "type": "DOCKER",
     "volumes": [
         {
-            "containerPath": "{{service.data_volume.container_path}}",
-            "hostPath": "{{service.data_volume.host_path}}",
+            "containerPath": "{{volumes.data_volume.container_path}}",
+            "hostPath": "{{volumes.data_volume.host_path}}",
             "mode": "RW"
         },
         {
-            "containerPath": "{{service.backup_volume.container_path}}",
-            "hostPath": "{{service.backup_volume.host_path}}",
+            "containerPath": "{{volumes.backup_volume.container_path}}",
+            "hostPath": "{{volumes.backup_volume.host_path}}",
             "mode": "RW"
         },
         {
-            "containerPath": "{{service.external_volume.container_path}}",
-            "hostPath": "{{service.external_volume.host_path}}",
+            "containerPath": "{{volumes.external_volume.container_path}}",
+            "hostPath": "{{volumes.external_volume.host_path}}",
             "mode": "RW"
         }
     ],
     "docker": {
-      "image": "{{resource.assets.container.docker.marklogic}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true
     }
   },
@@ -131,5 +112,24 @@
       "protocol": "MESOS_HTTP",
       "path": "/"
     }
-  ]
+  ],
+  "labels": {
+    "HAPROXY_3_GROUP": "external",
+    "HAPROXY_3_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_3_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_3_STICKY": "true",
+    "HAPROXY_4_GROUP": "external",
+    "HAPROXY_4_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_4_STICKY": "true",
+    "HAPROXY_5_GROUP": "external",
+    "HAPROXY_5_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_5_STICKY": "true"
+  },
+  "env": {
+    "MARKLOGIC_USR": "{{environment.marklogic.username}}",
+    "MARKLOGIC_PWD": "{{environment.marklogic.password}}",
+    "MARKLOGIC_AUTH_MODE": "{{environment.marklogic.auth_mode}}",
+    "MARKLOGIC_SEC_REALM": "{{environment.marklogic.realm}}",
+    "HDFS_CONFIG_URL": "{{environment.hdfs.config_url}}"
+  }
 }
