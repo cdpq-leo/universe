@@ -1,0 +1,101 @@
+{
+    "type": "object",
+    "properties": {
+        "service": {
+            "type": "object",
+            "description": "DC/OS service specifications of YOUR APP",
+            "properties": {
+                "name": {
+                    "description": "Name of application instance as seen in DC/OS.",
+                    "type": "string",
+                    "default": "demo-article-viewer"
+                },
+                "cpus": {
+                    "description": "Number of logical cores to allocate to each service instance.",
+                    "type": "number",
+                    "default": 0.3
+                },
+                "gpus": {
+                    "description": "Number of GPUS to allocate to each service instance.",
+                    "type": "number",
+                    "default": 0
+                },
+                "mem": {
+                    "description": "Memory in Mb to allocate to each service instance.",
+                    "type": "number",
+                    "default": 2048
+                },
+                "disk": {
+                    "description": "Number of disks to allocate to each service instance.",
+                    "type": "number",
+                    "default": 0
+                },
+                "instances": {
+                    "description": "Number of instances of your service.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "back_off_seconds": {
+                    "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "back_off_factor": {
+                    "description": "The multiplicand to apply to the backoffSeconds value.",
+                    "type": "number",
+                    "default": 1.15
+                },
+                "max_launch_delay_seconds": {
+                    "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                    "type": "number",
+                    "default": 3600
+                }
+            }
+        },
+        "placement": {
+            "type": "object",
+            "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+            "properties": {
+                "constraints": {
+                    "type": "string",
+                    "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+                    "default": "[[\"privatenodetype\", \"CLUSTER\", \"stateless\"], [\"application\", \"CLUSTER\", \"true\"]]",
+                    "media": {
+                        "type": "application/x-zone-constraints+json"
+                    }
+                }
+            }
+        },
+        "networking": {
+            "type": "object",
+            "description": "Configure the networking for your service.",
+            "properties": {
+                "container_port": {
+                    "description": "Container port number",
+                    "type": "number",
+                    "default": 8080
+                },
+                "service_port": {
+                    "description": "Service port number",
+                    "type": "number",
+                    "default": 10109
+                },
+                "host_port": {
+                    "description": "Host port number",
+                    "type": "number",
+                    "default": 0
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "properties": {
+                "ES_URL": {
+                    "type": "string",
+                    "description": "Elastic search URL",
+                    "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
+                }
+            }
+        }
+    }
+}
