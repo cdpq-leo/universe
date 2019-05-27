@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-template-docker-bridge",
-  "version": "cdpq-1.0.0-1.0.1",
+  "version": "cdpq-1.0.0-1.0.0",
   "maintainer": "leo@cdpq.com",
   "description": "template-docker-bridge",
   "minDcosReleaseVersion": "1.9.0",

@@ -2,7 +2,7 @@
     "packagingVersion": "4.0",
     "name": "cdpq-quotes-viewer",
     "maintainer": "leo@cdpq.com",
-    "version": "cdpq-1.0.0-1.0.3",
+    "version": "cdpq-1.0.0-1.0.2",
     "description": "Quotes viewer.",
     "minDcosReleaseVersion": "1.9.0",
     "tags": ["quotes", "viewer"],

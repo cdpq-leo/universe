@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-coreapi-translate",
-  "version": "cdpq-1.0.0-1.0.1",
+  "version": "cdpq-1.0.0-1.0.2",
   "maintainer": "leo@cdpq.com",
   "description": "translate service",
   "minDcosReleaseVersion": "1.9.0",

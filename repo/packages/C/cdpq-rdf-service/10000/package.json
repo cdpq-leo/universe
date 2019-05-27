@@ -2,7 +2,7 @@
     "packagingVersion": "4.0",
     "name": "cdpq-rdf-service",
     "maintainer": "leo@cdpq.com",
-    "version": "cdpq-1.0.0-1.0.3",
+    "version": "cdpq-1.0.0-1.0.1",
     "description": "Service to query RDF database.",
     "minDcosReleaseVersion": "1.9.0",
     "tags": ["rdf"],
