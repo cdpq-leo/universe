@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "dcos-neo4j": "cdpqleo/neo4j-dcos-proxy:1.0.0"
+        "image": "cdpqleo/neo4j-dcos-proxy:1.0.0"
       }
     }
   }

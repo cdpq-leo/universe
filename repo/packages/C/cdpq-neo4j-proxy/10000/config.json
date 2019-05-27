@@ -9,55 +9,57 @@
           "description": "Name of this service instance",
           "type": "string",
           "default": "neo4j/proxy"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 0.3
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 2048
+        },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
         }
       }
     },
-    "neo4j-proxy": {
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
+    },
+    "environment": {
       "description": "Neo4j specific configuration properties",
       "type": "object",
       "properties": {
-        "auth-username": {
+        "auth_username": {
           "description": "Username for authentication",
           "type": "string",
           "default": "neo4j"
         },
-        "auth-password": {
+        "auth_password": {
           "description": "Password for authentication",
           "type": "string",
           "default": "dcos"
-        },
-        "constraints": {
-          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "attribute": {
-                "type": "string"
-              },
-              "operator": {
-                "type": "string",
-                "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-              },
-              "value": {
-                "type": "string"
-              },
-              "last": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "default": []
         }
       },
       "required": [
-        "auth-username",
-        "auth-password"
+        "auth_username",
+        "auth_password"
       ]
     }
-  },
-  "required": [
-    "neo4j-proxy"
-  ]
+  }
 }

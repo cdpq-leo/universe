@@ -1,12 +1,12 @@
 {
   "id":"{{service.name}}",
-  "cpus":1,
-  "mem":1024,
-  "instances":1,
+  "cpus":{{service.cpus}},
+  "mem":{{service.mem}},
+  "instances":{{service.instances}},
   "container":{
     "type":"DOCKER",
     "docker":{
-      "image":"{{resource.assets.container.docker.dcos-neo4j}}",
+      "image":"{{resource.assets.container.docker.image}}",
       "forcePullImage":true,
       "network":"BRIDGE",
       "portMappings":[
@@ -19,8 +19,8 @@
     }
   },
   "env":{
-    "DCOS_NEO4J_USER":"{{neo4j-proxy.auth-username}}",
-    "DCOS_NEO4J_PASS":"{{neo4j-proxy.auth-password}}"
+    "DCOS_NEO4J_USER":"{{environment.auth_username}}",
+    "DCOS_NEO4J_PASS":"{{environment.auth_password}}"
   },
   "labels": {
      "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -38,17 +38,6 @@
       "maxConsecutiveFailures":10
     }
   ],
-  {{#neo4j-proxy.constraints}}
-  "constraints": [
-    {{#.}}
-      [
-        "{{attribute}}"
-       ,"{{operator}}"
-       {{#value}},"{{value}}"{{/value}}
-      ]{{^last}},{{/last}}
-    {{/.}}
-  ],
-  {{/neo4j-proxy.constraints}}
   "acceptedResourceRoles":[
     "slave_public"
   ]
