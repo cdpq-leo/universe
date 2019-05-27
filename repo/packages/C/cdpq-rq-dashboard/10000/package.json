@@ -1,7 +1,7 @@
 {
  "packagingVersion": "3.0",
  "name": "cdpq-rq-dashboard",
- "version": "leo-1.0.0-0.3.10",
+ "version": "cdpq-1.0.0-0.3.10",
  "maintainer": "dlevesque@cdpq.com",
  "description": "RQ Dashboard",
  "website": "http://python-rq.org/",

@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-smart-search-service",
-  "version": "leo-1.0.0-1.0.2",
+  "version": "cdpq-1.0.0-1.0.2",
   "maintainer": "leo@cdpq.com",
   "description": "smart-search-service user interface for ElasticSearch.",
   "minDcosReleaseVersion": "1.9.0",

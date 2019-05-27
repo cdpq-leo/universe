@@ -1,7 +1,7 @@
 {
   "packagingVersion": "2.0",
   "name": "cdpq-marklogic",
-  "version": "leo-1.0.0-9.0-6.2",
+  "version": "cdpq-1.0.0-9.0-6.2",
   "maintainer": "leo@cdpq.com",
   "description": "",
   "tags": ["triplestore", "nosql"],

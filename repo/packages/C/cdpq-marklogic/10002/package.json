@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-marklogic",
-  "version": "leo-1.0.3-9.0-7.2",
+  "version": "cdpq-1.0.3-9.0-7.2",
   "maintainer": "leo@cdpq.com",
   "description": "MarkLogic provides enterprise solutions for your business by enabling operational big data applications with NoSQL databases and data integration",
   "tags": ["triplestore", "nosql"],
