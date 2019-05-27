@@ -17,7 +17,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "{{service.docker_image}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []

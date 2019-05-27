@@ -24,11 +24,6 @@
           "description": "Memory to allocate to each service instance.",
           "type": "number",
           "default": 512
-        },
-        "docker_image":{
-          "description": "URL for the docker image.",
-          "type": "string",
-          "default": "cdpqleo/gremlin-server:1.0.0-3.3.3"
         }
       }
     }
