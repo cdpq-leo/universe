@@ -10,36 +10,6 @@
           "type": "string",
           "default": "redis"
         },
-        "constraints": {
-          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "attribute": {
-                "type": "string"
-              },
-              "operator": {
-                "type": "string",
-                "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-              },
-              "value": {
-                "type": "string"
-              },
-              "last": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "default": []
-        }
-      }
-    },
-    "redis": {
-      "type": "object",
-      "description": "Redis instance configuration properties",
-      "properties": {
         "cpus": {
           "description": "CPU shares to allocate to the Redis instance.",
           "type": "number",
@@ -57,19 +27,33 @@
           "type": "number",
           "default": 65536,
           "minimum": 2000
-        },
-        "hostpath": {
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Redis instance configuration properties",
+      "properties": {
+        "host_path": {
           "description": "Host path to store to the Redis data.",
           "type": "string",
           "default": "/mnt/azurefileshare/data/redis"
         }
-      },
-      "required": [
-        "cpus",
-        "mem",
-        "disk",
-        "hostpath"
-      ]
+      }
     }
   }
 }

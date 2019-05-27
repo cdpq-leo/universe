@@ -1,31 +1,20 @@
 {
  "id": "{{service.name}}",
  "instances": 1,
- {{#service.constraints}}
- "constraints": [
-   {{#.}}
-     [
-       "{{attribute}}"
-      ,"{{operator}}"
-      {{#value}},"{{value}}"{{/value}}
-     ]{{^last}},{{/last}}
-   {{/.}}
- ],
- {{/service.constraints}}
- "cpus": {{redis.cpus}},
- "mem": {{redis.mem}},
- "disk": {{redis.disk}},
+ "cpus": {{service.cpus}},
+ "mem": {{service.mem}},
+ "disk": {{service.disk}},
  "container": {
    "type": "DOCKER",
    "volumes": [
       {
         "containerPath": "/data",
-        "hostPath": "{{redis.hostpath}}",
+        "hostPath": "{{volumes.host_path}}",
         "mode": "RW"
       }
    ],
    "docker": {
-     "image": "{{resource.assets.container.docker.redis}}",
+     "image": "{{resource.assets.container.docker.image}}",
      "network": "BRIDGE",
      "portMappings": [
        {
