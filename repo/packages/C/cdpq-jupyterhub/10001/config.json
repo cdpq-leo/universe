@@ -10,44 +10,6 @@
           "type": "string",
           "default": "jupyterhub"
         },
-        "admin_users": {
-          "description": "List of admin users, separated by a comma.",
-          "type": "string"
-        },
-        "whitelisted_users":{
-          "description": "List of whitelisted users, seperated by a comma.",
-          "type": "string",
-          "default": ""
-        },
-        "api_tokens":{
-          "description": "List of API tokens, seperated by a comma e.g. token1:user1,token2:user2",
-          "type": "string",
-          "default": ""
-        },
-        "constraints": {
-          "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "attribute": {
-                "type": "string"
-              },
-              "operator": {
-                "type": "string",
-                "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-              },
-              "value": {
-                "type": "string"
-              },
-              "last": {
-                "type": "boolean",
-                "default": false
-              }
-            }
-          },
-          "default": []
-        },
         "cpus": {
           "description": "CPU shares to allocate to each service instance.",
           "type": "number",
@@ -55,30 +17,10 @@
           "minimum": 0.1
         },
         "mem": {
-          "description":  "Memory to allocate to each service instance.",
+          "description": "Memory to allocate to each service instance.",
           "type": "number",
           "default": 512.0,
           "minimum": 256.0
-        },
-        "env_vars": {
-          "description": "The list of environment variables for JupyterHub as a.",
-          "type": "array",
-          "additionalProperties": false,
-          "items": {
-            "type": "object",
-            "properties": {
-              "var_name": {
-                "type": "string"
-              },
-              "value": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "var_name",
-              "value"
-            ]
-          }
         }
       },
       "required": [
@@ -86,6 +28,20 @@
         "cpus",
         "mem"
       ]
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
     },
     "notebook": {
       "type": "object",
@@ -113,13 +69,52 @@
       "description": "Networking-related configuration properties for JupyterHub on DC/OS.",
       "type": "object",
       "properties": {
-        "virtual-host": {
+        "virtual_host": {
           "description": "The virtual host address to configure for integration with Marathon-lb.",
           "type": "string"
         },
-        "ssl-cert": {
+        "ssl_cert": {
           "description": "The path to the SSL certificate for the domain.",
           "type": "string"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "admin_users": {
+          "description": "List of admin users, separated by a comma.",
+          "type": "string"
+        },
+        "whitelisted_users": {
+          "description": "List of whitelisted users, seperated by a comma.",
+          "type": "string",
+          "default": ""
+        },
+        "api_tokens": {
+          "description": "List of API tokens, seperated by a comma e.g. token1:user1,token2:user2",
+          "type": "string",
+          "default": ""
+        },
+        "env_vars": {
+          "description": "The list of environment variables for JupyterHub as a.",
+          "type": "array",
+          "additionalProperties": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "var_name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "var_name",
+              "value"
+            ]
+          }
         }
       }
     }

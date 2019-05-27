@@ -4,22 +4,22 @@
   "mem": {{service.mem}},
   "instances": 1,
   "env": {
-    "JUPYTERHUB_ADMIN_USERS": "{{service.admin_users}}",
-    "JUPYTERHUB_WHITELISTED_USERS": "{{service.whitelisted_users}}",
-    "JUPYTERHUB_API_TOKENS": "{{service.api_tokens}}",
+    "JUPYTERHUB_ADMIN_USERS": "{{environment.admin_users}}",
+    "JUPYTERHUB_WHITELISTED_USERS": "{{environment.whitelisted_users}}",
+    "JUPYTERHUB_API_TOKENS": "{{environment.api_tokens}}",
     "JUPYTERHUB_BASE_URL": "/service/{{service.name}}",
     "NOTEBOOK_APP_PREFIX": "{{notebook.app_prefix}}",
     "NOTEBOOK_CPU_LIMIT": "{{notebook.cpus}}",
     "NOTEBOOK_MEMORY_LIMIT": "{{notebook.mem}}",
     "NOTEBOOK_DOCKER_IMAGE": "{{notebook.docker_image}}"
-    {{#service.env_vars}}
+    {{#environment.env_vars}}
     ,"{{var_name}}": "{{value}}"
-    {{/service.env_vars}}
+    {{/environment.env_vars}}
   },
   "container": {
       "type": "DOCKER",
       "docker": {
-         "image": "{{resource.assets.container.docker.jupyterhub}}",
+         "image": "{{resource.assets.container.docker.image}}",
          "forcePullImage": true,
          "network": "BRIDGE",
          "portMappings": [
@@ -38,27 +38,16 @@
       "maxConsecutiveFailures": 3
     }
   ],
-  {{#service.constraints}}
-  "constraints": [
-    {{#.}}
-      [
-        "{{attribute}}"
-       ,"{{operator}}"
-       {{#value}},"{{value}}"{{/value}}
-      ]{{^last}},{{/last}}
-    {{/.}}
-  ],
-  {{/service.constraints}}
   "labels": {
-    {{#networking.virtual-host}}
+    {{#networking.virtual_host}}
     "HAPROXY_GROUP":"external",
-    "HAPROXY_0_VHOST":"{{networking.virtual-host}}",
-    {{#networking.ssl-cert}}
+    "HAPROXY_0_VHOST":"{{networking.virtual_host}}",
+    {{#networking.ssl_cert}}
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_USE_HSTS": "true",
-    "HAPROXY_0_SSL_CERT": "{{networking.ssl-cert}}"
-    {{/networking.ssl-cert}}
-    {{/networking.virtual-host}}
+    "HAPROXY_0_SSL_CERT": "{{networking.ssl_cert}}"
+    {{/networking.ssl_cert}}
+    {{/networking.virtual_host}}
     "MARATHON_SINGLE_INSTANCE_APP": "true",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0",
