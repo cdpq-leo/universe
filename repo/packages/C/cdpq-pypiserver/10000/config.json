@@ -21,10 +21,32 @@
           "default": 0
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 4096
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "vhost": {
+          "description": "Virtual host.",
+          "type": "string",
+          "default": ""
         },
+        "service_port": {
+          "description": "Service port number",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "volumes": {
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "type": "object",
+      "properties": {
         "data_volume": {
           "type": "object",
           "description": "Pypi data volume config",
@@ -40,22 +62,6 @@
               "default": "/mnt/azurefileshare/data/pypiserver"
             }
           }
-        }
-      }
-    },
-    "marathon-lb" : {
-      "type": "object",
-      "description": "Marathon-lb ports config",
-      "properties": {
-        "vhost": {
-          "description":  "Virtual host.",
-          "type": "string",
-          "default": ""
-        },
-        "port0": {
-          "description": "Health check",
-          "type": "number",
-          "default": 0
         }
       }
     }

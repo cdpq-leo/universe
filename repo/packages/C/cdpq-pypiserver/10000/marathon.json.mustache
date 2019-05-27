@@ -6,14 +6,14 @@
   "cmd": "pypi-server -P /data/.htpasswd -a update,download,list /data/packages",
   "labels": {
     "HAPROXY_0_GROUP": "external",
-    "HAPROXY_0_VHOST": "{{marathon-lb.vhost}}",
+    "HAPROXY_0_VHOST": "{{networking.vhost}}",
     "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     "HAPROXY_0_STICKY": "true"
   },
   "container": {
     "portMappings": [
       {
-        "servicePort": {{marathon-lb.port0}},
+        "servicePort": {{networking.service_port}},
         "containerPort": 8080,
         "hostPort": 0,
         "protocol": "tcp"
@@ -22,13 +22,13 @@
     "type": "DOCKER",
     "volumes": [
         {
-            "containerPath": "{{service.data_volume.container_path}}",
-            "hostPath": "{{service.data_volume.host_path}}",
+            "containerPath": "{{volumes.data_volume.container_path}}",
+            "hostPath": "{{volumes.data_volume.host_path}}",
             "mode": "RW"
         }
     ],
     "docker": {
-      "image": "{{resource.assets.container.docker.pypiserver}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true
     }
   },

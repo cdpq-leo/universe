@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "pypiserver": "pypiserver/pypiserver:v1.2.5"
+        "image": "pypiserver/pypiserver:v1.2.5"
       }
     }
   }
