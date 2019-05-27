@@ -10,7 +10,7 @@
   "container": {
     "portMappings": [
       {
-        "containerPort": {{service.container_port}},
+        "containerPort": {{networking.container_port}},
         "hostPort": 0,
         "labels": {
             "VIP_0": "/{{service.name}}:5000"
@@ -21,13 +21,13 @@
     "type": "DOCKER",
     "volumes": [
         {
-            "containerPath": "{{service.data_volume.container_path}}",
-            "hostPath": "{{service.data_volume.host_path}}",
+            "containerPath": "{{volumes.data_volume.container_path}}",
+            "hostPath": "{{volumes.data_volume.host_path}}",
             "mode": "RW"
         }
     ],
     "docker": {
-      "image": "{{resource.assets.container.docker.coreapitranslate}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
@@ -39,20 +39,21 @@
     }
   ],
   "env": {
-    "HTTP_HOSTNAME": "{{service.env.HTTP_HOSTNAME}}",
-    "HTTP_PORT": "{{service.env.HTTP_PORT}}",
-    "SERVICE_PREFIX": "{{service.env.SERVICE_PREFIX}}",
-    "GOOGLE_APPLICATION_CREDENTIALS": "{{service.env.GOOGLE_APPLICATION_CREDENTIALS}}"
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}",
+    "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
+    "GOOGLE_APPLICATION_CREDENTIALS": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}"
   },
   "healthChecks": [
     {
       "protocol": "HTTP",
       "portIndex": 0,
-      "path": "{{service.health_url}}",
-      "gracePeriodSeconds": 120,
-      "intervalSeconds": 30,
-      "maxConsecutiveFailures": 3,
-      "timeoutSeconds": 5
+      "path": "{{health_checks.health_url}}",
+      "gracePeriodSeconds": {{health_checks.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.advanced_health_checking_settings.delay_seconds}}
   }]
 }
 
