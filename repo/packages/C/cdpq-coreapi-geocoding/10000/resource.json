@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "coreapigeocoding": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/coreapi_geocoding:1.0.1"
+        "image": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/coreapi_geocoding:1.0.1"
       }
     }
   }

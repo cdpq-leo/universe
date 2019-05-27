@@ -10,7 +10,7 @@
   "container": {
     "portMappings": [
       {
-        "containerPort": {{service.container_port}},
+        "containerPort": {{networking.container_port}},
         "hostPort": 0,
         "labels": {
             "VIP_0": "/{{service.name}}:5000"
@@ -21,7 +21,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "{{resource.assets.container.docker.coreapigeocoding}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
@@ -33,16 +33,16 @@
     }
   ],
   "env": {
-    "HTTP_HOSTNAME": "{{service.env.HTTP_HOSTNAME}}",
-    "HTTP_PORT": "{{service.env.HTTP_PORT}}",
-    "SERVICE_PREFIX": "{{service.env.SERVICE_PREFIX}}",
-    "GOOGLE_API_KEY": "{{service.env.GOOGLE_API_KEY}}"
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}",
+    "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
+    "GOOGLE_API_KEY": "{{environment.GOOGLE_API_KEY}}"
   },
   "healthChecks": [
     {
       "protocol": "HTTP",
       "portIndex": 0,
-      "path": "{{service.health_url}}",
+      "path": "{{health_checks.health_url}}",
       "gracePeriodSeconds": 120,
       "intervalSeconds": 30,
       "maxConsecutiveFailures": 3,
