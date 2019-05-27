@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "registry-docker": "registry:2.5.1"
+        "image": "registry:2.5.1"
       }
     }
   }

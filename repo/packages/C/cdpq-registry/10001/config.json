@@ -84,7 +84,7 @@
 				}
 			}
 		},
-		"storage": {
+		"volumes": {
 			"type": "object",
 			"description": "registry storage configuration properties",
 			"properties":{
