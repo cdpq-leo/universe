@@ -1,45 +1,15 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "properties": {
-        "service":{
-            "type":"object",
-            "description": "DC/OS service configuration properties",
-            "properties":{
-                "name" : {
-                    "description":"Name of this service instance.",
-                    "type":"string",
-                    "default":"grafana"
-                },
-                "constraints": {
-                  "description": "Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE.",
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "attribute": {
-                        "type": "string"
-                      },
-                      "operator": {
-                        "type": "string",
-                        "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-                      },
-                      "value": {
-                        "type": "string"
-                      },
-                      "last": {
-                        "type": "boolean",
-                        "default": false
-                      }
-                    }
-                  },
-                  "default": []
-                }
-            }
-        },
-        "grafana":{
+        "service": {
             "type": "object",
-            "description": "grafana service configuration properties",
+            "description": "DC/OS service configuration properties",
             "properties": {
+                "name": {
+                    "description": "Name of this service instance.",
+                    "type": "string",
+                    "default": "grafana"
+                },
                 "cpus": {
                     "description": "CPU shares to allocate to each service instance.",
                     "type": "number",
@@ -47,29 +17,37 @@
                     "minimum": 0.3
                 },
                 "mem": {
-                    "description":  "Memory to allocate to each service instance.",
+                    "description": "Memory to allocate to each service instance.",
                     "type": "number",
                     "default": 512.0,
                     "minimum": 512.0
                 },
-                "admin_password": {
-                    "description": "Admin password.",
-                    "type": "string",
-                    "default": "admin"
-                },
-                "plugins": {
-                    "description": "Comma separated Grafana plugins which will be installed via `grafana-cli plugins install grafana-example-app,grafana-clock-panel`. See https://grafana.com/plugins",
-                    "type": "string",
-                    "default": ""
+                "instances": {
+                    "description": "Number of instances of your service.",
+                    "type": "number",
+                    "default": 1.0
                 }
-
             },
             "required": [
                 "cpus",
                 "mem"
             ]
         },
-        "networking":{
+        "placement": {
+            "type": "object",
+            "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+            "properties": {
+                "constraints": {
+                    "type": "string",
+                    "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+                    "default": "[]",
+                    "media": {
+                        "type": "application/x-zone-constraints+json"
+                    }
+                }
+            }
+        },
+        "networking": {
             "type": "object",
             "description": "Grafana networking configuration properties",
             "properties": {
@@ -93,6 +71,22 @@
                             "default": "grafana.example.org"
                         }
                     }
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "description": "grafana service configuration properties",
+            "properties": {
+                "admin_password": {
+                    "description": "Admin password.",
+                    "type": "string",
+                    "default": "admin"
+                },
+                "plugins": {
+                    "description": "Comma separated Grafana plugins which will be installed via `grafana-cli plugins install grafana-example-app,grafana-clock-panel`. See https://grafana.com/plugins",
+                    "type": "string",
+                    "default": ""
                 }
             }
         }

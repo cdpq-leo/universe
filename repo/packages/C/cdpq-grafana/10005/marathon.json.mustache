@@ -1,16 +1,16 @@
 {
     "id": "{{service.name}}",
-    "cpus": {{grafana.cpus}},
-    "mem": {{grafana.mem}},
-    "instances": 1,
+    "cpus": {{service.cpus}},
+    "mem": {{service.mem}},
+    "instances": {{service.instances}},
     "env": {
-        "GF_SECURITY_ADMIN_PASSWORD": "{{grafana.admin_password}}",
-        "GF_INSTALL_PLUGINS": "{{grafana.plugins}}"
+        "GF_SECURITY_ADMIN_PASSWORD": "{{environment.admin_password}}",
+        "GF_INSTALL_PLUGINS": "{{environment.plugins}}"
     },
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "{{resource.assets.container.docker.grafana-docker}}",
+            "image": "{{resource.assets.container.docker.image}}",
             "forcePullImage": false,
             "network": "BRIDGE",
             "portMappings": [
@@ -36,17 +36,6 @@
             "maxConsecutiveFailures": 3
         }
     ],
-    {{#service.constraints}}
-    "constraints": [
-      {{#.}}
-        [
-          "{{attribute}}"
-         ,"{{operator}}"
-         {{#value}},"{{value}}"{{/value}}
-        ]{{^last}},{{/last}}
-      {{/.}}
-    ],
-    {{/service.constraints}}
     "labels": {
         "DCOS_PACKAGE_VERSION": "{{package.version}}",
         "DCOS_SERVICE_NAME": "{{service.name}}",
