@@ -72,7 +72,7 @@
       "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
       "portIndex": 0,
       "path": "{{health_checks.HTTP_protocol.path}}",
-      "protocol": "MESOS_HTTP", {{! can also put MESOS_HTTPS}}
+      "protocol": "HTTP", {{! can also put MESOS_HTTPS}}
       "ipProtocol": "IPv4" {{! Can also put IPv6}}
     }
    ],
@@ -85,7 +85,7 @@
       {{/networking.service_endpoints.enable_load_balanced_service_address}}
       "DCOS_SERVICE_PORT_INDEX": "0"
    },
-   "environment": {
+   "env": {
       {{! UPDATE this section if you added environment variables in the config.json file}}
       {{#service.region}}
       "SERVICE_REGION": "{{service.region}}"
