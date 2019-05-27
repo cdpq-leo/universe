@@ -10,7 +10,7 @@
   "container": {
     "portMappings": [
       {
-        "containerPort": {{service.container_port}},
+        "containerPort": {{networking.container_port}},
         "hostPort": 0,
         "labels": {
             "VIP_0": "/{{service.name}}:5000"
@@ -21,7 +21,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "{{resource.assets.container.docker.rdf-service}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
@@ -33,10 +33,10 @@
     }
   ],
   "env": {
-    "HTTP_HOSTNAME": "{{service.env.HTTP_HOSTNAME}}",
-    "HTTP_PORT": "{{service.env.HTTP_PORT}}",
-    "ENDPOINT": "{{service.env.ENDPOINT}}",
-    "ELASTIC_ENDPOINT": "{{service.env.ELASTIC_ENDPOINT}}"
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}",
+    "ENDPOINT": "{{environment.ENDPOINT}}",
+    "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}"
   },
   "labels": {
       "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -47,7 +47,7 @@
     {
       "protocol": "HTTP",
       "portIndex": 0,
-      "path": "{{service.health_url}}",
+      "path": "{{health_checks.health_url}}",
       "gracePeriodSeconds": 120,
       "intervalSeconds": 30,
       "maxConsecutiveFailures": 3,

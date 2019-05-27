@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "rdf-service": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/quotes_viewer:1.0.2"
+        "image": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/quotes_viewer:1.0.2"
       }
     }
   }

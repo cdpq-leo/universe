@@ -16,48 +16,59 @@
           "default": 0.2
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 256
-        },
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
         "container_port": {
           "description": "Container port",
           "type": "number",
           "default": 8080
-        },
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
           "default": "/en"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Environment variables",
+      "properties": {
+        "HTTP_HOSTNAME": {
+          "description": "Hostname",
+          "type": "string",
+          "default": "0.0.0.0"
         },
-        "env": {
-          "type": "object",
-          "description": "environment variables",
-          "properties": {
-              "HTTP_HOSTNAME" : {
-                  "description": "Hostname",
-                  "type": "string",
-                  "default": "0.0.0.0"
-              },
-              "HTTP_PORT" : {
-                  "description": "HTTP_PORT",
-                  "type": "string",
-                  "default": "80"
-              },
-              "ENDPOINT" : {
-                  "description": "API endpoint",
-                  "type": "string",
-                  "default": "http://ui-rdf-service.marathon.l4lb.thisdcos.directory:5000/service/ui-rdf-service"
-              },
-              "ELASTIC_ENDPOINT" : {
-                  "description": "Elastic endpoint",
-                  "type": "string",
-                  "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
-              }
-          }
+        "HTTP_PORT": {
+          "description": "HTTP_PORT",
+          "type": "string",
+          "default": "80"
+        },
+        "ENDPOINT": {
+          "description": "API endpoint",
+          "type": "string",
+          "default": "http://ui-rdf-service.marathon.l4lb.thisdcos.directory:5000/service/ui-rdf-service"
+        },
+        "ELASTIC_ENDPOINT": {
+          "description": "Elastic endpoint",
+          "type": "string",
+          "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
         }
       }
     }
   }
 }
-  
