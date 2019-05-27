@@ -219,7 +219,7 @@
             },
             "path": {
               "type": "string",
-              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, “/path/to/health”."
+              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, \"/path/to/health\"."
             },
             "IP_version": {
               "type": "string",
