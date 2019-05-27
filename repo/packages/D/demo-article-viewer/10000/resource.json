@@ -1,8 +1,8 @@
 {
     "images": {
-        "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR SMALL ICON",
-        "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR MEDIUM ICON",
-        "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/YOUR LARGE ICON"
+        "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/CDPQ/Images/icon-service-cdpq-small.png",
+        "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/CDPQ/Images/icon-service-cdpq-medium.png",
+        "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/CDPQ/Images/icon-service-cdpq-large.png"
     },
     "assets": {
         "container": {
