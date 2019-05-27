@@ -7,5 +7,12 @@
       "https://raw.githubusercontent.com/us3r/apache-nifi/master/media/screenshots/screen1.png",
       "https://raw.githubusercontent.com/us3r/apache-nifi/master/media/screenshots/screen2.png"
     ]
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cdpqleo/nifi:1.8.0_stable"
+      }
+    }
   }
 }

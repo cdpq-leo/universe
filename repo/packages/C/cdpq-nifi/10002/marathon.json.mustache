@@ -1,17 +1,17 @@
 {
   "env": {
-    "NIFI_CLUSTER_IS_NODE": "{{nifi.cluster}}",
-    "NIFI_CLUSTER_NODE_PROTOCOL_PORT": "{{nifi.cluster-node-protocol-port}}",
-    "NIFI_ZK_ROOT_NODE": "{{nifi.zookeeper-root}}",
-    "NIFI_CLUSTER_NODE_PROTOCOL_THREADS": "{{nifi.cluster-node-protocol-threads}}",
-    "NIFI_WEB_HTTP_PORT": "{{nifi.web-http-port}}",
-    "NIFI_ELECTION_MAX_WAIT": "{{nifi.election-max-wait}}",
-    "NIFI_ZK_CONNECT_STRING": "{{nifi.zookeeper}}",
-    "NIFI_ELECTION_MAX_CANDIDATES": "{{nifi.election-max-candidates}}",
-    "NIFI_CLUSTER_NODE_PROTOCOL_MAX_THREADS": "{{nifi.cluster-node-protocol-max-threads}}",
-    "NIFI_BOOTSTRAP_JVM_MAX": "{{nifi.bootstrap-jvm-max}}",
-    "NIFI_BOOTSTRAP_JVM_MIN": "{{nifi.bootstrap-jvm-min}}",
-    "HDFS_CONFIG_URL": "{{hdfs.config-url}}"
+    "NIFI_CLUSTER_IS_NODE": "{{environment.cluster}}",
+    "NIFI_CLUSTER_NODE_PROTOCOL_PORT": "{{environment.cluster_node_protocol_port}}",
+    "NIFI_ZK_ROOT_NODE": "{{environment.zookeeper_root}}",
+    "NIFI_CLUSTER_NODE_PROTOCOL_THREADS": "{{environment.cluster_node_protocol_threads}}",
+    "NIFI_WEB_HTTP_PORT": "{{environment.web_http_port}}",
+    "NIFI_ELECTION_MAX_WAIT": "{{environment.election_max_wait}}",
+    "NIFI_ZK_CONNECT_STRING": "{{environment.zookeeper}}",
+    "NIFI_ELECTION_MAX_CANDIDATES": "{{environment.election_max_candidates}}",
+    "NIFI_CLUSTER_NODE_PROTOCOL_MAX_THREADS": "{{environment.cluster_node_protocol_max_threads}}",
+    "NIFI_BOOTSTRAP_JVM_MAX": "{{environment.bootstrap_jvm_max}}",
+    "NIFI_BOOTSTRAP_JVM_MIN": "{{environment.bootstrap_jvm_min}}",
+    "HDFS_CONFIG_URL": "{{environment.hdfs_config_url}}"
   },
   "labels": {
     "DCOS_SERVICE_SCHEME": "http",
@@ -38,20 +38,20 @@
       {
         "persistent": {
           "type": "root",
-          "size": {{service.persistent-volume-size}},
+          "size": {{volumes.persistent_volume_size}},
           "constraints": []
         },
         "mode": "RW",
         "containerPath": "nifi"
       },
 			{
-			  "containerPath": "{{service.azurefileshare-path}}",
-				"hostPath": "{{service.azurefileshare-path}}",
+			  "containerPath": "{{volumes.azurefileshare_path}}",
+				"hostPath": "{{volumes.azurefileshare_path}}",
 				"mode": "RW"
 			}
     ],
     "docker": {
-      "image": "{{service.docker-image}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": false,
       "privileged": false,
       "parameters": []
@@ -61,7 +61,7 @@
   "mem": {{service.mem}},
   "disk": {{service.disk}},
   "instances": {{service.instances}},
-  "maxLaunchDelaySeconds": {{service.max-launch-delay-seconds}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
   "networks": [
     {
       "mode": "host"
