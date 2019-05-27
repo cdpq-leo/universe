@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service specifications of YOUR APP",
+      "properties": {
+        "name": {
+          "description": "Name of application instance as seen in DC/OS.",
+          "type": "string",
+          "default": "transactions-parser"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 1
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 10240
+        },
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 5000
+            },
+            "service_port": {
+              "description": "Service port number.",
+              "type": "number",
+              "default": 10278
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "default": "tcp"
+            }
+          }
+        }
+      }
+    }
+  }
+}
