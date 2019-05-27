@@ -1,12 +1,12 @@
 {
   "id": "{{service.name}}",
-  "cpus": {{kafka-manager.cpus}},
-  "mem": {{kafka-manager.mem}},
-  "instances": {{kafka-manager.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "instances": {{service.instances}},
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "{{service.docker_image}}",
+      "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "network": "BRIDGE",
       "portMappings": [
@@ -30,22 +30,11 @@
     }
   ],
   "env": {
-    "ZK_HOSTS": "{{kafka-manager.zk}}",
+    "ZK_HOSTS": "{{environment.zk}}",
     "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
     "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
-    "APPLICATION_SECRET": "{{kafka-manager.application_secret}}"
+    "APPLICATION_SECRET": "{{environment.application_secret}}"
   },
-  {{#service.constraints}}
-  "constraints": [
-    {{#.}}
-      [
-        "{{attribute}}"
-       ,"{{operator}}"
-       {{#value}},"{{value}}"{{/value}}
-      ]{{^last}},{{/last}}
-    {{/.}}
-  ],
-  {{/service.constraints}}
   "labels": {
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http",
