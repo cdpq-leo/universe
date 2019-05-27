@@ -16,58 +16,69 @@
           "default": 0.2
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 256
-        },
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
         "container_port": {
           "description": "Container port",
           "type": "number",
           "default": 8080
-        },
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
           "default": "/service/ui-rdf-service/api/health"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "environment variables",
+      "properties": {
+        "HTTP_HOSTNAME": {
+          "description": "Hostname",
+          "type": "string",
+          "default": "0.0.0.0"
         },
-        "env": {
-          "type": "object",
-          "description": "environment variables",
-          "properties": {
-              "HTTP_HOSTNAME" : {
-                  "description": "Hostname",
-                  "type": "string",
-                  "default": "0.0.0.0"
-              },
-              "HTTP_PORT" : {
-                  "description": "HTTP_PORT",
-                  "type": "string",
-                  "default": "80"
-              },
-              "SERVICE_PREFIX" : {
-                  "description": "service prefix url",
-                  "type": "string",
-                  "default": "/service/ui-rdf-service"
-              },
-              "USERNAME" : {
-                  "description": "Database username",
-                  "type": "string",
-                  "default": "admin"
-              },
-              "PASSWORD" : {
-                  "description": "Database password",
-                  "type": "string",
-                  "default": "CdpqQM22"
-              },
-              "ENDPOINT" : {
-                  "description": "Database endpoint",
-                  "type": "string",
-                  "default": "http://dcos-leo-public.eastus.cloudapp.azure.com:10555/KnowledgeBase/query"
-              }
-          }
+        "HTTP_PORT": {
+          "description": "HTTP_PORT",
+          "type": "string",
+          "default": "80"
+        },
+        "SERVICE_PREFIX": {
+          "description": "service prefix url",
+          "type": "string",
+          "default": "/service/ui-rdf-service"
+        },
+        "USERNAME": {
+          "description": "Database username",
+          "type": "string",
+          "default": "admin"
+        },
+        "PASSWORD": {
+          "description": "Database password",
+          "type": "string",
+          "default": "CdpqQM22"
+        },
+        "ENDPOINT": {
+          "description": "Database endpoint",
+          "type": "string",
+          "default": "http://dcos-leo-public.eastus.cloudapp.azure.com:10555/KnowledgeBase/query"
         }
       }
     }
   }
 }
-  
