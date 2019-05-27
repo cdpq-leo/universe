@@ -1,6 +1,7 @@
 {
    "id": "{{service.name}}",
    "cpus": {{service.cpus}},
+   "gpus": {{service.gpus}},
    "mem": {{service.mem}},
    "disk":{{service.disk}},
    "instances": {{service.instances}},
@@ -8,7 +9,11 @@
    "cmd": "{{service.cmd}}",
    {{/service.cmd}}
    "container":{
-      "type": "DOCKER",
+      "type": "MESOS", 
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":false,
+      },
       "volumes": [
       {  {{! local_persistant_volume type}}
          "persistent": {
@@ -33,25 +38,24 @@
         "hostPath": "{{volumes.host_volume.host_path}}",
         "mode": "{{volumes.host_volume.mode}}"
       }
-      ],
-      "portMappings":[
-         {
-            "containerPort": {{networking.service_endpoints.container_port}},
-            "hostPort": {{networking.service_endpoints.host_port}},
-            "protocol": "{{networking.service_endpoints.protocol}}",
-            "name": "{{networking.service_endpoints.name}}"            
-         }
-      ],
-      "docker":{
-         "image":"{{resource.assets.container.docker.image}}",
-         "forcePullImage":false,
-         "privileged": false
-      }  
+      ]
    },
    "networks":[
       {
-         "mode":"container/bridge"
+         "mode":"host"
       }
+   ],
+   "portDefinitions":[
+         {
+            {{#networking.service_endpoints.enable_load_balanced_service_address}}   
+            "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+            },
+            {{/networking.service_endpoints.enable_load_balanced_service_address}}
+            "port": {{networking.service_endpoints.port}},
+            "protocol": "{{networking.service_endpoints.protocol}}",
+            "name": "{{networking.service_endpoints.name}}"            
+         }
    ],
    "healthChecks": 
    [
@@ -60,20 +64,22 @@
       "intervalSeconds": {{health_checks.command_protocol.advanced_health_checking_settings.intervals}},
       "timeoutSeconds": {{health_checks.command_protocol.advanced_health_checking_settings.timeout}},
       "maxConsecutiveFailures": {{health_checks.command_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.command_protocol.advanced_health_checking_settings.delay_seconds}},
       "protocol": "COMMAND",
       "command": {
         "value": "{{health_checks.command_protocol.command}}"
       }
     },
-    { {{! HTTP_protocol type}}
-      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
-      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
-      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
-      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+    { {{! IP_protocol type}}
+      "gracePeriodSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.IP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.delay_seconds}},
       "portIndex": 0,
-      "path": "{{health_checks.HTTP_protocol.path}}",
-      "protocol": "HTTP", {{! can also put MESOS_HTTPS}}
-      "ipProtocol": "IPv4" {{! Can also put IPv6}}
+      "path": "{{health_checks.IP_protocol.path}}",
+      "protocol": "{{health_checks.IP_protocol.protocol}}",
+      "ipProtocol": "{{health_checks.IP_protocol.IP_version}}"
     }
    ],
    "labels":{

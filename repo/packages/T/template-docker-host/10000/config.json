@@ -53,7 +53,7 @@
         "constraints": {
           "type": "string",
           "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-          "default": "[[\"hostname\", \"MAX_PER\", \"1\"]]",
+          "default": "[]",
           "media": {
             "type": "application/x-zone-constraints+json"
           }
@@ -68,7 +68,7 @@
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
-            "container_port": {
+            "port": {
               "description": "Container port number",
               "type": "number",
               "default": 8080
@@ -77,11 +77,6 @@
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
               "default": "name"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -168,6 +163,11 @@
             "advanced_health_checking_settings": {
               "type": "object",
               "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
                 "grace_periods": {
                   "type": "number",
                   "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
@@ -192,20 +192,41 @@
             }
           }
         },
-        "HTTP_protocol": {
+        "IP_protocol": {
           "type": "object",
           "properties": {
-            "service_endpoint": {
+            "protocol": {
               "type": "string",
-              "description": "Select a service endpoint that you configured in Networking."
+              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+              "default": "HTTP",
+              "enum": [
+                "MESOS_HTTP",
+                "MESOS_HTTPS",
+                "MESOS_TCP",
+                "HTTP",
+                "HTTPS"
+              ]
             },
             "path": {
               "type": "string",
-              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399."
+              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, “/path/to/health”."
+            },
+            "IP_version": {
+              "type": "string",
+              "default": "IPv4",
+              "enum": [
+                "IPv4",
+                "IPv6"
+              ]
             },
             "advanced_health_checking_settings": {
               "type": "object",
               "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
                 "grace_periods": {
                   "type": "number",
                   "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",

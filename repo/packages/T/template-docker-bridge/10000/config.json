@@ -1,0 +1,282 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service specifications of YOUR APP",
+      "properties": {
+        "name": {
+          "description": "Name of application instance as seen in DC/OS.",
+          "type": "string",
+          "default": ""
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 0.3
+        },
+        "gpus": {
+          "description": "Number of GPUs to allocate to each service instance.",
+          "type": "number",
+          "default": 0.3
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 2048
+        },
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": "",
+          "minLength": 0
+        },
+        "region": {
+          "description": "The region that the service's tasks should run in.",
+          "type": "string",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8080
+            },
+            "service_endpoint_name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "name"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "default": "tcp"
+            },
+            "enable_load_balanced_service_address": {
+              "type": "boolean",
+              "description": "Load balance the service internally (layer 4), and create a service address. For external (layer 7) load balancing, create an external load balancer and attach this service.",
+              "default": false
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 78
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "type": "object",
+      "properties": {
+        "local_persistant_volume": {
+          "type": "object",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+          "properties": {
+            "container_path": {
+              "type": "string",
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container."
+            },
+            "size_MiB": {
+              "type": "number"
+            }
+          }
+        },
+        "external_persistant_volume": {
+          "type": "object",
+          "description": "A REX-Ray backed volume that is mounted on the agent from the network attached storage",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container."
+            }
+          }
+        },
+        "host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "host_path": {
+              "type": "string"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "he path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/)."
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "command_protocol": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                }
+              }
+            }
+          }
+        },
+        "IP_protocol": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "type": "string",
+              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+              "default": "HTTP",
+              "enum": [
+                "MESOS_HTTP",
+                "MESOS_HTTPS",
+                "MESOS_TCP",
+                "HTTP",
+                "HTTPS"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, “/path/to/health”."
+            },
+            "IP_version": {
+              "type": "string",
+              "default": "IPv4",
+              "enum": [
+                "IPv4",
+                "IPv6"
+              ]
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "an_environment_variable": {
+          "type": "string",
+          "description": "List of environment variables if needed",
+          "default": "value"
+        },
+        "a_label": {
+          "type": "string",
+          "description": "List of labels if needed",
+          "default": "value"
+        }
+      }
+    }
+  }
+}
