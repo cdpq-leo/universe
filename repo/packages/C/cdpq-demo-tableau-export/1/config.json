@@ -15,11 +15,6 @@
                     "type": "number",
                     "default": 0.3
                 },
-                "gpus": {
-                    "description": "Number of GPUS to allocate to each service instance.",
-                    "type": "number",
-                    "default": 0
-                },
                 "mem": {
                     "description": "Memory in Mb to allocate to each service instance.",
                     "type": "number",
