@@ -9,7 +9,7 @@
         "name": {
           "description": "Name of this service instance.",
           "type": "string",
-          "default": "rq-dashboard"
+          "default": "ui-rq-dashboard"
         },
         "cpus": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
@@ -98,7 +98,7 @@
         "redis_host": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "string",
-          "default": ""
+          "default": "redis.marathon.l4lb.thisdcos.directory"
         },
         "redis_port": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
@@ -108,7 +108,7 @@
         "url_prefix": {
           "description": "Url prefix for reverse proxy.",
           "type": "string",
-          "default": "/"
+          "default": "/service/ui-rq-dashboard"
         }
       },
       "required": [
