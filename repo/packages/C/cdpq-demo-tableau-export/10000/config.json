@@ -3,7 +3,7 @@
     "properties": {
         "service": {
             "type": "object",
-            "description": "DC/OS service specifications of YOUR APP",
+            "description": "DC/OS service specifications",
             "properties": {
                 "name": {
                     "description": "Name of application instance as seen in DC/OS.",

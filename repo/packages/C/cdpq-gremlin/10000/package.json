@@ -1,7 +1,7 @@
 {
  "packagingVersion": "3.0",
  "name": "cdpq-gremlin",
- "version": "cdpq-1.0.0-3.3.3",
+ "version": "1.0.0-3.3.3",
  "maintainer": "tinkerpop",
  "description": "A single instance Gremlin server.",
  "website": "http://tinkerpop.apache.org/",

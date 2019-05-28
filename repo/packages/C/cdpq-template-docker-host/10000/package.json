@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-template-docker-host",
-  "version": "cdpq-1.0.0-1.0.0",
+  "version": "1.0.0-1.0.0",
   "maintainer": "leo@cdpq.com",
   "description": "template-docker-host",
   "minDcosReleaseVersion": "1.9.0",

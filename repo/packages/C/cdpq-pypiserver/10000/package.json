@@ -1,7 +1,7 @@
 {
   "packagingVersion": "2.0",
   "name": "cdpq-pypiserver",
-  "version": "cdpq-1.0.0-1.2.5",
+  "version": "1.0.0-1.2.5",
   "maintainer": "leo@cdpq.com",
   "description": "",
   "tags": ["package", "common"],

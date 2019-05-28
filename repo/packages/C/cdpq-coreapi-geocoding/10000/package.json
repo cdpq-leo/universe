@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-coreapi-geocoding",
-  "version": "cdpq-1.0.0-1.0.1",
+  "version": "1.0.0-1.0.1",
   "maintainer": "leo@cdpq.com",
   "description": "geocoding service",
   "minDcosReleaseVersion": "1.9.0",

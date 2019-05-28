@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-coreapi-search",
-  "version": "cdpq-1.0.0-1.0.3",
+  "version": "1.0.0-1.0.3",
   "maintainer": "leo@cdpq.com",
   "description": "search service",
   "minDcosReleaseVersion": "1.9.0",

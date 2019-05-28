@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-grafana",
-  "version": "cdpq-5.0.1-5.1.0",
+  "version": "5.0.1-5.1.0",
   "scm": "https://github.com/grafana/grafana",
   "maintainer": "https://dcos.io/community",
   "website": "https://grafana.com",
