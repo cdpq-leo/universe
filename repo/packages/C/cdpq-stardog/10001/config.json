@@ -29,6 +29,42 @@
           "description": "Number of instances of your service.",
           "type": "number",
           "default": 1.0
+        },
+        "artifact_URI": {
+          "type": "object",
+          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\",\"UNIQUE\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
         }
       }
     },
@@ -44,7 +80,7 @@
         "container_port": {
           "description": "Container port number",
           "type": "number",
-          "default": 8080
+          "default": 5821
         },
         "service_port": {
           "description": "Service port number",
@@ -62,7 +98,8 @@
             },
             "external_public_agent_hostname": {
               "description": "For external access, Virtual Host URL to be used in the external load balancer.",
-              "type": "string"
+              "type": "string",
+              "default": "ext-leo-632981476.us-east-1.elb.amazonaws.com"
             }
           },
           "required": [

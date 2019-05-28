@@ -13,6 +13,9 @@
       "docker":{
          "image":"{{resource.assets.container.docker.image}}",
          "forcePullImage":false,
+         "pullConfig": {
+         "secret": "pullConfigSecret"
+         }
       },
       "volumes": [
       {  {{! local_persistant_volume type}}

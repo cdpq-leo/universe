@@ -7,6 +7,14 @@
    {{#service.cmd}}
    "cmd": "{{service.cmd}}",
    {{/service.cmd}}
+   "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": {{service.artifact_URI.extract}},
+      "executable": {{service.artifact_URI.executable}},
+      "cache": {{service.artifact_URI.cache}}
+    }
+   ],
    "container":{
       "type": "DOCKER",
       "volumes": [

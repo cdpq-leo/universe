@@ -55,7 +55,7 @@
      "DCOS_SERVICE_NAME": "{{environment.labels.DCOS_SERVICE_NAME}}",
      "DCOS_SERVICE_PORT_INDEX": "{{environment.labels.DCOS_SERVICE_PORT_INDEX}}",
      "DCOS_PACKAGE_DEFINITION": "{{environment.labels.DCOS_PACKAGE_DEFINITION}}",
-     "DCOS_PACKAGE_VERSION": "{{environment.labels.DCOS_PACKAGE_VERSION}}",
-     "DCOS_PACKAGE_NAME": "{{environment.labels.DCOS_PACKAGE_NAME}}"
+     "DCOS_PACKAGE_VERSION": "{{package.version}}",
+     "DCOS_PACKAGE_NAME": "{{service.name}}"
    }
 }

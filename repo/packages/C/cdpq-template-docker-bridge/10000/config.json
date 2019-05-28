@@ -43,6 +43,28 @@
           "media": {
             "type": "application/x-region+string"
           }
+        },
+        "artifact_URI": {
+          "type": "object",
+          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+          "properties": {
+            "uri": {
+              "type":"string",
+              "default": "https://..."
+            },
+            "extract": {
+              "type":"boolean",
+              "default": true
+            },
+            "executable": {
+              "type":"boolean",
+              "default": false
+            },
+            "cache": {
+              "type":"boolean",
+              "default": false
+            }
+          }
         }
       }
     },

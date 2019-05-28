@@ -4,12 +4,6 @@
   "mem": {{service.mem}},
   "disk": {{service.disk}},
   "instances": {{service.instances}},
-  "constraints": [
-    [
-      "hostname",
-      "UNIQUE"
-    ]
-  ],
   "acceptedResourceRoles": [
     "*"
   ],
@@ -37,7 +31,7 @@
         "containerPort": {{networking.container_port}},
         "hostPort": 0,
         "labels": {
-          "VIP_0": "{{networking.VIP_0.hostname}}:{{networking.container_port}}"
+          "VIP_0": "{{networking.VIP_0}}:{{networking.container_port}}"
         },
         "name": "{{service.name}}",
         "protocol": "tcp",
@@ -69,10 +63,10 @@
   "portDefinitions": [],
   "fetch": [
     {
-      "uri": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz",
-      "extract": true,
-      "executable": false,
-      "cache": false
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": {{service.artifact_URI.extract}},
+      "executable": {{service.artifact_URI.executable}},
+      "cache": {{service.artifact_URI.cache}}
     }
-  ]
+   ]
 }

@@ -109,6 +109,20 @@
               "default": 0
             }
           }
+        },
+        "secrets": {
+          "type": "object",
+          "description": "You can create secrets in DC/OS by using a key-value pair or as a file",
+          "properties": {
+            "source": {
+              "type": "string",
+              "default": "source"
+            },
+            "value": {
+              "type": "string",
+              "default": "value"
+            }
+          }
         }
       }
     },
