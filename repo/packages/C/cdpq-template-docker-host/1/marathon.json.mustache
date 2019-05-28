@@ -24,7 +24,7 @@
          },
          "mode": "RW",
          "containerPath": "{{volumes.local_persistant_volume.container_path}}"
-      }
+      },
       { {{! external_persistant_volume type}}
          "external": {
             "name": "{{volumes.external_persistant_volume.name}}",
@@ -35,7 +35,7 @@
          },
          "mode": "RW",
          "containerPath": "{{volumes.external_persistant_volume.container_path}}"
-      }
+      },
       { {{! host_volume type}}
         "containerPath": "{{volumes.host_volume.container_path}}",
         "hostPath": "{{volumes.host_volume.host_path}}",
