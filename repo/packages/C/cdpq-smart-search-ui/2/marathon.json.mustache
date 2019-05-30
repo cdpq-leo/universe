@@ -37,5 +37,13 @@
       "DCOS_SERVICE_PORT_INDEX":"0",
       "DCOS_SERVICE_SCHEME":"http",
       "DCOS_SERVICE_NAME":"{{service.name}}"
-   }
+   },
+  "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
 }

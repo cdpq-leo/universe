@@ -37,18 +37,6 @@
             "uri": {
               "type": "string",
               "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
-            },
-            "extract": {
-              "type": "boolean",
-              "default": true
-            },
-            "executable": {
-              "type": "boolean",
-              "default": false
-            },
-            "cache": {
-              "type": "boolean",
-              "default": false
             }
           }
         }

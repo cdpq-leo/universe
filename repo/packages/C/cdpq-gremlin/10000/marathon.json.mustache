@@ -25,18 +25,7 @@
   },
   "cpus": {{service.cpus}},
   "disk": {{service.disk}},
-  "healthChecks": [
-    {
-      "gracePeriodSeconds": 60,
-      "intervalSeconds": 5,
-      "maxConsecutiveFailures": 3,
-      "portIndex": 0,
-      "timeoutSeconds": 5,
-      "delaySeconds": 15,
-      "protocol": "TCP",
-      "ipProtocol": "IPv4"
-    }
-  ],
+  "healthChecks": [],
   "instances": 1,
   "maxLaunchDelaySeconds": 3600,
   "mem": {{service.mem}},

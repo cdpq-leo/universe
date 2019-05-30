@@ -47,6 +47,14 @@
       "intervalSeconds": 30,
       "maxConsecutiveFailures": 3,
       "timeoutSeconds": 5
-  }]
+  }],
+  "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
 }
 

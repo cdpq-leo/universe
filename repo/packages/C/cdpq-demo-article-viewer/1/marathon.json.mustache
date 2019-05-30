@@ -54,5 +54,13 @@
   "unreachableStrategy": {
     "inactiveAfterSeconds": 0,
     "expungeAfterSeconds": 0
-  }
+  },
+  "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
 }

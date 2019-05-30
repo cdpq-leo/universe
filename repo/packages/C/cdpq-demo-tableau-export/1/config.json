@@ -45,9 +45,15 @@
                     "type": "number",
                     "default": 3600
                 },
-                "docker_image_registry": {
-                    "type": "string",
-                    "default": "systemdcos-registry.marathon.l4lb.thisdcos.directory:443/cdpqleo/demo-tableau-export"
+                "artifact_URI": {
+                  "type": "object",
+                  "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+                  "properties": {
+                    "uri": {
+                      "type": "string",
+                      "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+                    }
+                  }
                 }
             }
         },

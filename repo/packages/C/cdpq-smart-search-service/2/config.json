@@ -19,6 +19,16 @@
           "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 2048
+        },
+        "artifact_URI": {
+          "type": "object",
+          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            }
+          }
         }
       }
     },

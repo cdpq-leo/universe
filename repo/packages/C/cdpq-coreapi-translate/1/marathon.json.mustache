@@ -54,6 +54,15 @@
       "timeoutSeconds": {{health_checks.advanced_health_checking_settings.timeout}},
       "maxConsecutiveFailures": {{health_checks.advanced_health_checking_settings.max_failures}},
       "delaySeconds": {{health_checks.advanced_health_checking_settings.delay_seconds}}
-  }]
+    }
+  ],
+  "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
 }
 
