@@ -5,6 +5,6 @@
   "maintainer": "leo@cdpq.com",
   "description": "MarkLogic provides enterprise solutions for your business by enabling operational big data applications with NoSQL databases and data integration",
   "tags": ["triplestore", "nosql"],
-  "preInstallNotes": "Marklogic installed!",
+  "postInstallNotes": "Marklogic installed!",
   "postUninstallNotes": "Marklogic uninstalled!"
 }

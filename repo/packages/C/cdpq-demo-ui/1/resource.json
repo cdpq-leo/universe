@@ -7,7 +7,7 @@
     "assets": {
         "container": {
             "docker": {
-                "image": "cdpqleo/demo-ui"
+                "image": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/demo-ui"
             }
         }
     }

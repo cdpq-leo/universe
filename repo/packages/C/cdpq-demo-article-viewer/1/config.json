@@ -44,6 +44,10 @@
                     "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
                     "type": "number",
                     "default": 3600
+                },
+                "docker_image_registry": {
+                    "type": "string",
+                    "default": "systemdcos-registry.marathon.l4lb.thisdcos.directory:443/cdpqleo/demo-article-viewer"
                 }
             }
         },

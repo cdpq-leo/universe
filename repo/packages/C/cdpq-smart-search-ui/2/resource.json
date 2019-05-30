@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "registry.marathon.l4lb.thisdcos.directory:5000/cdpqleo/smart-search-ui:1.0.3"
+        "image": "systemdcos-registry.marathon.l4lb.thisdcos.directory:443/cdpqleo/smart-search-ui:1.0.3"
       }
     }
   }

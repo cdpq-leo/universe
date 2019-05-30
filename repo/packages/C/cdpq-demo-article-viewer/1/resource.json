@@ -7,7 +7,7 @@
     "assets": {
         "container": {
             "docker": {
-                "image": "cdpqleo/demo-article-viewer"
+                "image": "systemdcos-registry.marathon.l4lb.thisdcos.directory:443/cdpqleo/demo-article-viewer"
             }
         }
     }
