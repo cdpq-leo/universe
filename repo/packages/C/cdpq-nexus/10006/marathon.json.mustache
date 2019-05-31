@@ -28,13 +28,16 @@
       {{/storage.external_volume.enable}}
       {{#storage.external_volume.enable}}
       {
-        "containerPath": "/nexus-data",
         "external": {
-          "name": "{{storage.external_volume.volume_name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
+            "size": {{volumes.external_volume.external.size}}
+            "name": "{{volumes.external_volume.external.name}}",
+            "provider": "{{volumes.external_volume.external.provider}}",
+            "options": {
+               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
+            }
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.external_volume.container_path}}"
       }
       {{/storage.external_volume.enable}}
       {{/storage.persist}}
