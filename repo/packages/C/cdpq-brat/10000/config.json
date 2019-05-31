@@ -189,7 +189,7 @@
         "HAPROXY_0_VHOST": {
           "type": "string",
           "description": "Exposed endpoint to the application",
-          "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+          "default": ""
         },
         "HAPROXY_0_PATH": {
           "type": "string",

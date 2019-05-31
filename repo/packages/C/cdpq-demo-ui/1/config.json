@@ -189,7 +189,7 @@
                 },
                 "MARKLOGIC_URL": {
                     "type": "string",
-                    "default": "http://dcos-leo-public.eastus.cloudapp.azure.com:10198"
+                    "default": ""
                 },
                 "MARKLOGIC_USR": {
                     "type": "string",

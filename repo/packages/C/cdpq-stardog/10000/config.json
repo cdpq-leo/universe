@@ -103,7 +103,7 @@
         "vhost": {
           "description":  "Virtual host.",
           "type": "string",
-          "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+          "default": ""
         },
         "port0": {
           "description": "UI",

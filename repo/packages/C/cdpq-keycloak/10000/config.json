@@ -61,7 +61,7 @@
                 "external_access": {
                     "type": "string",
                     "description": "(Optional) For external access, Virtual Host URL to be used in the external load balancer.",
-                    "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+                    "default": ""
                 }
             },
             "required": [
@@ -77,7 +77,7 @@
                 "KEYCLOAK_HOSTNAME": {
                     "description": "Hostname of the service",
                     "type": "string",
-                    "default": "dcos-leo-public.eastus.cloudapp.azure.com"
+                    "default": ""
                 },
                 "KEYCLOAK_USER": {
                     "description": "Keycloak username",
@@ -97,7 +97,7 @@
                 "DB_ADDR": {
                     "description": "Database address",
                     "type": "string",
-                    "default": "systemkeycloak-mysql.marathon.l4lb.thisdcos.directory"
+                    "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
                 },
                 "DB_PORT": {
                     "description": "Database port",
