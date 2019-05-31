@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-service service specifications",
+      "description": "DC/OS smart-search-search-svc service specifications",
       "properties": {
         "name": {
           "description": "Name of SmartSearchService instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search-service"
+          "default": "smart-search-search-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -57,7 +57,7 @@
             "path": {
               "type": "string",
               "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
-              "default": "/smart-search-service/api/health/"
+              "default": "/smart-search-search-svc/api/health/"
             },
             "advanced_health_checking_settings": {
               "type": "object",

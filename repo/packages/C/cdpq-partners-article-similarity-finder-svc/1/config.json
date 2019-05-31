@@ -1,0 +1,169 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service specifications",
+      "properties": {
+        "name": {
+          "description": "Name of application instance as seen in DC/OS.",
+          "type": "string",
+          "default": "partners-article-similarity-finder-svc"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 2
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 2048
+        },
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        },
+        "artifact_URI": {
+          "type": "object",
+          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"privatenodetype\",\"CLUSTER\",\"stateful\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 80
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "service_port": {
+              "description": "Service port number",
+              "type": "number",
+              "default": 10264
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "default": "tcp"
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "IP_protocol": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "type": "string",
+              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+              "default": "MESOS_HTTP",
+              "enum": [
+                "MESOS_HTTP",
+                "MESOS_HTTPS",
+                "MESOS_TCP",
+                "HTTP",
+                "HTTPS"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "default": "/docs"
+            },
+            "IP_version": {
+              "type": "string",
+              "default": "IPv4",
+              "enum": [
+                "IPv4",
+                "IPv6"
+              ]
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 15
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

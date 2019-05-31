@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of application instance as seen in DC/OS.",
           "type": "string",
-          "default": "search-ui"
+          "default": "smart-search-simple-search"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -152,7 +152,7 @@
       "properties": {
         "SMART_SEARCH_URL": {
           "type": "string",
-          "default": "http://smart-search-service.marathon.l4lb.thisdcos.directory:8080/smart-search-service/api/search/simple"
+          "default": ""
         },
         "labels": {
           "type": "object",

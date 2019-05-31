@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-ui service specifications",
+      "description": "DC/OS smart-search-smart-search service specifications",
       "properties": {
         "name": {
           "description": "Name of SmartSearchUI instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search-ui"
+          "default": "smart-search-smart-search"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",

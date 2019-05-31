@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-service service specifications",
+      "description": "DC/OS smart-search-search-svc service specifications",
       "properties": {
         "name": {
           "description": "Name of SmartSearchService instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search-service"
+          "default": "smart-search-search-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -28,7 +28,7 @@
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
-          "default": "/smart-search-service/api/health/"
+          "default": "/smart-search-search-svc/api/health/"
         },
         "container_port": {
           "description": "Container port",

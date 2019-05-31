@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-ui service specifications",
+      "description": "DC/OS smart-search-smart-search service specifications",
       "properties": {
         "name": {
           "description": "Name of SmartSearchUI instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search-ui"
+          "default": "smart-search-smart-search"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -73,10 +73,10 @@
       "type": "object",
       "description": "environment variables",
       "properties": {
-        "SMART_SEARCH_URL": {
-          "description": "Smart search service url.",
+        "SEARCH_SVC_URL": {
+          "description": "Search service url.",
           "type": "string",
-          "default": "http://smart-search-service.marathon.l4lb.thisdcos.directory:8080/smart-search-service/api/search/smart"
+          "default": ""
         }
       }
     }

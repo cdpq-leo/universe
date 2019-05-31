@@ -1,0 +1,48 @@
+{
+   "id": "{{service.name}}",
+   "cpus": {{service.cpus}},
+   "mem": {{service.mem}},
+   "disk":{{service.disk}},
+   "instances": {{service.instances}},
+   "fetch": [
+    {
+      "uri": "{{service.artifact_URI.uri}}",
+      "extract": {{service.artifact_URI.extract}},
+      "executable": {{service.artifact_URI.executable}},
+      "cache": {{service.artifact_URI.cache}}
+    }
+   ],
+   "container":{
+      "type": "DOCKER",
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":true,
+         "privileged": false
+      },
+      "volumes": [],
+      "portMappings":[
+         {
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}",
+            "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.container_port}}"
+            },            
+            "servicePort": {{networking.service_endpoints.service_port}}         
+         }
+      ] 
+   },
+   "requirePorts": false,
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
+   "healthChecks": [],
+   "labels":{},
+   "env": {},
+   "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}
