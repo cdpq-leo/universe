@@ -1,12 +1,12 @@
 {
   "packagingVersion": "4.0",
-  "name": "cdpq-transactions-parser",
+  "name": "cdpq-ivanhoe-cambridge-transactions-parser",
   "version": "1.0.0-1.0.0",
   "maintainer": "leo@cdpq.com",
-  "description": "transactions-parser",
+  "description": "ivanhoe-cambridge-transactions-parser",
   "minDcosReleaseVersion": "1.9.0",
-  "tags": ["transactions-parser"],
+  "tags": ["ivanhoe-cambridge-transactions-parser"],
   "preInstallNotes": "This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies. Preview packages should never be used in production!",
-  "postInstallNotes": "transactions-parser installed!",
-  "postUninstallNotes": "transactions-parser uninstalled!"
+  "postInstallNotes": "ivanhoe-cambridge-transactions-parser installed!",
+  "postUninstallNotes": "ivanhoe-cambridge-transactions-parser uninstalled!"
 }

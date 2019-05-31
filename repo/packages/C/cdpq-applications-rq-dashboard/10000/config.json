@@ -9,7 +9,7 @@
         "name": {
           "description": "Name of this service instance.",
           "type": "string",
-          "default": "ui-rq-dashboard"
+          "default": "applications-rq-dashboard"
         },
         "cpus": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
@@ -108,7 +108,7 @@
         "url_prefix": {
           "description": "Url prefix for reverse proxy.",
           "type": "string",
-          "default": "/service/ui-rq-dashboard"
+          "default": "/service/applications-rq-dashboard"
         }
       },
       "required": [

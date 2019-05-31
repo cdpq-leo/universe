@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of application instance as seen in DC/OS.",
           "type": "string",
-          "default": "transactions-parser"
+          "default": "ivanhoe-cambridge-transactions-parser"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",

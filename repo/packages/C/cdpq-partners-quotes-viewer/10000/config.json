@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS quotes viewer service specifications",
+      "description": "DC/OS partners-quotes-viewer service specifications",
       "properties": {
         "name": {
-          "default": "quotes-viewer",
+          "default": "partners-quotes-viewer",
           "type": "string",
-          "description": "Name of quotes-viewer instance as seen in DCOS."
+          "description": "Name of partners-quotes-viewer instance as seen in DCOS."
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",

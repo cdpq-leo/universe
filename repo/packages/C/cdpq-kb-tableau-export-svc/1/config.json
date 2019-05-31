@@ -8,7 +8,7 @@
                 "name": {
                     "description": "Name of application instance as seen in DC/OS.",
                     "type": "string",
-                    "default": "demo-ui"
+                    "default": "kb-tableau-export-svc"
                 },
                 "cpus": {
                     "description": "Number of logical cores to allocate to each service instance.",
@@ -78,17 +78,21 @@
                 "container_port": {
                     "description": "Container port number",
                     "type": "number",
-                    "default": 5000
+                    "default": 8080
                 },
                 "service_port": {
                     "description": "Service port number",
                     "type": "number",
-                    "default": 10123
+                    "default": 10109
                 },
                 "host_port": {
                     "description": "Host port number",
                     "type": "number",
                     "default": 0
+                },
+                "name": {
+                    "type": "string",
+                    "default": "default"
                 }
             }
         },
@@ -120,80 +124,24 @@
                 }
             }
         },
-        "health_checks": {
-            "type": "object",
-            "description": "Health checks may be specified per application to be run against the application's instances.",
-            "properties": {
-                "MESOS_HTTP": {
-                    "type": "object",
-                    "properties": {
-                        "port_index": {
-                            "type": "number",
-                            "default": 0
-                        },
-                        "path": {
-                            "type": "string",
-                            "default": "/health"
-                        },
-                        "advanced_health_checking_settings": {
-                            "type": "object",
-                            "properties": {
-                                "grace_periods": {
-                                    "type": "number",
-                                    "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
-                                    "default": 300
-                                },
-                                "intervals": {
-                                    "type": "number",
-                                    "description": "Number of seconds to wait between health checks.",
-                                    "default": 60
-                                },
-                                "timeout": {
-                                    "type": "number",
-                                    "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
-                                    "default": 20
-                                },
-                                "max_failures": {
-                                    "type": "number",
-                                    "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
-                                    "default": 3
-                                },
-                                "delay_seconds": {
-                                    "type": "number",
-                                    "default": 15
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "environment": {
             "type": "object",
             "properties": {
-                "KAFKA_PRODUCER_TOPIC_RESET": {
-                    "type": "string",
-                    "default": "streaming.kb.demo"
-                },
-                "MARKLOGIC_PWD": {
-                    "type": "string",
-                    "default": "Cdpq@1234567"
-                },
-                "KAFKA_PRODUCER_TOPIC_SUBMIT": {
-                    "type": "string",
-                    "default": "streaming.src.demo"
-                },
-                "MARKLOGIC_COL": {
-                    "type": "string",
-                    "default": "http://cdpq.com/docs/demo"
-                },
-                "MARKLOGIC_URL": {
+                "VIEWER_URL": {
                     "type": "string",
                     "default": ""
                 },
-                "MARKLOGIC_USR": {
+                "MARKLOGIC_USERNAME": {
                     "type": "string",
                     "default": "admin"
+                },
+                "MARKLOGIC_PASSWORD": {
+                    "type": "string",
+                    "default": "Cdpq@1234567"
+                },
+                "MARKLOGIC_URL": {
+                    "type": "string",
+                    "default": "http://marklogic.marathon.l4lb.thisdcos.directory:8000"
                 },
                 "KAFKA_BOOTSTRAP_SERVERS": {
                     "type": "string",
@@ -202,6 +150,10 @@
                 "MARKLOGIC_DB": {
                     "type": "string",
                     "default": "KnowledgeBase-Dev"
+                },
+                "KAFKA_CONSUMER_TOPIC": {
+                    "type": "string",
+                    "default": "streaming.kb.demo"
                 }
             }
         }
