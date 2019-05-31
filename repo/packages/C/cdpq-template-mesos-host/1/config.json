@@ -147,12 +147,40 @@
           "type": "object",
           "description": "A REX-Ray backed volume that is mounted on the agent from the network attached storage",
           "properties": {
-            "name": {
-              "type": "string"
-            },
             "container_path": {
               "type": "string",
-              "description": "The path where your application will read and write data. This must be a single-level path relative to the container."
+              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
+              "default": ""
+            },
+            "external": {
+              "type": "object",
+              "properties": {
+                "size ": {
+                  "type": "number",
+                  "description": "The size of the volume in GiB",
+                  "default": 16
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
+                  "default": ""
+                },
+                "provider": {
+                  "type": "string",
+                  "description": "Your storage provider",
+                  "default": "dvdi"
+                },
+                "options": {
+                  "type": "object",
+                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
+                  "properties": {
+                    "dvdi_driver": {
+                      "type": "string",
+                      "default": "rexray"
+                    }
+                  }
+                }
+              }
             }
           }
         },

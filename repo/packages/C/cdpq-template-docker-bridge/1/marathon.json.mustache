@@ -32,10 +32,11 @@
       },
       { {{! external_persistant_volume type}}
          "external": {
-            "name": "{{volumes.external_persistant_volume.name}}",
-            "provider": "dvdi",
+            "size": {{volumes.external_persistant_volume.external.size}}
+            "name": "{{volumes.external_persistant_volume.external.name}}",
+            "provider": "{{volumes.external_persistant_volume.external.provider}}",
             "options": {
-               "dvdi/driver": "rexray"
+               "dvdi/driver": "{{volumes.external_persistant_volume.external.options.dvdi_driver}}"
             }
          },
          "mode": "RW",
