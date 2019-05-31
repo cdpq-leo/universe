@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS coreapi-translate service specifications",
+      "description": "DC/OS translate-svc service specifications",
       "properties": {
         "name": {
-          "description": "Name of CoreApiTranslate instances as seen in DC/OS.",
+          "description": "Name of translate-svc instances as seen in DC/OS.",
           "type": "string",
-          "default": "ui-coreapi-translate"
+          "default": "translate-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -49,7 +49,7 @@
       "properties": {
         "data_volume": {
           "type": "object",
-          "description": "coreapi-search data volume config",
+          "description": "translate-svc data volume config",
           "properties": {
             "container_path": {
               "description": "Container path",
@@ -72,7 +72,7 @@
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
-          "default": "/service/ui-coreapi-translate/api/health"
+          "default": "/service/translate-svc/api/health"
         },
         "advanced_health_checking_settings": {
           "type": "object",
@@ -123,7 +123,7 @@
         "SERVICE_PREFIX": {
           "description": "service prefix url",
           "type": "string",
-          "default": "/service/ui-coreapi-translate"
+          "default": "/service/translate-svc"
         },
         "GOOGLE_APPLICATION_CREDENTIALS": {
           "description": "Google service account credentials file location.",

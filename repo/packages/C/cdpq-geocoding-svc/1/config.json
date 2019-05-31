@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS RDF service specifications",
+      "description": "DC/OS geocoding-svc service specifications",
       "properties": {
         "name": {
-          "default": "ui-rdf-service",
+          "description": "Name of geocoding-svc instances as seen in DC/OS.",
           "type": "string",
-          "description": "Name of rdf-service instance as seen in DCOS."
+          "default": "geocoding-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -19,6 +19,16 @@
           "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 256
+        },
+        "artifact_URI": {
+          "type": "object",
+          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            }
+          }
         }
       }
     },
@@ -27,7 +37,7 @@
       "description": "Configure the networking for your service.",
       "properties": {
         "container_port": {
-          "description": "Container port",
+          "description": "Container port number",
           "type": "number",
           "default": 8080
         }
@@ -40,7 +50,7 @@
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
-          "default": "/service/ui-rdf-service/api/health"
+          "default": "/service/geocoding-svc/api/health"
         }
       }
     },
@@ -56,25 +66,15 @@
         "HTTP_PORT": {
           "description": "HTTP_PORT",
           "type": "string",
-          "default": "80"
+          "default": "8080"
         },
         "SERVICE_PREFIX": {
           "description": "service prefix url",
           "type": "string",
-          "default": "/service/ui-rdf-service"
+          "default": "/service/geocoding-svc"
         },
-        "USERNAME": {
-          "description": "Database username",
-          "type": "string",
-          "default": "admin"
-        },
-        "PASSWORD": {
-          "description": "Database password",
-          "type": "string",
-          "default": "CdpqQM22"
-        },
-        "ENDPOINT": {
-          "description": "Database endpoint",
+        "GOOGLE_API_KEY": {
+          "description": "api key",
           "type": "string",
           "default": ""
         }
