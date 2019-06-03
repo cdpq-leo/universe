@@ -16,15 +16,28 @@
       "privileged": false
     },
     "volumes": [
+      {{#volumes.persist}}
+      {{#volumes.external_volume.enable}}
       {
-        "persistent": {
-          "size": {{volumes.size}},
-          "profileName": "fast",
-          "type": "mount"
-        },
-        "mode": "RW",
-        "containerPath": "{{volumes.container_path}}"
+        "external": {
+            "name": "{{volumes.external_volume.external.name}}",
+            "provider": "{{volumes.external_volume.external.provider}}",
+            "options": {
+               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
+            }
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.external_volume.container_path}}"
       }
+      {{/volumes.external_volume.enable}}
+      {{^volumes.external_volume.enable}}
+      {
+        "containerPath": "{{volumes.local_volume.container_path}}",
+        "hostPath": "{{volumes.local_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.external_volume.enable}}
+      {{/volumes.persist}}
     ],
     "portMappings": [
       {

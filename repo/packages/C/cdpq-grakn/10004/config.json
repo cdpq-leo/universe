@@ -31,32 +31,70 @@
       }
     },
     "volumes": {
+      "description": "Storage properties for the your service on DC/OS.",
       "type": "object",
-      "description": "Docker volume properties",
       "properties": {
-        "enabled": {
-          "description": "Enable host volume or not",
+        "persist": {
+          "description": "Whether have persistent data, aka 'you want a volume or not'. If false, all your service data and state is ephemeral and will not be shared between Nexus instances. By default, this is false.",
           "type": "boolean",
           "default": false
         },
-        "host_path": {
-          "description": "Host path",
-          "type": "string",
-          "default": ""
+        "local_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+          "type": "object",
+          "properties": {
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": ""
+            },
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": ""
+            }
+          }
         },
-        "container_path": {
-          "description": "Container path",
-          "type": "string",
-          "default": ""
-        },
-        "mode": {
-          "description": "Mode",
-          "type": "string",
-          "default": "RO",
-          "enum": [
-            "RW",
-            "RO"
-          ]
+        "external_volume": {
+          "description": "External volumes configuration. Uses the REX-Ray volume driver.",
+          "type": "object",
+          "properties": {
+            "enable": {
+              "description": "Whether to use DC/OS external volumes to persist your service data. By default, this is false.",
+              "type": "boolean",
+              "default": false
+            },
+            "container_path": {
+              "type": "string",
+              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
+              "default": ""
+            },
+            "external": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
+                  "default": ""
+                },
+                "provider": {
+                  "type": "string",
+                  "description": "Your storage provider",
+                  "default": "dvdi"
+                },
+                "options": {
+                  "type": "object",
+                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
+                  "properties": {
+                    "dvdi_driver": {
+                      "type": "string",
+                      "default": "rexray"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },

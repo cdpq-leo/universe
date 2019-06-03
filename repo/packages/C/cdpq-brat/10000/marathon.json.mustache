@@ -18,16 +18,28 @@
     ],
     "type": "DOCKER",
     "volumes": [
+      {{#volumes.persist}}
+      {{#volumes.external_volume.enable}}
       {
-        "containerPath": "{{volumes.data_host_volume.container_path}}",
-        "hostPath": "{{volumes.data_host_volume.host_path}}",
-        "mode": "{{volumes.data_host_volume.mode}}"
-      },
-      {
-        "containerPath": "{{volumes.config_host_volume.container_path}}",
-        "hostPath": "{{volumes.config_host_volume.host_path}}",
-        "mode": "{{volumes.config_host_volume.mode}}"
+        "external": {
+            "name": "{{volumes.external_volume.external.name}}",
+            "provider": "{{volumes.external_volume.external.provider}}",
+            "options": {
+               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
+            }
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.external_volume.container_path}}"
       }
+      {{/volumes.external_volume.enable}}
+      {{^volumes.external_volume.enable}}
+      {
+        "containerPath": "{{volumes.local_volume.container_path}}",
+        "hostPath": "{{volumes.local_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.external_volume.enable}}
+      {{/volumes.persist}}
     ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
