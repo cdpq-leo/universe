@@ -89,49 +89,73 @@
       "properties": {
         "backup_host_volume": {
           "type": "object",
-          "description": "Marklogic backup volume config",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": "/var/opt/Backups"
-            },
             "host_path": {
-              "description": "Host path",
               "type": "string",
-              "default": "/mnt/azurefileshare/data/marklogic/backups"
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/backup"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/backup"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
             }
           }
         },
         "data_host_volume": {
           "type": "object",
-          "description": "Marklogic data volume config",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": "/var/opt/MarkLogic"
-            },
             "host_path": {
-              "description": "Host path",
               "type": "string",
-              "default": "/var/lib/mesos/marklogic"
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/data"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/data"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
             }
           }
         },
         "external_host_volume": {
           "type": "object",
-          "description": "Marklogic external volume config",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": "/var/opt/External"
-            },
             "host_path": {
-              "description": "Host path",
               "type": "string",
-              "default": "/mnt/azurefileshare/data/marklogic/external"
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/external"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/external"
+            },
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
             }
           }
         }

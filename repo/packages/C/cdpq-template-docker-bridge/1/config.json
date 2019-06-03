@@ -182,11 +182,14 @@
           "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
             "host_path": {
-              "type": "string"
+              "type": "string",
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/data"
             },
             "container_path": {
               "type": "string",
-              "description": "he path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/)."
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/data"
             },
             "mode": {
               "type": "string",

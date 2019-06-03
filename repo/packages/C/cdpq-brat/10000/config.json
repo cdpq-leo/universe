@@ -84,12 +84,13 @@
           "properties": {
             "host_path": {
               "type": "string",
-              "description": "path on the host to the brat data",
-              "default": "/mnt/azurefileshare/hdfs/app/brat/brat-data"
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/data"
             },
             "container_path": {
               "type": "string",
-              "default": "/bratdata"
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/data"
             },
             "mode": {
               "type": "string",
@@ -107,12 +108,13 @@
           "properties": {
             "host_path": {
               "type": "string",
-              "description": "path on the host to the brat config",
-              "default": "/mnt/azurefileshare/hdfs/app/brat/brat-cfg"
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/config"
             },
             "container_path": {
               "type": "string",
-              "default": "/bratcfg"
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/config"
             },
             "mode": {
               "type": "string",
