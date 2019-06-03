@@ -98,11 +98,6 @@
             "external": {
               "type": "object",
               "properties": {
-                "size ": {
-                  "type": "number",
-                  "description": "The size of the volume in GiB",
-                  "default": 16
-                },
                 "name": {
                   "type": "string",
                   "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",

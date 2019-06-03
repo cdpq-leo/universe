@@ -18,18 +18,10 @@
       ]
     },
     "volumes": [
-      {{#storage.persist}}
-      {{^storage.external_volume.enable}}
-      {
-        "containerPath": "/nexus-data",
-        "hostPath": "{{storage.local_volume.host_volume}}",
-        "mode": "RW"
-      }
-      {{/storage.external_volume.enable}}
-      {{#storage.external_volume.enable}}
+      {{#volumes.persist}}
+      {{#volumes.external_volume.enable}}
       {
         "external": {
-            "size": {{volumes.external_volume.external.size}}
             "name": "{{volumes.external_volume.external.name}}",
             "provider": "{{volumes.external_volume.external.provider}}",
             "options": {
@@ -39,8 +31,15 @@
          "mode": "RW",
          "containerPath": "{{volumes.external_volume.container_path}}"
       }
-      {{/storage.external_volume.enable}}
-      {{/storage.persist}}
+      {{/volumes.external_volume.enable}}
+      {{^volumes.external_volume.enable}}
+      {
+        "containerPath": "{{volumes.local_volume.container_path}}",
+        "hostPath": "{{volumes.local_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.external_volume.enable}}
+      {{/volumes.persist}}
     ]
   },
   "healthChecks": [
