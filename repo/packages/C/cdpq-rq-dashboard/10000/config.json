@@ -9,7 +9,7 @@
         "name": {
           "description": "Name of this service instance.",
           "type": "string",
-          "default": "applications-rq-dashboard"
+          "default": "rq-dashboard"
         },
         "cpus": {
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
