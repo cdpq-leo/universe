@@ -35,7 +35,7 @@
       "type": "object",
       "properties": {
         "persist": {
-          "description": "Whether have persistent data, aka 'you want a volume or not'. If false, all your service data and state is ephemeral and will not be shared between Nexus instances. By default, this is false.",
+          "description": "Whether have persistent data, aka 'you want a volume or not'. If false, all your service data and state is ephemeral and will not be shared between service instances. By default, this is false.",
           "type": "boolean",
           "default": false
         },

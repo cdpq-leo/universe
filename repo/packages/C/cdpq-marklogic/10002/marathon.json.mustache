@@ -80,28 +80,21 @@
     ],
     "type": "DOCKER",
     "volumes": [
-      {{#volumes.persist}}
-      {{#volumes.external_volume.enable}}
-      {
-        "external": {
-            "name": "{{volumes.external_volume.external.name}}",
-            "provider": "{{volumes.external_volume.external.provider}}",
-            "options": {
-               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
-            }
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.external_volume.container_path}}"
-      }
-      {{/volumes.external_volume.enable}}
-      {{^volumes.external_volume.enable}}
-      {
-        "containerPath": "{{volumes.local_volume.container_path}}",
-        "hostPath": "{{volumes.local_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.external_volume.enable}}
-      {{/volumes.persist}}
+        {
+            "containerPath": "{{volumes.data_host_volume.container_path}}",
+            "hostPath": "{{volumes.data_host_volume.host_path}}",
+            "mode": "RW"
+        },
+        {
+            "containerPath": "{{volumes.backup_host_volume.container_path}}",
+            "hostPath": "{{volumes.backup_host_volume.host_path}}",
+            "mode": "RW"
+        },
+        {
+            "containerPath": "{{volumes.external_host_config.container_path}}",
+            "hostPath": "{{volumes.external_host_config.host_path}}",
+            "mode": "RW"
+        }
     ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",

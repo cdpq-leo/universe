@@ -6,30 +6,21 @@
   "disk": {{service.disk}},
   "container":{
     "type":"DOCKER",
-    "volumes": [
-      {{#volumes.persist}}
-      {{#volumes.external_volume.enable}}
+    "volumes":[
       {
-        "external": {
-            "name": "{{volumes.external_volume.external.name}}",
-            "provider": "{{volumes.external_volume.external.provider}}",
-            "options": {
-               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
-            }
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.external_volume.container_path}}"
-      }
-      {{/volumes.external_volume.enable}}
-      {{^volumes.external_volume.enable}}
+        "containerPath":"{{volumes.local_persistant_volume.container_path}}",
+        "mode":"RW",
+        "persistent":{
+          "type":"root",
+          "size":{{volumes.local_persistant_volume.size_MiB}}
+        }
+      },
       {
-        "containerPath": "{{volumes.local_volume.container_path}}",
-        "hostPath": "{{volumes.local_volume.host_path}}",
-        "mode": "RW"
+        "containerPath":"{{volumes.host_volume.host_path}}",
+        "hostPath":"{{volumes.host_volume.container_path}}",
+        "mode":"{{volumes.host_volume.mode}}"
       }
-      {{/volumes.external_volume.enable}}
-      {{/volumes.persist}}
-    ],
+    ]
     "docker":{
       "image":"{{resource.assets.container.docker.image}}",
       "network":"USER"

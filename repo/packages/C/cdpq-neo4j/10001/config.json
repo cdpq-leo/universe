@@ -44,68 +44,45 @@
       ]
     },
     "volumes": {
-      "description": "Storage properties for the your service on DC/OS.",
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "persist": {
-          "description": "Whether to use volumes to persist your service data, aka 'you want a volume or not'. If false, all your service data and state is ephemeral and will not be shared between Nexus instances. By default, this is false.",
-          "type": "boolean",
-          "default": false
-        },
-        "local_volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+        "local_persistant_volume": {
           "type": "object",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
-            "host_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+            "container_path": {
               "type": "string",
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container.",
               "default": "data"
             },
-            "container_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "/data"
+            "size_MiB": {
+              "type": "number",
+              "default": 8000.0,
+              "minimum": 4000.0
             }
           }
         },
-        "external_volume": {
-          "description": "External volumes configuration. Uses the REX-Ray volume driver.",
+        "host_volume": {
           "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "enable": {
-              "description": "Whether to use DC/OS external volumes to persist your service data. By default, this is false.",
-              "type": "boolean",
-              "default": false
+            "host_path": {
+              "type": "string",
+              "default": "data"
             },
             "container_path": {
               "type": "string",
-              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
-              "default": "data"
+              "description": "If you are using the Mesos containerizer, this must be a single-level path relative to the container.",
+              "default": "/data"
             },
-            "external": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
-                  "default": ""
-                },
-                "provider": {
-                  "type": "string",
-                  "description": "Your storage provider",
-                  "default": "dvdi"
-                },
-                "options": {
-                  "type": "object",
-                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
-                  "properties": {
-                    "dvdi_driver": {
-                      "type": "string",
-                      "default": "rexray"
-                    }
-                  }
-                }
-              }
+            "mode": {
+              "type": "string",
+              "default": "RW",
+              "enum": [
+                "RW",
+                "RO"
+              ]
             }
           }
         }
