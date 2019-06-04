@@ -1,0 +1,100 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "instances": 1,
+  "env": {
+    "ACCEPT_EULA": "Y",
+    "SA_PASSWORD": "{{environment.SA_PASSWORD}}",
+    "MSSQL_PID": "{{environment.MSSQL_PID}}"
+  },
+  "container": {
+    "type": "DOCKER",
+    "volumes": [{
+      {{^volumes.persistence.enable}}
+      "containerPath": "/var/opt/mssql",
+      "hostPath": "{{volumes.host_volume}}/{{service.name}}",
+      {{/volumes.persistence.enable}}
+      {{#volumes.persistence.enable}}
+      {{^volumes.persistence.external.enable}}
+      "containerPath": "var",
+      "persistent": {
+        "size": {{volumes.persistence.volume_size}}
+      },
+      {{/volumes.persistence.external.enable}}
+      {{#volumes.persistence.external.enable}}
+      "containerPath": "/var/opt/mssql",
+      "external": {
+        "name": "{{volumes.persistence.external.volume_name}}",
+        "provider": "{{volumes.persistence.external.provider}}",
+        "options": { "dvdi/driver": "{{volumes.persistence.external.driver}}" }
+      },
+      {{/volumes.persistence.external.enable}}
+      {{/volumes.persistence.enable}}
+      "mode": "RW"
+    }],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      {{#networking.host_mode}}
+      "network": "HOST",
+      {{/networking.host_mode}}            
+      {{^networking.host_mode}}
+      "network": "BRIDGE",
+      "portMappings": [{
+        "containerPort": 1433,
+        "hostPort": 0,
+        {{#networking.external_access.enable}}
+        "servicePort": {{networking.external_access.external_access_port}},
+        {{/networking.external_access.enable}}
+        "protocol": "tcp",
+        "name": "sqlserver",
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.port}}"
+        }
+      }],
+      {{/networking.host_mode}}
+      "forcePullImage": false
+    }
+  },
+  {{#networking.host_mode}}
+  "portDefinitions": [{
+      "protocol": "tcp",
+      "port": 1433,
+      "name": "sqlserver",
+      {{#networking.external_access.enable}}
+      "servicePort": {{networking.external_access.external_access_port}},
+      {{/networking.external_access.enable}}
+      "labels": {
+        "VIP_0": "/{{service.name}}:{{networking.port}}"
+      }
+  }],
+  "requirePorts": true,
+  "constraints": [["hostname", "UNIQUE"]],
+  {{/networking.host_mode}}
+  "healthChecks": [{
+    "protocol": "TCP",
+    {{#networking.host_mode}}
+    "port": 1433,
+    {{/networking.host_mode}}
+    {{^networking.host_mode}}
+    "portIndex": 0,
+    {{/networking.host_mode}}    
+    "gracePeriodSeconds": 300,
+    "intervalSeconds": 60,
+    "timeoutSeconds": 20,
+    "maxConsecutiveFailures": 3
+  }],
+  "labels": {
+    "DCOS_PACKAGE_VERSION": "2016-13.0.1601.5-0.1",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "MARATHON_SINGLE_INSTANCE_APP": "true",
+    {{#networking.external_access.enable}}
+    "HAPROXY_GROUP": "external",
+    {{/networking.external_access.enable}}
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false"
+  },
+  "upgradeStrategy":{
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 0
+  }
+}
