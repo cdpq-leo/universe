@@ -1,6 +1,5 @@
 {
   "packagingVersion": "3.0",
-  "minDcosReleaseVersion": "9999",
   "name": "cdpq-sqlserver",
   "version": "TBD",
   "maintainer": "https://dcos.io/community/",
