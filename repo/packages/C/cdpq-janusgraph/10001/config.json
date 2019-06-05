@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of your instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search"
+          "default": "janusgraph"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -44,7 +44,8 @@
       "properties": {
         "cassandra_hostnames": {
           "description": "Comma seperated values of the hostnames of the cassandra nodes to connect to.",
-          "type": "string"
+          "type": "string",
+          "default": "node-0-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-1-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-2-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-3-server.data-servicescassandra.autoip.dcos.thisdcos.directory"
         },
         "elastic_hostname": {
           "description": "Elastic hostname.",
