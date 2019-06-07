@@ -56,6 +56,14 @@
       "maxConsecutiveFailures": 3,
       "timeoutSeconds": 5
     }
-  ]
+  ],
+  "fetch": [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+   ]
 }
 
