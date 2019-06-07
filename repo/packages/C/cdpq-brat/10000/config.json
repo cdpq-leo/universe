@@ -13,17 +13,17 @@
         "cpus": {
           "description": "CPU shares to allocate to the Alluxio instance.",
           "type": "number",
-          "default": 1
+          "default": 0.5
         },
         "mem": {
           "description": "Memory to allocate to the Alluxio instance.",
           "type": "number",
-          "default": 2048
+          "default": 256
         },
         "disk": {
           "description": "Disk (MB) to allocate to the Alluxio instance.",
           "type": "number",
-          "default": 16384
+          "default": 8192
         },
         "instances": {
           "description": "Number of instances of Alluxio.",

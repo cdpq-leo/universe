@@ -182,7 +182,7 @@
     "fetch": {
       "type": "object",
       "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
-      "properites": {
+      "properties": {
         "artifact_URI": {
           "type": "object",
           "properties": {
