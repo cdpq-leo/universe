@@ -61,9 +61,17 @@
         "constraints": {
           "type": "string",
           "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-          "default": "[[\"privatenodetype\",\"CLUSTER\",\"stateful\"]]",
+          "default": "[]",
           "media": {
             "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
           }
         }
       }
@@ -90,11 +98,6 @@
               "description": "Host port number",
               "type": "number",
               "default": 10666
-            },
-            "service_port": {
-              "description": "Service port number",
-              "type": "number",
-              "default": 10341
             },
             "protocol": {
               "type": "string",

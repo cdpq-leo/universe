@@ -42,6 +42,9 @@
     "DCOS_SERVICE_NAME": "{{service.name}}"
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "REDIS_HOST": "{{environment.redis_host}}",
     "REDIS_PORT": "{{environment.redis_port}}"
   }

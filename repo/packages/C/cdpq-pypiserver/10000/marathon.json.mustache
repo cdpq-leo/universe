@@ -13,7 +13,6 @@
   "container": {
     "portMappings": [
       {
-        "servicePort": {{networking.service_port}},
         "containerPort": 8080,
         "hostPort": 0,
         "protocol": "tcp"
@@ -43,5 +42,10 @@
       "protocol": "MESOS_HTTP",
       "path": "/"
     }
-  ]
+  ],
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+  }
 }

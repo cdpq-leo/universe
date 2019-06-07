@@ -1,5 +1,8 @@
 {
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "NIFI_CLUSTER_IS_NODE": "{{environment.cluster}}",
     "NIFI_CLUSTER_NODE_PROTOCOL_PORT": "{{environment.cluster_node_protocol_port}}",
     "NIFI_ZK_ROOT_NODE": "{{environment.zookeeper_root}}",

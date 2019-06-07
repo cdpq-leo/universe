@@ -27,8 +27,7 @@
             "protocol": "{{networking.service_endpoints.protocol}}",
             "labels": {
                "VIP_0": "/{{service.name}}:{{networking.service_endpoints.container_port}}"
-            },            
-            "servicePort": {{networking.service_endpoints.service_port}}         
+            }
          }
       ] 
    },
@@ -53,7 +52,11 @@
     }
    ],
    "labels":{},
-   "env": {},
+   "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+   },
    "upgradeStrategy": {
     "maximumOverCapacity": 1,
     "minimumHealthCapacity": 1

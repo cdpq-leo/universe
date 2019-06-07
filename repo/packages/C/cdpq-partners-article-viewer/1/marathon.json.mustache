@@ -28,8 +28,7 @@
             "labels": {
                "VIP_0": "/{{service.name}}:{{networking.service_endpoints.container_port}}"
             },            
-            "name": "{{networking.service_endpoints.service_endpoint_name}}",
-            "servicePort": {{networking.service_endpoints.service_port}}         
+            "name": "{{networking.service_endpoints.service_endpoint_name}}"
          }
       ] 
    },
@@ -60,6 +59,9 @@
       "HAPROXY_0_GROUP": "{{environment.HAPROXY_0_GROUP}}"
    },
    "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+      {{/placement.region}}
      "ENDPOINT": "{{environment.ENDPOINT}}"
   },
   "upgradeStrategy": {

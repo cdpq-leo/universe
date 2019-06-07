@@ -27,8 +27,19 @@
     }
   },
   "env":{
-    "NEO4J_AUTH":"{{environment.auth_username}}/{{environment.auth_password}}",
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "NEO4J_AUTH":"{{environment.auth_username}}",
+    "NEO4J_AUTH_PASSWORD": {
+      "secret": "neo4jauthpassword"
+    }
     "NEO4J_dbms_mode":"READ_REPLICA"
+  },
+  "secrets": {
+    "neo4jauthpassword": {
+      "source": "{{environment.auth_password}}"
+    }
   },
   "ipAddress":{
     "networkName":"{{networking.network_name}}"

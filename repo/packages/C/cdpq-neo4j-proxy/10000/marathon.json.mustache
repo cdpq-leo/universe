@@ -19,13 +19,23 @@
     }
   },
   "env":{
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "DCOS_NEO4J_USER":"{{environment.auth_username}}",
-    "DCOS_NEO4J_PASS":"{{environment.auth_password}}"
+    "DCOS_NEO4J_PASS": {
+      "secret": "neo4jpassword"
+    }
   },
   "labels": {
      "DCOS_SERVICE_NAME": "{{service.name}}",
      "DCOS_SERVICE_SCHEME": "http",
      "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "secrets": {
+    "neo4jpassword": {
+      "source": "{{environment.auth_password}}"
+    }
   },
   "healthChecks":[
     {

@@ -4,6 +4,9 @@
   "mem": {{service.mem}},
   "instances": 1,
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     {{#service.proxy.enable}}
     "REGISTRY_PROXY_REMOTEURL": "{{service.proxy.remote_url}}",
     "REGISTRY_PROXY_USERNAME": "{{service.proxy.username}}",

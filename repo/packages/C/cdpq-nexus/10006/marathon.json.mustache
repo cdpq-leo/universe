@@ -3,7 +3,6 @@
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "acceptedResourceRoles": [ "{{service.resource_role}}" ],
-
   "instances": 1,
   "container": {
     "type": "DOCKER",
@@ -66,6 +65,11 @@
     "HAPROXY_0_VHOST": "{{networking.proxy_vhost}}",
     {{/networking.proxy_vhost}}
     "MARATHON_SINGLE_INSTANCE_APP": "true"
+  },
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
   }
   {{#networking.pinned_hostname}},
   "constraints": [

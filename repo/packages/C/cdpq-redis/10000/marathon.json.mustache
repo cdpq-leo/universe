@@ -53,5 +53,10 @@
    "timeoutSeconds": 5,
    "maxConsecutiveFailures": 3
    }
- ]
+ ],
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+  }
 }

@@ -28,8 +28,7 @@
             "labels": {
                "VIP_0": "/{{service.name}}:{{networking.service_endpoints.container_port}}"
             },            
-            "name": "{{networking.service_endpoints.service_endpoint_name}}",
-            "servicePort": {{networking.service_endpoints.service_port}}         
+            "name": "{{networking.service_endpoints.service_endpoint_name}}"   
          }
       ] 
    },
@@ -54,14 +53,24 @@
    ],
    "labels":{},
    "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+      {{/placement.region}}
       "MYSQL_DATABASE": "{{environment.MYSQL_DATABASE}}",
-      "MYSQL_PASSWORD": "{{environment.MYSQL_PASSWORD}}",
+      "MYSQL_PASSWORD": {
+         "secret": "mysqlpassword"
+      },
       "MYSQL_USERNAME": "{{environment.MYSQL_USERNAME}}",
       "MYSQL_HOST": "{{environment.MYSQL_HOST}}",
       "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
       "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
       "SIMILARITY_ENDPOINT": "{{environment.SIMILARITY_ENDPOINT}}",
       "LOG_REQUEST_BODIES": "{{environment.LOG_REQUEST_BODIES}}"
+  },
+  "secrets": {
+    "mysqlpassword": {
+      "source": "{{environment.MYSQL_PASSWORD}}"
+    }
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 1,
