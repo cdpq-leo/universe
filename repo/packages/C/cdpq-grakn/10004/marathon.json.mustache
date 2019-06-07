@@ -50,11 +50,15 @@
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
-      "network": "BRIDGE",
       "privileged": false,
       "parameters": []
     }
   },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
   "healthChecks":[
     {
       "protocol":"HTTP",

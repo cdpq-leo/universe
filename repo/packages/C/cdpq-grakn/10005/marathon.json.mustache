@@ -1,0 +1,66 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "instances": 1,
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "MESOS",
+    "portMappings": [
+      {
+        "containerPort": 4567,
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/{{service.name}}:4567"
+        },
+        "protocol": "tcp"
+      }, 
+      {
+        "containerPort": 48555,
+        "hostPort": 0,
+        "labels": {
+          "VIP_1": "/{{service.name}}:48555"
+        },
+        "protocol": "tcp"
+      }
+    ],
+    "volumes": [
+      {
+        "containerPath": "{{volumes.local_volume.container_path}}",
+        "hostPath": "{{volumes.local_volume.host_path}}",
+        "mode": "RO"
+      }
+    ],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    }
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "portDefinitions": [],
+  "healthChecks":[],
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_PACKAGE_NAME": "{{package.name}}"
+
+  },
+  "env": {
+    "START_LOCAL_STORAGE": "{{environment.START_LOCAL_STORAGE}}",
+    "BACKGROUND_TASKS_THREADS": "{{environment.BACKGROUND_TASKS_THREADS}}",
+    "SPARK_MASTER": "{{environment.SPARK_MASTER}}",
+    "LOG_LEVEL": "{{environment.v}}",
+    "STORAGE_HOSTNAME": "{{environment.STORAGE_HOSTNAME}}",
+    "KEYSPACE": "{{environment.KEYSPACE}}"
+  }
+}

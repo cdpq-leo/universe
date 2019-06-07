@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service configuration properties",
+      "properties": {
+        "name": {
+          "description": "Name of this service instance.",
+          "type": "string",
+          "default": "grakn-dev"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Grakn instance.",
+          "type": "number",
+          "default": 0.5
+        },
+        "mem": {
+          "description": "Memory to allocate to the Grakn instance.",
+          "type": "number",
+          "default": 8096
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Grakn instance.",
+          "type": "number",
+          "default": 4096
+        }
+      }
+    },
+    "volumes": {
+      "description": "Storage properties for the your service on DC/OS.",
+      "type": "object",
+      "properties": {
+        "local_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+          "type": "object",
+          "properties": {
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/mnt/azurefileshare/data/grakn"
+            },
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/mnt/azurefileshare/data/grakn"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Grakn instance configuration properties",
+      "properties": {
+        "START_LOCAL_STORAGE": {
+          "type": "boolean",
+          "default": false
+        },
+        "BACKGROUND_TASKS_THREADS": {
+          "type": "number",
+          "default": 4
+        },
+        "SPARK_MASTER": {
+          "type": "string",
+          "default": "local[*]"
+        },
+        "LOG_LEVEL": {
+          "type": "string",
+          "default": "DEBUG"
+        },
+        "STORAGE_HOSTNAME": {
+          "type": "string",
+          "default": "node-0-server.cassandra.autoip.dcos.thisdcos.directory,node-1-server.cassandra.autoip.dcos.thisdcos.directory,node-2-server.cassandra.autoip.dcos.thisdcos.directory"
+        },
+        "KEYSPACE": {
+          "type": "string",
+          "default": "grakn"
+        }
+      }
+    }
+  }
+}
