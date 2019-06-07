@@ -20,29 +20,28 @@
   },
   "container": {
     "type": "DOCKER",
-    "volumes": [{
-      {{^volumes.persistence.enable}}
-      "containerPath": "/var/opt/mssql",
-      "hostPath": "{{volumes.host_volume}}/{{service.name}}",
-      {{/volumes.persistence.enable}}
-      {{#volumes.persistence.enable}}
-      {{^volumes.persistence.external.enable}}
-      "containerPath": "var",
-      "persistent": {
-        "size": {{volumes.persistence.volume_size}}
+    "volumes": [
+      {
+        "containerPath": "{{volumes.local_backup_volume.container_path}}",
+        "hostPath": "{{volumes.local_backup_volume.host_path}}",
+        "mode": "RW"
       },
-      {{/volumes.persistence.external.enable}}
-      {{#volumes.persistence.external.enable}}
-      "containerPath": "/var/opt/mssql",
-      "external": {
-        "name": "{{volumes.persistence.external.volume_name}}",
-        "provider": "{{volumes.persistence.external.provider}}",
-        "options": { "dvdi/driver": "{{volumes.persistence.external.driver}}" }
+      {
+        "containerPath": "{{volumes.local_data_volume.container_path}}",
+        "hostPath": "{{volumes.local_data_volume.host_path}}",
+        "mode": "RW"
       },
-      {{/volumes.persistence.external.enable}}
-      {{/volumes.persistence.enable}}
-      "mode": "RW"
-    }],
+      {
+        "containerPath": "{{volumes.local_logs_volume.container_path}}",
+        "hostPath": "{{volumes.local_logs_volume.host_path}}",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "{{volumes.local_temp_db_volume.container_path}}",
+        "hostPath": "{{volumes.local_temp_db_volume.host_path}}",
+        "mode": "RW"
+      }
+    ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       {{#networking.host_mode}}
