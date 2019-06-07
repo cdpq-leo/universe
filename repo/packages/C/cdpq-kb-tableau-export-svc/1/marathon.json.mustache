@@ -27,19 +27,28 @@
         "containerPort": {{networking.container_port}},
         "hostPort": {{networking.host_port}},
         "name": "{{networking.name}}",
-        "protocol": "tcp",
-        "servicePort": {{networking.service_port}}
+        "protocol": "tcp"
       }
     ]
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "VIEWER_URL": "{{environment.VIEWER_URL}}",
     "MARKLOGIC_USERNAME": "{{environment.MARKLOGIC_USERNAME}}",
-    "MARKLOGIC_PASSWORD": "{{environment.MARKLOGIC_PASSWORD}}",
+    "MARKLOGIC_PASSWORD": {
+      "secret": "marklogicpassword"
+    },
     "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}",
     "KAFKA_CONSUMER_TOPIC": "{{environment.KAFKA_CONSUMER_TOPIC}}"
+  },
+  "secrets": {
+    "marklogicpassword": {
+      "source": "{{environment.MARKLOGIC_PASSWORD}}"
+    }
   },
   "executor": "",
   "labels": {},

@@ -36,7 +36,9 @@
     "ZK_HOSTS": "{{environment.zk}}",
     "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
     "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
-    "APPLICATION_SECRET": "applicationkey"
+    "APPLICATION_SECRET": {
+      "secret": "applicationkey"
+    }
   },
   "labels": {
     "DCOS_SERVICE_NAME": "{{service.name}}",

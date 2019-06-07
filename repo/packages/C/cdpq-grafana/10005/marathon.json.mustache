@@ -7,7 +7,9 @@
         {{#placement.region}}
         "SERVICE_REGION": "{{placement.region}}",
         {{/placement.region}}
-        "GF_SECURITY_ADMIN_PASSWORD": adminpassword,
+        "GF_SECURITY_ADMIN_PASSWORD": {
+            "secret": "adminpassword"
+        },
         "GF_INSTALL_PLUGINS": "{{environment.plugins}}"
     },
     "secrets": {

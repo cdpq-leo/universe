@@ -43,6 +43,28 @@
         "instances"
       ]
     },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
     "volumes": {
       "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
@@ -69,7 +91,7 @@
           "properties": {
             "host_path": {
               "type": "string",
-              "description":"Path on the host filesystem to the location of the data you mounted",
+              "description": "Path on the host filesystem to the location of the data you mounted",
               "default": "/var/lib/data"
             },
             "container_path": {

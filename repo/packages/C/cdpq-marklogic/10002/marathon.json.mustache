@@ -6,7 +6,6 @@
   "container": {
     "portMappings": [
       {
-        "servicePort": {{networking.marathon_lb.port0}},
         "containerPort": 7997,
         "hostPort": 0,
         "labels": {
@@ -15,7 +14,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port1}},
         "containerPort": 7998,
         "hostPort": 0,
         "labels": {
@@ -24,7 +22,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port2}},
         "containerPort": 7999,
         "hostPort": 0,
         "labels": {
@@ -33,7 +30,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port3}},
         "containerPort": 8000,
         "hostPort": 0,
         "labels": {
@@ -42,7 +38,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port4}},
         "containerPort": 8001,
         "hostPort": 0,
         "labels": {
@@ -51,7 +46,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port5}},
         "containerPort": 8002,
         "hostPort": 0,
         "labels": {
@@ -60,7 +54,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port6}},
         "containerPort": 8003,
         "hostPort": 0,
         "labels": {
@@ -69,7 +62,6 @@
         "protocol": "tcp"
       },
       {
-        "servicePort": {{networking.marathon_lb.port7}},
         "containerPort": 8004,
         "hostPort": 0,
         "labels": {
@@ -91,8 +83,8 @@
             "mode": "RW"
         },
         {
-            "containerPath": "{{volumes.external_host_config.container_path}}",
-            "hostPath": "{{volumes.external_host_config.host_path}}",
+            "containerPath": "{{volumes.external_host_volume.container_path}}",
+            "hostPath": "{{volumes.external_host_volume.host_path}}",
             "mode": "RW"
         }
     ],
@@ -126,10 +118,20 @@
     "HAPROXY_5_STICKY": "true"
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "MARKLOGIC_USR": "{{environment.marklogic.username}}",
-    "MARKLOGIC_PWD": "{{environment.marklogic.password}}",
+    "MARKLOGIC_PWD": {
+      "secret": "marklogicpassword"
+    },
     "MARKLOGIC_AUTH_MODE": "{{environment.marklogic.auth_mode}}",
     "MARKLOGIC_SEC_REALM": "{{environment.marklogic.realm}}",
     "HDFS_CONFIG_URL": "{{environment.hdfs.config_url}}"
+  },
+  "secrets": {
+    "marklogicpassword": {
+      "source": "{{environment.marklogic.password}}"
+    }
   }
 }

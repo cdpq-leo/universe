@@ -36,7 +36,9 @@
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "KAFKA_PRODUCER_TOPIC_RESET": "{{environment.KAFKA_PRODUCER_TOPIC_RESET}}",
-    "MARKLOGIC_PWD": "marklogicpassword",
+    "MARKLOGIC_PWD": {
+      "secret": "marklogicpassword"
+    },
     "KAFKA_PRODUCER_TOPIC_SUBMIT": "{{environment.KAFKA_PRODUCER_TOPIC_SUBMIT}}",
     "MARKLOGIC_COL": "{{environment.MARKLOGIC_COL}}",
     "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
