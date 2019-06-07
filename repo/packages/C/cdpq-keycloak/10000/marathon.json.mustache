@@ -64,7 +64,7 @@
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_VHOST": "{{networking.external_access}}",
-    "HAPROXY_0_PATH": "/{{service.name}}",
+    "HAPROXY_0_PATH": "{{service.name}}",
     {{/networking.external_access}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",

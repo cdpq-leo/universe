@@ -19,15 +19,27 @@
           "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 2048
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
         },
-        "artifact_URI": {
-          "type": "object",
-          "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
-          "properties": {
-            "uri": {
-              "type": "string",
-              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
-            }
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
           }
         }
       }
@@ -141,6 +153,33 @@
           "description": "Grakn keyspace",
           "type": "string",
           "default": "calais_articles"
+        }
+      }
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properites": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
         }
       }
     }

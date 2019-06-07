@@ -39,6 +39,9 @@
     }
   ],
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
     "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
@@ -56,13 +59,14 @@
       "delaySeconds": {{health_checks.advanced_health_checking_settings.delay_seconds}}
     }
   ],
-  "fetch": [
+  "fetch": 
+   [
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": true,
-      "executable": false,
-      "cache": false
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
-  ]
+   ]
 }
 

@@ -44,16 +44,6 @@
                     "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
                     "type": "number",
                     "default": 3600
-                },
-                "artifact_URI": {
-                    "type": "object",
-                    "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
-                    "properties": {
-                        "uri": {
-                            "type": "string",
-                            "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
-                        }
-                    }
                 }
             }
         },
@@ -210,6 +200,33 @@
                 "MARKLOGIC_DB": {
                     "type": "string",
                     "default": "KnowledgeBase-Dev"
+                }
+            }
+        },
+        "fetch": {
+            "type": "object",
+            "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+            "properites": {
+                "artifact_URI": {
+                    "type": "object",
+                    "properties": {
+                        "uri": {
+                            "type": "string",
+                            "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+                        },
+                        "extract": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "executable": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "cache": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
                 }
             }
         }

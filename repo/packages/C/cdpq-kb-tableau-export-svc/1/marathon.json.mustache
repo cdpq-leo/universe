@@ -72,12 +72,13 @@
     "inactiveAfterSeconds": 0,
     "expungeAfterSeconds": 0
   },
-  "fetch": [
+  "fetch": 
+  [
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": true,
-      "executable": false,
-      "cache": false
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
   ]
 }

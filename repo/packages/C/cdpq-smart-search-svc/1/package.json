@@ -1,6 +1,6 @@
 {
   "packagingVersion": "4.0",
-  "name": "cdpq-smart-search-search-svc",
+  "name": "cdpq-smart-search-svc",
   "version": "1.0.0-1.0.2",
   "maintainer": "leo@cdpq.com",
   "description": "smart-search-search-svc user interface for ElasticSearch.",

@@ -4,12 +4,13 @@
    "mem": {{service.mem}},
    "disk":{{service.disk}},
    "instances": {{service.instances}},
-   "fetch": [
+  "fetch": 
+   [
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": {{service.artifact_URI.extract}},
-      "executable": {{service.artifact_URI.executable}},
-      "cache": {{service.artifact_URI.cache}}
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
    ],
    "container":{

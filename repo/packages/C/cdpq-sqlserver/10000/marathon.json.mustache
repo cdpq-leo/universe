@@ -4,9 +4,19 @@
   "mem": {{service.mem}},
   "instances": 1,
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "ACCEPT_EULA": "Y",
-    "SA_PASSWORD": "{{environment.SA_PASSWORD}}",
+    "SA_PASSWORD": {
+      "secret": "sapassword"
+    },
     "MSSQL_PID": "{{environment.MSSQL_PID}}"
+  },
+  "secrets": {
+    "sapassword": {
+      "source": "{{environment.SA_PASSWORD}}"
+    }
   },
   "container": {
     "type": "DOCKER",

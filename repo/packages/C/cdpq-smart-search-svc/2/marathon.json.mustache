@@ -28,6 +28,9 @@
     }
   ],
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "ELASTICSEARCH_HOSTNAME": "{{environment.ELASTICSEARCH_HOST}}",
     "GRAKN_MAX_RESULTS": "{{environment.GRAKN_MAX_RESULTS}}",
     "GRAKN_KEYSPACE": "{{environment.GRAKN_KEYSPACE}}",
@@ -56,12 +59,13 @@
       "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
     }
   ],
-  "fetch": [
+  "fetch": 
+   [
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": true,
-      "executable": false,
-      "cache": false
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
-  ]
+   ]
 }

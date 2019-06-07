@@ -47,12 +47,14 @@
           "VIP_0": "{{networking.VIP_0}}:{{networking.container_port}}"
         },
         "name": "{{service.name}}",
-        "protocol": "tcp",
-        "servicePort": {{networking.service_port}}
+        "protocol": "tcp"
       }
     ]
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "DEPLOYMENT_TYPE": "{{environment.DEPLOYMENT_TYPE}}",
     "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}"
   },
@@ -74,12 +76,13 @@
     }
   ],
   "portDefinitions": [],
-  "fetch": [
+  "fetch": 
+   [
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": true,
-      "executable": false,
-      "cache": false
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
-  ]
+   ]
 }

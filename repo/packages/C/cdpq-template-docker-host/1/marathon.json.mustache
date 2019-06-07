@@ -8,12 +8,14 @@
    "cmd": "{{service.cmd}}",
    {{/service.cmd}}
    "fetch": [
+      {{#fetch.artifact_URI.uri}}
     {
-      "uri": "{{service.artifact_URI.uri}}",
-      "extract": {{service.artifact_URI.extract}},
-      "executable": {{service.artifact_URI.executable}},
-      "cache": {{service.artifact_URI.cache}}
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
     }
+      {{/fetch.artifact_URI.uri}}
    ],
    "container":{
       "type": "DOCKER",

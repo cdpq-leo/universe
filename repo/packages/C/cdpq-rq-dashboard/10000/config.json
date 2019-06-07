@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/schema#",
   "type": "object",
   "properties": {
     "service": {
@@ -112,17 +111,11 @@
           "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "number",
           "default": 6379
-        },
-        "url_prefix": {
-          "description": "Url prefix for reverse proxy.",
-          "type": "string",
-          "default": "/service/applications-rq-dashboard"
         }
       },
       "required": [
         "redis_host",
-        "redis_port",
-        "url_prefix"
+        "redis_port"
       ]
     }
   }
