@@ -46,7 +46,10 @@
     "ALLUXIO_LICENSE_BASE64": "{{alluxio.license}}",
     "ALLUXIO_SECURITY_AUTHENTICATION_TYPE": "{{environment.auth_type}}",
     "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS": "*",
-    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "*"
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "*",
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+    {{/placement.region}}
   },
   "executor": "",
   "healthChecks": [

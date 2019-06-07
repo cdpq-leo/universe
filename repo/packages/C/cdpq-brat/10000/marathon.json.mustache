@@ -12,8 +12,7 @@
       {
         "containerPort": {{networking.container_port}},
         "hostPort": {{networking.host_port}},
-        "protocol": "tcp",
-        "servicePort": {{networking.service_port}}
+        "protocol": "tcp"
       }
     ],
     "type": "DOCKER",
@@ -38,8 +37,13 @@
   },
   "env": {
     "BRAT_USERNAME": "{{environment.username}}",
-    "BRAT_PASSWORD": "{{environment.password}}",
-    "BRAT_EMAIL": "{{environment.email}}"
+    "BRAT_PASSWORD": {
+      "secret": "bratpassword"
+    },
+    "BRAT_EMAIL": "{{environment.email}}",
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+    {{/placement.region}}
   },
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
@@ -51,6 +55,11 @@
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http"
   },
+  "secrets": {
+    "bratpassword": {
+      "source": "{{environment.BRAT_PASSWORD}}"
+    }
+  }
   "healthChecks": [
     {
       "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},

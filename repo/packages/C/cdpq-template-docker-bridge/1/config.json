@@ -36,14 +36,6 @@
           "default": "",
           "minLength": 0
         },
-        "region": {
-          "description": "The region that the service's tasks should run in.",
-          "type": "string",
-          "default": "",
-          "media": {
-            "type": "application/x-region+string"
-          }
-        },
         "artifact_URI": {
           "type": "object",
           "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
@@ -78,6 +70,14 @@
           "default": "[]",
           "media": {
             "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
           }
         }
       }

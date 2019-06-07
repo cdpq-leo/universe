@@ -62,6 +62,14 @@
           "media": {
             "type": "application/x-zone-constraints+json"
           }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
         }
       }
     },

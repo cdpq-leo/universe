@@ -88,7 +88,10 @@
     {{/volumes.tier2_host_volume.enable_tier2}}
     "ALLUXIO_UNDERFS_ADDRESS": "{{environment.underfs_address}}",
     "ALLUXIO_MASTER_HOSTNAME": "{{environment.master_hostname}}",
-    "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{environment.underfs_hdfs_configuration}}"
+    "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{environment.underfs_hdfs_configuration}}",
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+    {{/placement.region}}
   },
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
