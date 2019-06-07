@@ -36,14 +36,14 @@
     }
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "BRAT_USERNAME": "{{environment.username}}",
     "BRAT_PASSWORD": {
       "secret": "bratpassword"
     },
-    "BRAT_EMAIL": "{{environment.email}}",
-    {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}"
-    {{/placement.region}}
+    "BRAT_EMAIL": "{{environment.email}}"
   },
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
@@ -57,9 +57,9 @@
   },
   "secrets": {
     "bratpassword": {
-      "source": "{{environment.BRAT_PASSWORD}}"
+      "source": "{{environment.password}}"
     }
-  }
+  },
   "healthChecks": [
     {
       "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},

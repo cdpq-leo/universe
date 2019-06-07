@@ -33,6 +33,9 @@
     }
   ],
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
     "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",

@@ -4,8 +4,16 @@
     "mem": {{service.mem}},
     "instances": {{service.instances}},
     "env": {
-        "GF_SECURITY_ADMIN_PASSWORD": "{{environment.admin_password}}",
+        {{#placement.region}}
+        "SERVICE_REGION": "{{placement.region}}",
+        {{/placement.region}}
+        "GF_SECURITY_ADMIN_PASSWORD": adminpassword,
         "GF_INSTALL_PLUGINS": "{{environment.plugins}}"
+    },
+    "secrets": {
+        "adminpassword": {
+            "source": "{{environment.admin_password}}"
+        }
     },
     "container": {
         "type": "DOCKER",
@@ -17,9 +25,6 @@
             {
                 "containerPort": 3000,
                 "hostPort": 0,
-                {{#networking.external_access.enable}}
-                "servicePort": {{networking.external_access.external_access_port}},
-                {{/networking.external_access.enable}}
                 "protocol": "tcp"
             }
             ]

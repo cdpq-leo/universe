@@ -28,6 +28,9 @@
   ],
   "healthChecks": [],
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "CASSANDRA_HOSTNAMES": "{{environment.cassandra_hostnames}}",
     "ELASTIC_HOSTNAME": "{{environment.elastic_hostname}}",
     "KEYSPACE": "{{environment.keyspace}}",

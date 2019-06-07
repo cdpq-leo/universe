@@ -40,16 +40,16 @@
     ]
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "ALLUXIO_UNDERFS_ADDRESS": "{{environment.underfs_address}}",
     "ALLUXIO_MASTER_HOSTNAME": "{{service.name}}.marathon.mesos",
     "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{environment.underfs_hdfs_configuration}}",
     "ALLUXIO_LICENSE_BASE64": "{{alluxio.license}}",
     "ALLUXIO_SECURITY_AUTHENTICATION_TYPE": "{{environment.auth_type}}",
     "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS": "*",
-    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "*",
-    {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}"
-    {{/placement.region}}
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "*"
   },
   "executor": "",
   "healthChecks": [

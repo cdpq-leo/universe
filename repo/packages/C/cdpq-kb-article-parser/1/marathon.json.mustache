@@ -32,14 +32,22 @@
     ]
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "KAFKA_PRODUCER_TOPIC_RESET": "{{environment.KAFKA_PRODUCER_TOPIC_RESET}}",
-    "MARKLOGIC_PWD": "{{environment.MARKLOGIC_PWD}}",
+    "MARKLOGIC_PWD": "marklogicpassword",
     "KAFKA_PRODUCER_TOPIC_SUBMIT": "{{environment.KAFKA_PRODUCER_TOPIC_SUBMIT}}",
     "MARKLOGIC_COL": "{{environment.MARKLOGIC_COL}}",
     "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "MARKLOGIC_USR": "{{environment.MARKLOGIC_USR}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}"
+  },
+  "secrets": {
+    "marklogicpassword": {
+      "source": "{{environment.MARKLOGIC_PWD}}"
+    }
   },
   "executor": "",
   "healthChecks": [

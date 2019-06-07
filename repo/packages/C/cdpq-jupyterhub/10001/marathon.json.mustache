@@ -4,6 +4,9 @@
   "mem": {{service.mem}},
   "instances": 1,
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "JUPYTERHUB_ADMIN_USERS": "{{environment.admin_users}}",
     "JUPYTERHUB_WHITELISTED_USERS": "{{environment.whitelisted_users}}",
     "JUPYTERHUB_API_TOKENS": "{{environment.api_tokens}}",

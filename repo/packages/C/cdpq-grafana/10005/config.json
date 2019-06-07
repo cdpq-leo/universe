@@ -44,6 +44,14 @@
                     "media": {
                         "type": "application/x-zone-constraints+json"
                     }
+                },
+                "region": {
+                    "type": "string",
+                    "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+                    "default": "",
+                    "media": {
+                        "type": "application/x-region+string"
+                    }
                 }
             }
         },
@@ -59,11 +67,6 @@
                             "description": "Enable or disable creating a VIP for external access through a public node running Marathon-LB.",
                             "type": "boolean",
                             "default": true
-                        },
-                        "external_access_port": {
-                            "description": "For external access, port number to be used for clear communication in the external Marathon-LB load balancer",
-                            "type": "number",
-                            "default": 13000
                         },
                         "virtual_host": {
                             "description": "For external access, Virtual Host URL to be used in the external load balancer.",

@@ -30,14 +30,22 @@
     }
   ],
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "ZK_HOSTS": "{{environment.zk}}",
     "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
     "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
-    "APPLICATION_SECRET": "{{environment.application_secret}}"
+    "APPLICATION_SECRET": "applicationkey"
   },
   "labels": {
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "secrets": {
+    "applicationkey": {
+      "source": "{{environment.application_secret}}"
+    }
   }
 }

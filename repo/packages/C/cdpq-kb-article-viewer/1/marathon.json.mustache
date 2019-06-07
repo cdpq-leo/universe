@@ -21,12 +21,14 @@
         "containerPort": {{networking.container_port}},
         "hostPort": {{networking.host_port}},
         "labels": {},
-        "protocol": "tcp",
-        "servicePort": {{networking.service_port}}
+        "protocol": "tcp"
       }
     ]
   },
   "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
     "ES_URL": "{{environment.ES_URL}}"
   },
   "executor": "",
