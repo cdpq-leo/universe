@@ -62,7 +62,7 @@
         "health_url": {
           "description": "Url for health checks",
           "type": "string",
-          "default": "/service/geocoding-svc/api/health"
+          "default": "/api/health"
         }
       }
     },
