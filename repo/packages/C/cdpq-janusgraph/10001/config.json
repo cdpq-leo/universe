@@ -57,6 +57,26 @@
           "description": "Container port number",
           "type": "number",
           "default": 8182
+        },
+        "name": {
+          "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+          "type": "string",
+          "default": "name"
+        },
+        "host_port": {
+          "description": "Host port number",
+          "type": "number",
+          "default": 0
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+          "default": "tcp"
+        },
+        "load_balance_port": {
+          "type": "number",
+          "description": "This port will be used to load balance this service address internally",
+          "default": 8182
         }
       }
     },
