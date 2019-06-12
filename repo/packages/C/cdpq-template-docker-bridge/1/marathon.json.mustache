@@ -27,43 +27,34 @@
       "volumes": [
       {  {{! local_persistant_volume type}}
          "persistent": {
-             "size": {{volumes.local_persistant_volume.size_MiB}}
+            "type": {{volumes.local_persistant_volume.type}},
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            "profileName": {{volumes.local_persistant_volume.profileName}}
          },
          "mode": "RW",
-         "containerPath": "{{volumes.local_persistant_volume.container_path}}"
-      },
-      { {{! external_persistant_volume type}}
-         "external": {
-            "name": "{{volumes.external_persistant_volume.external.name}}",
-            "provider": "{{volumes.external_persistant_volume.external.provider}}",
-            "options": {
-               "dvdi/driver": "{{volumes.external_persistant_volume.external.options.dvdi_driver}}"
-            }
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.external_persistant_volume.container_path}}"
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
       },
       { {{! host_volume type}}
         "containerPath": "{{volumes.host_volume.container_path}}",
         "hostPath": "{{volumes.host_volume.host_path}}",
-        "mode": "{{volumes.host_volume.mode}}"
+        "mode": "RW"
       }
       ],
       "portMappings":[
          {
-            "containerPort": {{networking.service_endpoints.container_port}},
-            "hostPort": {{networking.service_endpoints.host_port}},
-            "protocol": "{{networking.service_endpoints.protocol}}",
-            {{#networking.service_endpoints.enable_load_balanced_service_address}}   
+            {{#networking.service_endpoints.load_balance_port}}   
             "labels": {
                "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-            },            
-            {{/networking.service_endpoints.enable_load_balanced_service_address}}
+            }, 
+            {{/networking.service_endpoints.load_balance_port}}
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}",      
             "name": "{{networking.service_endpoints.service_endpoint_name}}"            
          }
       ] 
    },
-   "requirePorts": false,
    "networks":[
       {
          "mode":"container/bridge"

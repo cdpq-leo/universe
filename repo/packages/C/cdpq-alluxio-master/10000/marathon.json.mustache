@@ -17,25 +17,37 @@
     },
     "portMappings": [
       {
-        "containerPort": 19999,
-        "hostPort": 19999,
-        "labels": {},
-        "protocol": "tcp",
-        "servicePort": 10101
+        "containerPort": {{networking.service_endpoints.service_endpoint_01.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_01.host_port}},
+        {{#networking.service_endpoints.service_endpoint_01.load_balance_port}}
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_01.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_01.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_01.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_01.service_port}}
       },
       {
-        "containerPort": 19998,
-        "hostPort": 19998,
-        "labels": {},
-        "protocol": "tcp",
-        "servicePort": 10102
+        "containerPort": {{networking.service_endpoints.service_endpoint_02.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_02.host_port}},
+        {{#networking.service_endpoints.service_endpoint_02.load_balance_port}}
+        "labels": {
+          "VIP_1": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_02.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_02.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_02.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_02.service_port}}
       },
       {
-        "containerPort": 39999,
-        "hostPort": 10103,
-        "labels": {},
-        "protocol": "tcp",
-        "servicePort": 10103
+        "containerPort": {{networking.service_endpoints.service_endpoint_03.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_03.host_port}},
+        {{#networking.service_endpoints.service_endpoint_03.load_balance_port}}
+        "labels": {
+          "VIP_2": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_03.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_03.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_03.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_03.service_port}}
       }
     ]
   },
@@ -73,7 +85,6 @@
       "mode": "container/bridge"
     }
   ],
-  "requirePorts": false,
   "upgradeStrategy": {
     "maximumOverCapacity": 1,
     "minimumHealthCapacity": 1

@@ -85,18 +85,12 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
-            },
-            "enable_load_balanced_service_address": {
-              "type": "boolean",
-              "description": "Load balance the service internally (layer 4), and create a service address. For external (layer 7) load balancing, create an external load balancer and attach this service.",
-              "default": false
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally",
-              "default": 78
+              "description": "This port will be used to load balance this service address internally"
             }
           }
         }
@@ -112,46 +106,24 @@
           "properties": {
             "container_path": {
               "type": "string",
-              "description": "The path where your application will read and write data. This must be a single-level path relative to the container."
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
             },
             "size_MiB": {
-              "type": "number"
-            }
-          }
-        },
-        "external_persistant_volume": {
-          "type": "object",
-          "description": "A REX-Ray backed volume that is mounted on the agent from the network attached storage",
-          "properties": {
-            "container_path": {
-              "type": "string",
-              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
-              "default": ""
+              "type": "number",
+              "description": "The size of the persistent volume in MiBs."
             },
-            "external": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
-                  "default": ""
-                },
-                "provider": {
-                  "type": "string",
-                  "description": "Your storage provider",
-                  "default": "dvdi"
-                },
-                "options": {
-                  "type": "object",
-                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
-                  "properties": {
-                    "dvdi_driver": {
-                      "type": "string",
-                      "default": "rexray"
-                    }
-                  }
-                }
-              }
+            "type": {
+              "type": "string",
+              "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+            },
+            "constraints": {
+              "type": "string",
+              "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+              "default": []
+            },
+            "profileName": {
+              "type": "string",
+              "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
             }
           }
         },
