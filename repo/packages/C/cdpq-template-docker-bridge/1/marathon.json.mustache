@@ -25,21 +25,26 @@
          "privileged": false
       },
       "volumes": [
-      {  {{! local_persistant_volume type}}
+      {{! data volume}}
+      {{#volumes.volume.local_persistant_volume.container_path}}
+      {
          "persistent": {
-            "type": {{volumes.local_persistant_volume.type}},
-            "size": {{volumes.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.local_persistant_volume.constraints}},
-            "profileName": {{volumes.local_persistant_volume.profileName}}
+            "type": {{volumes.volume.local_persistant_volume.type}},
+            "size": {{volumes.volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.volume.local_persistant_volume.profileName}}
          },
          "mode": "RW",
-         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
-      },
-      { {{! host_volume type}}
-        "containerPath": "{{volumes.host_volume.container_path}}",
-        "hostPath": "{{volumes.host_volume.host_path}}",
+         "containerPath": "{{volumes.volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
+      {{^volumes.volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.volume.host_volume.host_path}}",
         "mode": "RW"
       }
+      {{/volumes.volume.local_persistant_volume.container_path}}
       ],
       "portMappings":[
          {
@@ -51,7 +56,7 @@
             "containerPort": {{networking.service_endpoints.container_port}},
             "hostPort": {{networking.service_endpoints.host_port}},
             "protocol": "{{networking.service_endpoints.protocol}}",      
-            "name": "{{networking.service_endpoints.service_endpoint_name}}"            
+            "name": "{{networking.service_endpoints.name}}"            
          }
       ] 
    },

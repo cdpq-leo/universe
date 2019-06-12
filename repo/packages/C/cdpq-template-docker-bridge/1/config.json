@@ -73,7 +73,7 @@
               "type": "number",
               "default": 8080
             },
-            "service_endpoint_name": {
+            "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
               "default": "name"
@@ -121,8 +121,11 @@
                   "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
                 },
                 "constraints": {
-                  "type": "string",
+                  "type": "array",
                   "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
                   "default": []
                 },
                 "profileName": {

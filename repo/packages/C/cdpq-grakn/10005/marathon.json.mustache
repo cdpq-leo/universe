@@ -11,28 +11,46 @@
     "type": "MESOS",
     "portMappings": [
       {
-        "containerPort": 4567,
-        "hostPort": 0,
+        {{#networking.service_endpoint_01.load_balance_port}}   
         "labels": {
-          "VIP_0": "/{{service.name}}:4567"
-        },
-        "protocol": "tcp"
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_01.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoint_01.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_01.container_port}},
+        "hostPort": {{networking.service_endpoint_01.host_port}},
+        "protocol": "{{networking.service_endpoint_01.protocol}}"     
       }, 
       {
-        "containerPort": 48555,
-        "hostPort": 0,
+        {{#networking.service_endpoint_02.load_balance_port}}   
         "labels": {
-          "VIP_1": "/{{service.name}}:48555"
-        },
-        "protocol": "tcp"
+            "VIP_1": "/{{service.name}}:{{networking.service_endpoint_02.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoint_02.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_02.container_port}},
+        "hostPort": {{networking.service_endpoint_02.host_port}},
+        "protocol": "{{networking.service_endpoint_02.protocol}}"   
       }
     ],
     "volumes": [
+      {{#volumes.volume.local_persistant_volume.container_path}}
       {
-        "containerPath": "{{volumes.local_volume.container_path}}",
-        "hostPath": "{{volumes.local_volume.host_path}}",
-        "mode": "RO"
+        "persistent": {
+            "type": {{volumes.volume.local_persistant_volume.type}},
+            "size": {{volumes.volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.volume.local_persistant_volume.profileName}}
+        },
+        "mode": "RW",
+        "containerPath": "{{volumes.volume.local_persistant_volume.container_path}}",
       }
+      {{/volumes.volume.local_persistant_volume.container_path}}
+      {{^volumes.volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
     ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
@@ -46,14 +64,12 @@
       "mode": "container/bridge"
     }
   ],
-  "portDefinitions": [],
   "healthChecks":[],
   "labels": {
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0",
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_PACKAGE_NAME": "{{package.name}}"
-
   },
   "env": {
     "START_LOCAL_STORAGE": "{{environment.START_LOCAL_STORAGE}}",
