@@ -60,6 +60,11 @@
       "description": "Networking properties for the Nexus service on DC/OS.",
       "type": "object",
       "properties": {
+        "container_port": {
+          "description": "Container port number",
+          "type": "number",
+          "default": 8080
+        },
         "host_port": {
           "description": "The host port to map the Nexus service. A value of 0 will randomly assign a value for host port.",
           "type": "number",
@@ -79,68 +84,52 @@
       ]
     },
     "volumes": {
-      "description": "Storage properties for the Nexus service on DC/OS.",
+      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "persist": {
-          "description": "Whether to use DC/OS persist Nexus data. If false, all Nexus data and state is ephemeral and will not be shared between Nexus instances. By default, this is false.",
-          "type": "boolean",
-          "default": false
-        },
-        "local_volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+        "local_persistant_volume": {
           "type": "object",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
-            "host_path": {
-              "description": "The location of a volume on the host to be used for persisting Nexus configuration and data.",
-              "type": "string",
-              "default": "/opt/sonatype/nexus-data"
-            },
             "container_path": {
-              "description": "The location of a volume on the host to be used for persisting Nexus configuration and data.",
               "type": "string",
-              "default": "/nexus-data"
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+            },
+            "size_MiB": {
+              "type": "number",
+              "description": "The size of the persistent volume in MiBs."
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+            },
+            "constraints": {
+              "type": "array",
+              "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "profileName": {
+              "type": "string",
+              "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
             }
           }
         },
-        "external_volume": {
-          "description": "External volumes configuration. Uses the REX-Ray volume driver.",
+        "host_volume": {
           "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "enable": {
-              "description": "Whether to use DC/OS external volumes to persist Nexus data. By default, this is false.",
-              "type": "boolean",
-              "default": false
+            "host_path": {
+              "type": "string",
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/data"
             },
             "container_path": {
               "type": "string",
-              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
-              "default": ""
-            },
-            "external": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
-                  "default": ""
-                },
-                "provider": {
-                  "type": "string",
-                  "description": "Your storage provider",
-                  "default": "dvdi"
-                },
-                "options": {
-                  "type": "object",
-                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
-                  "properties": {
-                    "dvdi_driver": {
-                      "type": "string",
-                      "default": "rexray"
-                    }
-                  }
-                }
-              }
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/data"
             }
           }
         }
