@@ -1,0 +1,14 @@
+{
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "jboss/keycloak"
+      }
+    }
+  },
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-small.png",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-medium.png",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-large.png"
+   }
+}

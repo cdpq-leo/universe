@@ -1,7 +1,5 @@
 {
   "packagingVersion": "4.0",
-  "upgradesFrom": [],
-  "downgradesTo": [],
   "name": "cdpq-brat",
   "version": "1.0.0-1.0.0",
   "maintainer": "leo@cdpq.com",
