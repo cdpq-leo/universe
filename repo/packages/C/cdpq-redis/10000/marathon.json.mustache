@@ -7,39 +7,39 @@
  "container": {
    "type": "DOCKER",
    "volumes": [
-      {{#volumes.persist}}
-      {{#volumes.external_volume.enable}}
+      {{#volumes.local_persistant_volume.container_path}}
       {
-        "external": {
-            "name": "{{volumes.external_volume.external.name}}",
-            "provider": "{{volumes.external_volume.external.provider}}",
-            "options": {
-               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
-            }
+         "persistent": {
+            "type": {{volumes.local_persistant_volume.type}},
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            "profileName": {{volumes.local_persistant_volume.profileName}}
          },
          "mode": "RW",
-         "containerPath": "{{volumes.external_volume.container_path}}"
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
       }
-      {{/volumes.external_volume.enable}}
-      {{^volumes.external_volume.enable}}
+      {{/volumes.local_persistant_volume.container_path}}
+      {{^volumes.local_persistant_volume.container_path}}
       {
-        "containerPath": "{{volumes.local_volume.container_path}}",
-        "hostPath": "{{volumes.local_volume.host_path}}",
+        "containerPath": "{{volumes.host_volume.container_path}}",
+        "hostPath": "{{volumes.host_volume.host_path}}",
         "mode": "RW"
       }
-      {{/volumes.external_volume.enable}}
-      {{/volumes.persist}}
+      {{/volumes.local_persistant_volume.container_path}}
     ],
    "docker": {
      "image": "{{resource.assets.container.docker.image}}",
      "network": "BRIDGE",
      "portMappings": [
        {
-       "containerPort": 6379,
-       "protocol": "tcp",
-       "labels": {
-            "VIP_0": "/{{service.name}}:6379"
-          }
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"
        }
      ]
    }

@@ -58,6 +58,38 @@
         }
       }
     },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 9181
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 9181
+            }
+          }
+        }
+      }
+    },
     "health_checks": {
       "type": "object",
       "description": "Health checks may be specified per application to be run against the application's instances.",
@@ -103,20 +135,14 @@
       "description": "RQ Dashboard instance configuration properties",
       "properties": {
         "redis_host": {
-          "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "string",
           "default": "redis.marathon.l4lb.thisdcos.directory"
         },
         "redis_port": {
-          "description": "CPU shares to allocate to the RQ Dashboard instance.",
           "type": "number",
           "default": 6379
         }
-      },
-      "required": [
-        "redis_host",
-        "redis_port"
-      ]
+      }
     }
   }
 }

@@ -52,69 +52,85 @@
         }
       }
     },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 6379
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 6379
+            }
+          }
+        }
+      }
+    },
     "volumes": {
-      "description": "Storage properties for the your service on DC/OS.",
+      "description": "By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant. Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "persist": {
-          "description": "Whether to use volumes to persist youir service data. If false, all your service data and state is ephemeral and will not be shared between service instances. By default, this is false.",
-          "type": "boolean",
-          "default": false
-        },
-        "local_volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+        "local_persistant_volume": {
           "type": "object",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
-            "host_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "/mnt/azurefileshare/data/redis"
-            },
             "container_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
               "type": "string",
-              "default": "/redis-data"
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+            },
+            "size_MiB": {
+              "type": "number",
+              "description": "The size of the persistent volume in MiBs."
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+            },
+            "constraints": {
+              "type": "array",
+              "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "profileName": {
+              "type": "string",
+              "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
             }
           }
         },
-        "external_volume": {
-          "description": "External volumes configuration. Uses the REX-Ray volume driver.",
+        "host_volume": {
           "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
           "properties": {
-            "enable": {
-              "description": "Whether to use DC/OS external volumes to persist your service data. By default, this is false.",
-              "type": "boolean",
-              "default": false
+            "host_path": {
+              "type": "string",
+              "description": "Path on the host filesystem to the location of the data you mounted",
+              "default": "/var/lib/data/redis"
             },
             "container_path": {
               "type": "string",
-              "description": "The path where the volume is mounted inside the container. For Mesos external volumes, this must be a single-level path relative to the container; it cannot contain a forward slash (/).",
-              "default": ""
-            },
-            "external": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "The name that your volume driver uses to look up your volume. When your task is staged on an agent, the volume driver queries the storage service for a volume with this name. If one does not exist, it is created implicitly. Otherwise, the existing volume is reused.",
-                  "default": ""
-                },
-                "provider": {
-                  "type": "string",
-                  "description": "Your storage provider",
-                  "default": "dvdi"
-                },
-                "options": {
-                  "type": "object",
-                  "description": " Which Docker volume driver to use for storage. The only Docker volume driver provided with DC/OS is rexray",
-                  "properties": {
-                    "dvdi_driver": {
-                      "type": "string",
-                      "default": "rexray"
-                    }
-                  }
-                }
-              }
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/redis-data"
             }
           }
         }
