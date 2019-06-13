@@ -64,7 +64,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -112,7 +112,7 @@
           "default": "admin"
         },
         "PASSWORD": {
-          "description": "Database password",
+          "description": "Name of the secret in the secret store containing the password for authentication",
           "type": "string",
           "default": "MySecret"
         },

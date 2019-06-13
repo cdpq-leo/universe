@@ -165,9 +165,9 @@
           "default": "neo4j"
         },
         "auth_password": {
-          "description": "Password for authentication",
+          "description": "Name of the secret in the secret store containing the password for authentication",
           "type": "string",
-          "default": "dcos"
+          "default": "secret_auth_password"
         },
         "expected_cluster_size": {
           "description": "Expected core cluster size.",
@@ -178,7 +178,7 @@
         "network_name": {
           "description": "The name of your existing DC/OS overlay network.",
           "type": "string",
-          "default": "dcos"
+          "default": ""
         }
       },
       "required": [

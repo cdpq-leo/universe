@@ -94,7 +94,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -146,7 +146,7 @@
                         "host_path": {
                             "type": "string",
                             "description": "Path on the host filesystem to the location of the data you mounted",
-                            "default": "/mnt/azurefileshare/hdfs/data/kb/demo"
+                            "default": "var/lib/kb-tableau-export"
                         },
                         "container_path": {
                             "type": "string",
@@ -170,23 +170,23 @@
                 },
                 "MARKLOGIC_PASSWORD": {
                     "type": "string",
-                    "default": "Cdpq@1234567"
+                    "default": "secret_marklogic_password"
                 },
                 "MARKLOGIC_URL": {
                     "type": "string",
-                    "default": "http://marklogic.marathon.l4lb.thisdcos.directory:8000"
+                    "default": ""
                 },
                 "KAFKA_BOOTSTRAP_SERVERS": {
                     "type": "string",
-                    "default": "broker.kafka.l4lb.thisdcos.directory:9092"
+                    "default": ""
                 },
                 "MARKLOGIC_DB": {
                     "type": "string",
-                    "default": "KnowledgeBase-Dev"
+                    "default": ""
                 },
                 "KAFKA_CONSUMER_TOPIC": {
                     "type": "string",
-                    "default": "streaming.kb.demo"
+                    "default": ""
                 }
             }
         },

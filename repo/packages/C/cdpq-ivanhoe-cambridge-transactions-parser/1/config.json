@@ -74,7 +74,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {

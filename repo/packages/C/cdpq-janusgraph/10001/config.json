@@ -70,7 +70,7 @@
         },
         "protocol": {
           "type": "string",
-          "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+          "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
           "default": "tcp"
         },
         "load_balance_port": {
@@ -87,7 +87,7 @@
         "cassandra_hostnames": {
           "description": "Comma seperated values of the hostnames of the cassandra nodes to connect to.",
           "type": "string",
-          "default": "node-0-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-1-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-2-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-3-server.data-servicescassandra.autoip.dcos.thisdcos.directory"
+          "default": ""
         },
         "elastic_hostname": {
           "description": "Elastic hostname.",

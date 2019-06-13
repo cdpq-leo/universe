@@ -79,7 +79,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -156,10 +156,11 @@
       "properties": {
         "MYSQL_DATABASE": {
           "type": "string",
-          "default": "lavue_partners"
+          "default": "s"
         },
         "MYSQL_PASSWORD": {
           "type": "string",
+          "description": "Name of the secret in the secret store containing the password for authentication",
           "default": ""
         },
         "MYSQL_USERNAME": {
@@ -168,7 +169,7 @@
         },
         "MYSQL_HOST": {
           "type": "string",
-          "default": "db.mysql.l4lb.thisdcos.directory"
+          "default": ""
         },
         "SIMILARITY_TIMEOUT_SECONDS": {
           "type": "string",
@@ -176,11 +177,11 @@
         },
         "ELASTIC_ENDPOINT": {
           "type": "string",
-          "default": "master.elastic.l4lb.thisdcos.directory:9200"
+          "default": ""
         },
         "SIMILARITY_ENDPOINT": {
           "type": "string",
-          "default": "http://duplicates-remover.marathon.l4lb.thisdcos.directory/volatil/syntaxical/?language=english&signature_size=100&duplication_threshold=50"
+          "default": ""
         },
         "LOG_REQUEST_BODIES": {
           "type": "string",

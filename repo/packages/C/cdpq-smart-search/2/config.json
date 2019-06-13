@@ -3,10 +3,10 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-smart-search service specifications",
+      "description": "DC/OS smart-search service specifications",
       "properties": {
         "name": {
-          "description": "Name of SmartSearchUI instances as seen in DC/OS.",
+          "description": "Name of smart-search instances as seen in DC/OS.",
           "type": "string",
           "default": "smart-search"
         },
@@ -47,7 +47,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {

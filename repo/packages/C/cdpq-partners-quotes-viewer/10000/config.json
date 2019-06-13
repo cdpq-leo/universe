@@ -64,7 +64,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -104,12 +104,12 @@
         "ENDPOINT": {
           "description": "API endpoint",
           "type": "string",
-          "default": "http://ui-rdf-service.marathon.l4lb.thisdcos.directory:5000/service/ui-rdf-service"
+          "default": ""
         },
         "ELASTIC_ENDPOINT": {
           "description": "Elastic endpoint",
           "type": "string",
-          "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
+          "default": ""
         }
       }
     },

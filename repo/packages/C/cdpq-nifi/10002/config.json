@@ -78,7 +78,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -99,7 +99,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -120,7 +120,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -139,10 +139,10 @@
                 "azurefileshare_path": {
                     "description": "path on host to azurefileshare, will be mapped in the container to the same path",
                     "type": "string",
-                    "default": "/mnt/azurefileshare"
+                    "default": ""
                 },
                 "persistent_volume_size": {
-                    "description": "Disk (MB) to allocate to the persistent docke volume",
+                    "description": "Disk (MB) to allocate to the persistent docker volume",
                     "type": "number",
                     "default": 5000
                 }
@@ -155,7 +155,7 @@
                 "zookeeper": {
                     "description": "The Connect String that is needed to connect to Apache ZooKeeper. This is a comma-separted list of hostname:port pairs.",
                     "type": "string",
-                    "default": "master.mesos:2181"
+                    "default": ""
                 },
                 "zookeeper_root": {
                     "description": "The root ZNode that should be used in ZooKeeper. ZooKeeper provides a directory-like structure for storing data. Each directory in this structure is referred to as a ZNode. This denotes the root ZNode, or directory, that should be used for storing data. The default value is /nifi. This is important to set correctly, as which cluster the NiFi instance attempts to join is determined by which ZooKeeper instance it connects to and the ZooKeeper Root Node that is specified.",
@@ -211,7 +211,7 @@
                 "hdfs_config_url": {
                     "description": "HDFS endpoints url",
                     "type": "string",
-                    "default": "http://api.hdfs.marathon.l4lb.thisdcos.directory/v1/endpoints"
+                    "default": ""
                 }
             }
         }

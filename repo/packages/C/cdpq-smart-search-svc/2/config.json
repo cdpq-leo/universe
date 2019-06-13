@@ -3,12 +3,12 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "DC/OS smart-search-search-svc service specifications",
+      "description": "DC/OS smart-search-svc service specifications",
       "properties": {
         "name": {
-          "description": "Name of SmartSearchService instances as seen in DC/OS.",
+          "description": "Name of smart-search-svc instances as seen in DC/OS.",
           "type": "string",
-          "default": "smart-search-search-svc"
+          "default": "smart-search-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
@@ -36,7 +36,7 @@
         },
         "region": {
           "type": "string",
-          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
           "default": "",
           "media": {
             "type": "application/x-region+string"
@@ -64,7 +64,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -148,12 +148,12 @@
         "ELASTICSEARCH_HOST": {
           "description": "Hostname of the ES host to connect to.",
           "type": "string",
-          "default": "master.elastic.l4lb.thisdcos.directory"
+          "default": ""
         },
         "GRAKN_HOSTNAME": {
           "description": "GRAKN_HOSTNAME",
           "type": "string",
-          "default": "grakn.marathon.l4lb.thisdcos.directory"
+          "default": ""
         },
         "GRAKN_PORT": {
           "description": "GRAKN_PORT",

@@ -79,7 +79,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -148,7 +148,7 @@
         },
         "backup_volume": {
           "type": "object",
-          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
+          "description": "A volume for backup. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
             "local_persistant_volume": {
               "type": "object",

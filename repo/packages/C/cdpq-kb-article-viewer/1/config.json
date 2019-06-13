@@ -89,7 +89,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -106,7 +106,7 @@
                 "ES_URL": {
                     "type": "string",
                     "description": "Elastic search URL",
-                    "default": "http://master.elastic.l4lb.thisdcos.directory:9200"
+                    "default": ""
                 }
             }
         },

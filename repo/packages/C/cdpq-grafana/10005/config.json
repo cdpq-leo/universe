@@ -1,5 +1,4 @@
 {
-    "$schema": "http://json-schema.org/schema#",
     "properties": {
         "service": {
             "type": "object",
@@ -80,7 +79,7 @@
                         },
                         "protocol": {
                             "type": "string",
-                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                             "default": "tcp"
                         },
                         "load_balance_port": {
@@ -111,8 +110,8 @@
             "type": "object",
             "description": "grafana service configuration properties",
             "properties": {
-                "admin_password": {
-                    "description": "Admin password.",
+                "secret_admin_password": {
+                    "description": "Name of admin password in secret store.",
                     "type": "string",
                     "default": "admin"
                 },

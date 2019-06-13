@@ -66,7 +66,7 @@
         },
         "region": {
           "type": "string",
-          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
           "default": "",
           "media": {
             "type": "application/x-region+string"
@@ -80,7 +80,6 @@
       "properties": {
         "service_endpoints": {
           "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
             "service_endpoint_01": {
               "type": "object",
@@ -97,7 +96,7 @@
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                   "default": "tcp"
                 },
                 "service_port": {
@@ -125,7 +124,7 @@
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                   "default": "tcp"
                 },
                 "service_port": {
@@ -153,7 +152,7 @@
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
                   "default": "tcp"
                 },
                 "service_port": {
@@ -218,7 +217,7 @@
         "license": {
           "description": "alluxio license base64 format",
           "type": "string",
-          "default": "ewogICJjaGVja3N1bSI6ICI3YjFmMjlkOTVhOTExZDJkY2UxN2Q2ZmExNjM4YmFmMSIsCiAgImVtYWlsIjogImxwZXJyZWF1bHRAY2RwcS5jb20iLAogICJrZXkiOiAiQy0wZmZiOWE1OC0zMGE5MWZkMi05NDVhZDgzMS1iOTIxZmFiMCIsCiAgIm5hbWUiOiAiTG91aXMgUGVycmVhdWx0IiwKICAicmVtb3RlIjogdHJ1ZSwKICAic2VjcmV0IjogInZYOWU3MFVPZld1VGN5ZEpjaVduQ2lhZTlYSTFld3ZCQUhmbTJJcUkvM01IcDh0U09OM2txSkxFSURjPSIsCiAgInZlcnNpb24iOiAyCn0="
+          "default": "aLicense"
         },
         "underfs_address": {
           "description": "address for understorage filesystem",

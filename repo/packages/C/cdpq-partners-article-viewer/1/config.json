@@ -79,7 +79,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -156,7 +156,7 @@
       "properties": {
         "ENDPOINT": {
           "type": "string",
-          "default": "http://lavue-service.marathon.l4lb.thisdcos.directory:8080"
+          "default": ""
         },
         "HAPROXY_0_VHOST": {
           "type": "string",

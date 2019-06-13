@@ -78,7 +78,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -136,7 +136,7 @@
       "properties": {
         "redis_host": {
           "type": "string",
-          "default": "redis.marathon.l4lb.thisdcos.directory"
+          "default": ""
         },
         "redis_port": {
           "type": "string",

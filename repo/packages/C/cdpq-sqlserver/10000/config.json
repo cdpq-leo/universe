@@ -136,9 +136,9 @@
 			"description": "List of environment variables.",
 			"properties": {
 				"SA_PASSWORD": {
-					"description": "A_PASSWORD is the database system administrator (userid = 'sa') password used to connect to SQL Server once the container is running. Important note: This password needs to include at least 8 characters of at least three of these four categories: uppercase letters, lowercase letters, numbers and non-alphanumeric symbols.",
+					"description": "Give the name of the corresponding secret in the secret store. A_PASSWORD is the database system administrator (userid = 'sa') password used to connect to SQL Server once the container is running. Important note: This password needs to include at least 8 characters of at least three of these four categories: uppercase letters, lowercase letters, numbers and non-alphanumeric symbols.",
 					"type": "string",
-					"default": "YourStrong!Passw0rd"
+					"default": "my_secret"
 				},
 				"MSSQL_PID ": {
 					"description": "MSSQL_PID is the Product ID (PID) or Edition that the container will run with.",

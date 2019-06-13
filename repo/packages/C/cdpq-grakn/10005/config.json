@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of this service instance.",
           "type": "string",
-          "default": "grakn-dev"
+          "default": "grakn"
         },
         "cpus": {
           "description": "CPU shares to allocate to the Grakn instance.",
@@ -47,7 +47,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -73,7 +73,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -130,12 +130,12 @@
                 "host_path": {
                   "type": "string",
                   "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": "/mnt/azurefileshare/data/grakn"
+                  "default": "var/lib/grakn"
                 },
                 "container_path": {
                   "type": "string",
                   "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/mnt/azurefileshare/data/grakn"
+                  "default": "/grakn-data"
                 }
               }
             }
@@ -165,7 +165,7 @@
         },
         "STORAGE_HOSTNAME": {
           "type": "string",
-          "default": "node-0-server.cassandra.autoip.dcos.thisdcos.directory,node-1-server.cassandra.autoip.dcos.thisdcos.directory,node-2-server.cassandra.autoip.dcos.thisdcos.directory"
+          "default": ""
         },
         "KEYSPACE": {
           "type": "string",

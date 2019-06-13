@@ -6,7 +6,7 @@
       "description": "DC/OS marklogic service specifications",
       "properties": {
         "name": {
-          "description": "Name of SmartSearchService instances as seen in DC/OS.",
+          "description": "Name of marklogic instances as seen in DC/OS.",
           "type": "string",
           "default": "marklogic"
         },
@@ -69,7 +69,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -94,7 +94,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -119,7 +119,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -144,7 +144,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -169,7 +169,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -194,7 +194,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -219,7 +219,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -244,7 +244,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -260,7 +260,7 @@
       "properties": {
         "backup_volume": {
           "type": "object",
-          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "description": "A volume for bakcup. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
             "local_persistant_volume": {
               "type": "object",
@@ -312,7 +312,7 @@
         },
         "data_volume": {
           "type": "object",
-          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
             "local_persistant_volume": {
               "type": "object",
@@ -364,7 +364,7 @@
         },
         "external_volume": {
           "type": "object",
-          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "description": "An external volume. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
             "local_persistant_volume": {
               "type": "object",
@@ -430,9 +430,9 @@
               "default": "admin"
             },
             "password": {
-              "description": "Admin password",
+              "description": "Name of the secret in the secret store containing the marklogic password",
               "type": "string",
-              "default": "dcos"
+              "default": "secret_marklogic_password"
             },
             "auth_mode": {
               "description": "Auth mode",

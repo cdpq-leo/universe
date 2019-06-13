@@ -77,31 +77,12 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally"
-            }
-          }
-        }
-      }
-    },
-    "volumes": {
-      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
-      "type": "object",
-      "properties": {
-        "local_persistant_volume": {
-          "type": "object",
-          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-          "properties": {
-            "container_path": {
-              "type": "string",
-              "description": "The path where your application will read and write data. This must be a single-level path relative to the container."
-            },
-            "size_MiB": {
-              "type": "number"
             }
           }
         }
@@ -158,39 +139,6 @@
         "SMART_SEARCH_URL": {
           "type": "string",
           "default": ""
-        },
-        "labels": {
-          "type": "object",
-          "properties": {
-            "DCOS_PACKAGE_OPTIONS": {
-              "type": "string",
-              "default": "eyJzZXJ2aWNlIjp7ImNwdXMiOjAuMywiY29udGFpbmVyX3BvcnQiOjgwODAsImhlYWx0aF91cmwiOiIvIiwibWVtIjo1MTIsImVudiI6eyJTTUFSVF9TRUFSQ0hfVVJMIjoiaHR0cDovL3NtYXJ0LXNlYXJjaC1zZXJ2aWNlLm1hcmF0aG9uLmw0bGIudGhpc2Rjb3MuZGlyZWN0b3J5OjgwODAvc21hcnQtc2VhcmNoLXNlcnZpY2UvYXBpL3NlYXJjaC9zaW1wbGUifSwibmFtZSI6InNlYXJjaC11aSJ9fQ=="
-            },
-            "DCOS_SERVICE_SCHEME": {
-              "type": "string",
-              "default": "http"
-            },
-            "DCOS_PACKAGE_SOURCE": {
-              "type": "string",
-              "default": "http://universe.marathon.mesos:8085/repo"
-            },
-            "DCOS_PACKAGE_METADATA": {
-              "type": "string",
-              "default": "eyJwYWNrYWdpbmdWZXJzaW9uIjoiNC4wIiwibmFtZSI6InNtYXJ0LXNlYXJjaC11aSIsInZlcnNpb24iOiJsZW8tMS4wLjAtMS4wLjMiLCJtYWludGFpbmVyIjoibGVvQGNkcHEuY29tIiwiZGVzY3JpcHRpb24iOiJzbWFydC1zZWFyY2gtdWkgdXNlciBpbnRlcmZhY2UgZm9yIEVsYXN0aWNTZWFyY2guIiwidGFncyI6WyJzbWFydC1zZWFyY2gtc2VydmljZSIsIkVsYXN0aWNTZWFyY2giLCJJbnRlcmZhY2UiXSwic2VsZWN0ZWQiOmZhbHNlLCJmcmFtZXdvcmsiOmZhbHNlLCJwcmVJbnN0YWxsTm90ZXMiOiJUaGlzIERDL09TIFNlcnZpY2UgaXMgY3VycmVudGx5IGluIHByZXZpZXcuIFRoZXJlIG1heSBiZSBidWdzLCBpbmNvbXBsZXRlIGZlYXR1cmVzLCBpbmNvcnJlY3QgZG9jdW1lbnRhdGlvbiwgb3Igb3RoZXIgZGlzY3JlcGFuY2llcy4gUHJldmlldyBwYWNrYWdlcyBzaG91bGQgbmV2ZXIgYmUgdXNlZCBpbiBwcm9kdWN0aW9uISIsInBvc3RJbnN0YWxsTm90ZXMiOiJzbWFydC1zZWFyY2gtdWkgaW5zdGFsbGVkISIsInBvc3RVbmluc3RhbGxOb3RlcyI6InNtYXJ0LXNlYXJjaC11aSB1bmluc3RhbGxlZCEiLCJpbWFnZXMiOnsiaWNvbi1zbWFsbCI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9jZHBxLWxlby9hc3NldHMvbWFzdGVyL1NtYXJ0U2VhcmNoL0ltYWdlcy9pY29uLXNlcnZpY2UtY2RwcS1zbWFsbC5wbmciLCJpY29uLW1lZGl1bSI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9jZHBxLWxlby9hc3NldHMvbWFzdGVyL1NtYXJ0U2VhcmNoL0ltYWdlcy9pY29uLXNlcnZpY2UtY2RwcS1tZWRpdW0ucG5nIiwiaWNvbi1sYXJnZSI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9jZHBxLWxlby9hc3NldHMvbWFzdGVyL1NtYXJ0U2VhcmNoL0ltYWdlcy9pY29uLXNlcnZpY2UtY2RwcS1sYXJnZS5wbmcifX0="
-            },
-            "DCOS_SERVICE_NAME": {
-              "type": "string",
-              "default": "search-ui"
-            },
-            "DCOS_SERVICE_PORT_INDEX": {
-              "type": "string",
-              "default": "0"
-            },
-            "DCOS_PACKAGE_DEFINITION": {
-              "type": "string",
-              "default": "eyJtZXRhZGF0YSI6eyJDb250ZW50LVR5cGUiOiJhcHBsaWNhdGlvbi92bmQuZGNvcy51bml2ZXJzZS5wYWNrYWdlK2pzb247Y2hhcnNldD11dGYtODt2ZXJzaW9uPXY0IiwiQ29udGVudC1FbmNvZGluZyI6Imd6aXAifSwiZGF0YSI6Ikg0c0lBQUFBQUFBQUFMVlhiVmZpT0JUK0s5MStWbWpMTURQNGFSRkZ5aWhxb1VYWXMyZE9tb1kya0RiZEpBWFI0My9mbXhhUUY5ZjVzR2MrVk52azN1ZTViOG05dkpvNXdnc1UweXdPaUpDVVorYUYrYVZtbVdkbWhsSUNIekpGUXAxTGdnUk96Z3NLRzh1ZElDUDgzSzVaTmF2ODI0QTlRUmhCa3V5d2JNdXk3RE16UlRSVDhCQlJhZjJKby95Zkd1WXBxRVJFWWtGelZVRWUwUm1GSk1JQVpTSm1DQk5qeG9WeHpaQlVGQTlMbVJvZ0tCUkw4K0t2UTEzUVcxSk1ZUHRBSHI3ZExacjU5NWtwd1dDc1NHUmVaQVZqOEkzVDdldUtoSklxc3YyY0NRaklpb3ZGZGlFWHhNMmtRb3dOdUNKZ2dUbEtxRFN1T3ZYN29UR3M2QTFZd0lVUUpGTnNEWDRZb0xTa1pGVXpSZ2tSeEVqUjJnaUpFUmF4UElOdGlFak9pQUkvQ1ZLRklKdEYwTWZLaURndVVnQkNPbFJuQmtTQ0t3QXhJZ29CSkRuS01DV3laanhVREVhVldDSU5tZkNDUlVaR0lIR2FERUlhVmFid3FNQWE3QStJU3M2bE9uTG5PQmUwMmliUlZ0N1A2T2NhUlhhZ3d5QWltZFNTVlFSVG1sMWhMcjJqb2pIdFdxc3NRVUJES3RGTHIrYlNhZWY1WFFGb09DRWpBbkZDT2pjbXBDUjJPMjJLeG8vMG5yWXBhYWlYNlZQZlFlTUJ1MDJiU1RnT1dyT2hLenUwRFhMOU9lNEZMKzZjeDRkeWcxWDBOQUM1MVEvQWl0M1VadUhRL2VyMjFEZnNCT3NvWmZQcHNLbW1ZM3RQeHN1eEkrbjl2TDNGWm1FMm9mZVpyUGIxd3dhRHg2RHZQOW1ETHZ5L0duWmJnYjlZZ1ozOWI2UXhZRGliNWhQSEw2YmpwblA3b2V5enRyM0VlK2Q5VGlacElQSGEvYnJ4dmZUZnV4NDgrSFpyNUFYOThkQWZkSi9zeXdlZmViT2gzN3oyZ2hnNDNaVkxWKysyTGJ5cmtUMlkrVll3REJic3lndGFvMGNyNlk1OFg5dkhvNTczSy9uN1I5L3VRaXovSytaSGRnK1dZZVlsYU54a21CN2FqbTlhNitqYVRuRHZNZy9UQ1BLVGgxVk1OMDl2TDZiYlp4K1BYUzV4QnZuUER2STFENTJtTlJtekFteWJsUnc5dTNYYjV2RVJGa1Uzclplb3U4SFk1WFAvNmE5dzJySkNCemc3VUJlWk44Y2Q5OENtMmVNVzl6TGE0NkJSajYybXVwWVczc09qcGJvK2RmZncrMDdvUE5zUXI4cm4rR09NNlUxcmpzQXZrUGwyYUZzL0Q4ZmRyTVRYdnFmQlM5Z0kxcnFtSms4RHlJbjNjbnNROStZQ2ZCRFRKN2ZBalRzVmpkbmUyZGhocG1HalA1OEdsM1o0ODl6ZjRrZTl2ajE5OTdGVjZ2U3NiZTFEakwwRzZBbGRsK05kYmkrUDdWV2g0ekZkTXhPblZVUTNYY2gzc0w1MSttczA5alRQajhONDd1SUFPUXFTc09meFJ5ZGhFMGNkMXNoeGZXUTZsMTQvVEQxR0lGOTNuZFh4L2pwc2VFdXdRV3BiUm40dzByVTk3SHErM3ptSngycnk1UEhUT2djN3hzOFc2clpzbkw2ZjAzM2JPNW4xdzN6VFhWSHlRa0REZ1hzTVNVbVUxRytGb0x1YkVQTmRmM3cxNGFKZlZHOVM2cFo3QVFBeGxVcXNhOXNic2NhK3NMQ21vTjlFY0lIV0lxbzdCQmZyaXlZMDNMcnVydEJsNjBmWDhVWFZwZC9ld0NTYTZ0NmdPU2h3bjRNa1kwQ1VLSlhMaTNwZG9GVXRwaW9wUXQyQXRYWFFlSFRETHJIUE5YamxTRDJGNWtwRWZhaXBxaFpiZDB2c2VnVmM5Y0h6VXExa3FlVlpESGQ3dVp1U2lCYnBiK2V0YVBhSkdSSXgrZTI4SmN1R1Z2ZG9hSDRKVjV1a1F4SXdvKy92UEp2UldDZEVyWE50R2cvbmtGUGRhUVhQaVZDMFN0ZDJydmxBOEhDU3F1YVE0NDY4VVRka1RqQ2RVVndPRS9LRXBScitYbzhnQjdCcThKbXg1N3p2Vm1OQmhtSFNRREJzZ0pONnVDalp5K0dzTWhLcWw1WnhpTWdNRlV4OU1GbnFJT1NGL0lDMlNFTVlYWUNZOFJoTVpnYU1SRUNudUFIMXhNRUhvdDhKVEFZNy83Wkc3Wm1RbFREN0pzQnBBTktVcEtlY2R5U0Y0NlE5dVF2L1A1RmpmZmtPVEFsQlRDVS9DOEZPQ1gzQnl1bTJrakZneU1FTCtXbjg2dWJiM3NYeE0rZENuY0oydHZ0R3VmK0pqZCt0N3hZQWttejU2OW9DSVNwNHBxZFJZNGtFUlNFanAwVTB2R3Q3bzUvRDY3Ylg2ZjMwdmR0VDY4cENNcW9TMkVVVXd2TjU0ZWhEQzJmMm8zSC8xeGVrZHZORDFUckthYjFhcXZiMVJmbFdYcFpGSGdzRWxuY0YzLzA2aVBncXExWkhmSE9JL3dWUSs3QmtUUTBBQUE9PSJ9"
-            }
-          }
         }
       }
     },

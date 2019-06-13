@@ -69,7 +69,7 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
@@ -121,7 +121,7 @@
             "host_path": {
               "type": "string",
               "description": "Path on the host filesystem to the location of the data you mounted",
-              "default": "/mnt/azurefileshare/data/pypiserver"
+              "default": "var/lib/pypiserver"
             },
             "container_path": {
               "type": "string",

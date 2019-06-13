@@ -59,9 +59,9 @@
           "default": "neo4j"
         },
         "auth_password": {
-          "description": "Password for authentication",
+          "description": "Name of the secret in the secret store containing the password for authentication",
           "type": "string",
-          "default": "dcos"
+          "default": ""
         }
       },
       "required": [
