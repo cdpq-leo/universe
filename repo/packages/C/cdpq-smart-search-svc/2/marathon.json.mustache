@@ -5,12 +5,14 @@
   "container": {
     "portMappings": [
       {
-        "containerPort": {{networking.container_port}},
-        "hostPort": 0,
+        {{#networking.service_endpoints.load_balance_port}}   
         "labels": {
-            "VIP_0": "/{{service.name}}:8080"
-        },
-        "protocol": "tcp"
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
     "type": "DOCKER",

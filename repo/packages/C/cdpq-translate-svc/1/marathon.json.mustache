@@ -10,21 +10,37 @@
   "container": {
     "portMappings": [
       {
-        "containerPort": {{networking.container_port}},
-        "hostPort": 0,
+        {{#networking.service_endpoints.load_balance_port}}   
         "labels": {
-            "VIP_0": "/{{service.name}}:5000"
-        },
-        "protocol": "tcp"
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"      
       }
     ],
     "type": "DOCKER",
     "volumes": [
-        {
-            "containerPath": "{{volumes.data_volume.container_path}}",
-            "hostPath": "{{volumes.data_volume.host_path}}",
-            "mode": "RW"
-        }
+       {{#volumes.volume.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.volume.local_persistant_volume.type}},
+            "size": {{volumes.volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
+      {{^volumes.volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
     ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",

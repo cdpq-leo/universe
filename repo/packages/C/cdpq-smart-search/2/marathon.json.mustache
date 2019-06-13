@@ -6,9 +6,14 @@
    "container":{
       "portMappings":[
          {
-            "containerPort":{{networking.container_port}},
-            "hostPort":{{networking.host_port}},
-            "protocol":"tcp"
+            {{#networking.service_endpoints.load_balance_port}}   
+            "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+            }, 
+            {{/networking.service_endpoints.load_balance_port}}
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}"      
          }
       ],
       "type":"DOCKER",

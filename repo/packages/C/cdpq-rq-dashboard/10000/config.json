@@ -139,8 +139,8 @@
           "default": "redis.marathon.l4lb.thisdcos.directory"
         },
         "redis_port": {
-          "type": "number",
-          "default": 6379
+          "type": "string",
+          "default": "6379"
         }
       }
     }
