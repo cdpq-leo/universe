@@ -11,7 +11,13 @@
     "SA_PASSWORD": {
       "secret": "sapassword"
     },
-    "MSSQL_PID": "{{environment.MSSQL_PID}}"
+    "MSSQL_PID": "{{environment.MSSQL_PID}}",
+    "MSSQL_TCP_PORT": "{{networking.port}}",
+    "MSSQL_LCID": "{{environment.MSSQL_LCID}}",
+    "MSSQL_BACKUP_DIR": "{{environment.MSSQL_BACKUP_DIR}}",
+    "MSSQL_LOG_DIR": "{{environment.MSSQL_LOG_DIR}}",
+    "MSSQL_DUMP_DIR": "{{environment.MSSQL_DUMP_DIR}}",
+    "MSSQL_DATA_DIR": "{{environment.MSSQL_DATA_DIR}}"
   },
   "secrets": {
     "sapassword": {
@@ -22,22 +28,22 @@
     "type": "DOCKER",
     "volumes": [
       {
-        "containerPath": "{{volumes.local_backup_volume.container_path}}",
+        "containerPath": "{{environment.MSSQL_BACKUP_DIR}}",
         "hostPath": "{{volumes.local_backup_volume.host_path}}",
         "mode": "RW"
       },
       {
-        "containerPath": "{{volumes.local_data_volume.container_path}}",
+        "containerPath": "{{environment.MSSQL_DATA_DIR}}",
         "hostPath": "{{volumes.local_data_volume.host_path}}",
         "mode": "RW"
       },
       {
-        "containerPath": "{{volumes.local_logs_volume.container_path}}",
+        "containerPath": "{{environment.MSSQL_LOG_DIR}}",
         "hostPath": "{{volumes.local_logs_volume.host_path}}",
         "mode": "RW"
       },
       {
-        "containerPath": "{{volumes.local_temp_db_volume.container_path}}",
+        "containerPath": "{{environment.MSSQL_DUMP_DIR}}",
         "hostPath": "{{volumes.local_temp_db_volume.host_path}}",
         "mode": "RW"
       }
@@ -94,7 +100,7 @@
     "maxConsecutiveFailures": 3
   }],
   "labels": {
-    "DCOS_PACKAGE_VERSION": "2016-13.0.1601.5-0.1",
+    "DCOS_PACKAGE_VERSION": "{{package.version}}",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "MARATHON_SINGLE_INSTANCE_APP": "true",
     {{#networking.external_access.enable}}

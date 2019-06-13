@@ -59,11 +59,8 @@
 					"properties": {
 						"host_path": {
 							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
-						},
-						"container_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
+							"type": "string",
+							"default": "/"
 						}
 					}
 				},
@@ -73,11 +70,8 @@
 					"properties": {
 						"host_path": {
 							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
-						},
-						"container_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
+							"type": "string",
+							"default": "/"
 						}
 					}
 				},
@@ -87,11 +81,8 @@
 					"properties": {
 						"host_path": {
 							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
-						},
-						"container_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
+							"type": "string",
+							"default": "/"
 						}
 					}
 				},
@@ -101,11 +92,8 @@
 					"properties": {
 						"host_path": {
 							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
-						},
-						"container_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-							"type": "string"
+							"type": "string",
+							"default": "/"
 						}
 					}
 				}
@@ -163,6 +151,31 @@
 						"EnterpriseCore"
 					],
 					"default": "Developer"
+				},
+				"MSSQL_LCID": {
+					"description": "Sets the language ID to use for SQL Server.Default value is English ; for example 1036 is French. To se all options, visit the https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-fulltext-languages-transact-sql?view=sql-server-2017",
+					"type": "string",
+					"default": "1033"
+				},
+				"MSSQL_BACKUP_DIR": {
+					"description": "Set the Default backup directory location.",
+					"type": "string",
+					"default": "/tmp/backup"
+				},
+				"MSSQL_LOG_DIR": {
+					"description": "Change the directory where the new SQL Server database log (.ldf) files are created.",
+					"type": "string",
+					"default": "/tmp/log"
+				},
+				"MSSQL_DUMP_DIR": {
+					"description": "Change the directory where SQL Server will deposit the memory dumps and other troubleshooting files by default.",
+					"type": "string",
+					"default": "/tmp/dump"
+				},
+				"MSSQL_DATA_DIR": {
+					"description": "Change the directory where the new SQL Server database data files (.mdf) are created.",
+					"type": "string",
+					"default": "/tmp/data"
 				}
 			}
 		}
