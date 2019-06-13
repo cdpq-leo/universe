@@ -4,15 +4,11 @@
   "mem": {{service.mem}},
   "disk": {{service.disk}},
   "instances": {{service.instances}},
-  "acceptedResourceRoles": [
-    "*"
-  ],
   "networks": [
     {
       "mode": "container/bridge"
     }
   ],
-  "portDefinitions": [],
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -23,12 +19,14 @@
     },
     "portMappings": [
       {
-        "containerPort": {{networking.container_port}},
-        "hostPort": {{networking.host_port}},
+        {{#networking.service_endpoints.load_balance_port}}   
         "labels": {
-          "VIP_0": "/{{service.name}}:8080"
-        },
-        "protocol": "tcp"          
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"           
       }
     ]
   },
@@ -36,38 +34,33 @@
       {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
-       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
-       "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
-       "KEYCLOAK_PASSWORD": {
-          "secret": "keycloakpassword"
-       },
-       "DB_VENDOR": "{{environment.DB_VENDOR}}",
-       "DB_ADDR": "{{environment.DB_ADDR}}",
-       "DB_PORT": "{{environment.DB_PORT}}",
-       "DB_NAME": "{{environment.DB_NAME}}",
-       "DB_USER": "{{environment.DB_USER}}",
-       "DB_PASSWORD": {
-          "secret": "dbpassword"
-        }
+      "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
+      "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
+      "KEYCLOAK_PASSWORD": {
+         "secret": "keycloakpassword"
+      },
+      "PROXY_ADDRESS_FORWARDING": "true"
   },
   "secrets": {
     "keycloakpassword": {
       "source": "{{environment.KEYCLOAK_PASSWORD}}"
-    },
-    "dbpassword": {
-      "source": "{{environment.DB_PASSWORD}}"
     }
   },
   "labels": {
-    {{#networking.external_access}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_VHOST": "{{networking.external_access}}",
-    "HAPROXY_0_PATH": "{{service.name}}",
-    {{/networking.external_access}}
+    "HAPROXY_0_VHOST": "{{networking.HA_PROXY.VHOST}}",
+    "HAPROXY_0_PATH": "{{networking.HA_PROXY.path}}",
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
-  }
+  },
+  "healthChecks": [
+    {
+      "portIndex": {{health_checks.port_index}},
+      "protocol": "{{health_checks.protocol}}",
+      "path": "{{health_checks.path}}"
+    }
+  ]
 }

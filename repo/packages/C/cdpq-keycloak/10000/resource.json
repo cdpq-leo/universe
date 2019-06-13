@@ -2,7 +2,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "jboss/keycloak"
+        "image": "cdpqleo/dcos-keycloak:1.0.0-6.0.1"
       }
     }
   },

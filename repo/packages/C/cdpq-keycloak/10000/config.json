@@ -63,28 +63,72 @@
         },
         "networking": {
             "type": "object",
-            "description": "DC/OS Keycloak networking configuration properties",
+            "description": "Configure the networking for your service.",
             "properties": {
-                "container_port": {
-                    "description": "Container port number",
-                    "type": "number",
-                    "default": 8080
+                "service_endpoints": {
+                    "type": "object",
+                    "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+                    "properties": {
+                        "container_port": {
+                            "description": "Container port number",
+                            "type": "number",
+                            "default": 8080
+                        },
+                        "host_port": {
+                            "description": "Host port number",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "default": "tcp"
+                        },
+                        "load_balance_port": {
+                            "type": "number",
+                            "description": "This port will be used to load balance this service address internally"
+                        }
+                    }
                 },
-                "host_port": {
-                    "description": "Host port number",
+                "HA_PROXY": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "default": "/keycloak"
+                        },
+                        "VHOST": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "health_checks": {
+            "type": "object",
+            "description": "Health checks may be specified per application to be run against the application's instances.",
+            "properties": {
+                "protocol": {
+                    "type": "string",
+                    "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+                    "default": "MESOS_HTTP",
+                    "enum": [
+                        "MESOS_HTTP",
+                        "MESOS_HTTPS",
+                        "MESOS_TCP",
+                        "HTTP",
+                        "HTTPS"
+                    ]
+                },
+                "path": {
+                    "type": "string",
+                    "default": "/keycloak/auth/"
+                },
+                "port_index": {
                     "type": "number",
                     "default": 0
-                },
-                "external_access": {
-                    "type": "string",
-                    "description": "(Optional) For external access, Virtual Host URL to be used in the external load balancer.",
-                    "default": ""
                 }
-            },
-            "required": [
-                "container_port",
-                "host_port"
-            ]
+            }
         },
         "environment": {
             "type": "object",
@@ -102,36 +146,6 @@
                 },
                 "KEYCLOAK_PASSWORD": {
                     "description": "Keycloak password",
-                    "type": "string",
-                    "default": "admin"
-                },
-                "DB_VENDOR": {
-                    "description": "Database vendor",
-                    "type": "string",
-                    "default": "mysql"
-                },
-                "DB_ADDR": {
-                    "description": "Database address",
-                    "type": "string",
-                    "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
-                },
-                "DB_PORT": {
-                    "description": "Database port",
-                    "type": "string",
-                    "default": "3306"
-                },
-                "DB_NAME": {
-                    "description": "Database name",
-                    "type": "string",
-                    "default": "keycloak"
-                },
-                "DB_USER": {
-                    "description": "Database username",
-                    "type": "string",
-                    "default": "keycloak"
-                },
-                "DB_PASSWORD": {
-                    "description": "Database password",
                     "type": "string",
                     "default": "keycloak"
                 }
