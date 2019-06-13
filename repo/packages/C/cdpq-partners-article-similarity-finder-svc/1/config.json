@@ -95,7 +95,7 @@
             "protocol": {
               "type": "string",
               "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
-              "default": "MESOS_HTTP",
+              "default": "HTTP",
               "enum": [
                 "MESOS_HTTP",
                 "MESOS_HTTPS",

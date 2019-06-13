@@ -53,10 +53,30 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "vhost": {
-          "description": "Virtual host.",
-          "type": "string",
-          "default": ""
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8080
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocole can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
         }
       }
     },
@@ -64,19 +84,49 @@
       "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "data_volume": {
+        "local_persistant_volume": {
           "type": "object",
-          "description": "Pypi data volume config",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
             "container_path": {
-              "description": "Container path",
               "type": "string",
-              "default": "/data"
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
             },
-            "host_path": {
-              "description": "Host path",
+            "size_MiB": {
+              "type": "number",
+              "description": "The size of the persistent volume in MiBs."
+            },
+            "type": {
               "type": "string",
+              "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+            },
+            "constraints": {
+              "type": "array",
+              "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "profileName": {
+              "type": "string",
+              "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+            }
+          }
+        },
+        "host_volume": {
+          "type": "object",
+          "description": "A host volume is a directory on the local agent mapped to one in a container.",
+          "properties": {
+            "host_path": {
+              "type": "string",
+              "description": "Path on the host filesystem to the location of the data you mounted",
               "default": "/mnt/azurefileshare/data/pypiserver"
+            },
+            "container_path": {
+              "type": "string",
+              "description": "Path, in the container, where you wish to have the data mounted",
+              "default": "/data"
             }
           }
         }

@@ -4,7 +4,7 @@
    "mem": {{service.mem}},
    "disk":{{service.disk}},
    "instances": {{service.instances}},
-  "fetch": 
+   "fetch": 
    [
     {
       "uri": "{{fetch.artifact_URI.uri}}",
@@ -12,7 +12,7 @@
       "executable": {{fetch.artifact_URI.executable}},
       "cache": {{fetch.artifact_URI.cache}}
     }
-   ]
+   ],
    "container":{
       "type": "DOCKER",
       "docker":{
@@ -50,7 +50,7 @@
       "path": "{{health_checks.IP_protocol.path}}",
       "portIndex": 0,
       "protocol": "{{health_checks.IP_protocol.protocol}}",
-      "ipProtocol": "{{health_checks.IP_protocol.IPv4}}"
+      "ipProtocol": "{{health_checks.IP_protocol.IP_version}}"
     }
    ],
    "labels":{},

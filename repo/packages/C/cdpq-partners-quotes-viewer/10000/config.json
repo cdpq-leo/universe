@@ -121,7 +121,8 @@
           "type": "object",
           "properties": {
             "uri": {
-              "type": "string"
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
             },
             "extract": {
               "type": "boolean",
