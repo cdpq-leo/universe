@@ -1,0 +1,73 @@
+{
+  "id": "/{{service.name}}",
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "mem": {{service.mem}},
+  "cpus": {{service.cpus}},
+  "disk": {{service.disk}},
+  "instances": {{service.instances}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "volumes": [],
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ]
+  },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "ES_URL": "{{environment.ES_URL}}"
+  },
+  "executor": "",
+  "labels": {
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http"
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  },
+  "version": "2019-05-23T11:07:24.050Z",
+  "versionInfo": {
+    "lastScalingAt": "2019-05-23T11:07:24.050Z",
+    "lastConfigChangeAt": "2019-05-23T11:07:24.050Z"
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0,
+    "expungeAfterSeconds": 0
+  },
+  "fetch": 
+  [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+  ]
+}

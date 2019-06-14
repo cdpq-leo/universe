@@ -1,0 +1,63 @@
+{
+    "id": "{{service.name}}",
+    "cpus": {{service.cpus}},
+    "mem": {{service.mem}},
+    "instances": {{service.instances}},
+    "env": {
+        {{#placement.region}}
+        "SERVICE_REGION": "{{placement.region}}",
+        {{/placement.region}}
+        "GF_SECURITY_ADMIN_PASSWORD": {
+            "secret": "adminpassword"
+        },
+        "GF_INSTALL_PLUGINS": "{{environment.plugins}}"
+    },
+    "secrets": {
+        "adminpassword": {
+            "source": "{{environment.secret_admin_password}}"
+        }
+    },
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "{{resource.assets.container.docker.image}}",
+            "forcePullImage": false,
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                {{#networking.service_endpoints.load_balance_port}}   
+                "labels": {
+                    "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+                }, 
+                {{/networking.service_endpoints.load_balance_port}}
+                "containerPort": {{networking.service_endpoints.container_port}},
+                "hostPort": {{networking.service_endpoints.host_port}},
+                "protocol": "{{networking.service_endpoints.protocol}}",      
+                "name": "{{networking.service_endpoints.service_endpoint_name}}"
+                }
+            ]
+        }
+    },
+    "healthChecks": [
+        {
+            "protocol": "MESOS_HTTP",
+            "path": "/api/health",
+            "portIndex": 0,
+            "gracePeriodSeconds": 300,
+            "intervalSeconds": 60,
+            "timeoutSeconds": 20,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "labels": {
+        "DCOS_PACKAGE_VERSION": "{{package.version}}",
+        "DCOS_SERVICE_NAME": "{{service.name}}",
+        "DCOS_SERVICE_PORT_INDEX": "0",
+        "DCOS_SERVICE_SCHEME": "http",
+        {{#networking.external_access.enable}}
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "{{networking.external_access.virtual_host}}",
+        {{/networking.external_access.enable}}
+        "DCOS_PACKAGE_IS_FRAMEWORK": "false"
+    }
+}

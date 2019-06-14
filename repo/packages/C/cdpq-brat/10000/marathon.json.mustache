@@ -1,0 +1,120 @@
+{
+  "id": "/{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "cmd": "{{service.cmd}}",
+  "container": {
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}",      
+        "name": "{{networking.service_endpoints.service_endpoint_name}}"            
+      }
+    ],
+    "type": "DOCKER",
+    "volumes": [
+      {{! data volume}}
+      {{#volumes.data_volume.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.data_volume.local_persistant_volume.type}},
+            "size": {{volumes.data_volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.data_volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.data_volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.data_volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.data_volume.local_persistant_volume.container_path}}
+      {{^volumes.data_volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.data_volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.data_volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.data_volume.local_persistant_volume.container_path}}
+      ,
+      {{! config volume }}
+      {{#volumes.config_volume.local_persistant_volume.container_path}}
+      {        
+         "persistent": {
+            "type": {{volumes.config_volume.local_persistant_volume.type}},
+            "size": {{volumes.config_volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.config_volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.config_volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.config_volume.local_persistant_volume.container_path}}",
+      }
+        {{/volumes.config_volume.local_persistant_volume.container_path}}
+        {{^volumes.config_volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.config_volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.config_volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.config_volume.local_persistant_volume.container_path}}
+    ],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    }
+  },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "BRAT_USERNAME": "{{environment.username}}",
+    "BRAT_PASSWORD": {
+      "secret": "bratpassword"
+    },
+    "BRAT_EMAIL": "{{environment.email}}"
+  },
+  "labels": {
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_VHOST": "{{environment.HAPROXY_0_VHOST}}",
+    "HAPROXY_0_PATH": "/{{service.name}}",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http"
+  },
+  "secrets": {
+    "bratpassword": {
+      "source": "{{environment.secret_password}}"
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
+    }
+  ],
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}

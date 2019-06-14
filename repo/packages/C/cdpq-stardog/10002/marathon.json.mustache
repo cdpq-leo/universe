@@ -1,0 +1,107 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "instances": {{service.instances}},
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "volumes": [
+      {{! back_up volume}}
+      {{#volumes.backup_volume.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.backup_volume.local_persistant_volume.type}},
+            "size": {{volumes.backup_volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.backup_volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.backup_volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.backup_volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.backup_volume.local_persistant_volume.container_path}}
+      {{^volumes.backup_volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.backup_volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.backup_volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.backup_volume.local_persistant_volume.container_path}}
+      ,
+      {{! data volume}}
+      {{#volumes.data_volume.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.data_volume.local_persistant_volume.type}},
+            "size": {{volumes.data_volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.data_volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.data_volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.data_volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.data_volume.local_persistant_volume.container_path}}
+      {{^volumes.data_volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.data_volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.data_volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.data_volume.local_persistant_volume.container_path}}
+    ],
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}",      
+        "name": "{{networking.service_endpoints.name}}" 
+      }
+    ]
+  },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "DEPLOYMENT_TYPE": "{{environment.DEPLOYMENT_TYPE}}",
+    "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}"
+  },
+  "labels": {
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_VHOST": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "portDefinitions": [],
+  "fetch": 
+   [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+   ]
+}

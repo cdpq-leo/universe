@@ -1,0 +1,58 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "instances": {{service.instances}},
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          {{#networking.service_endpoints.load_balance_port}}   
+          "labels": {
+              "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+          }, 
+          {{/networking.service_endpoints.load_balance_port}}
+          "containerPort": {{networking.service_endpoints.container_port}},
+          "hostPort": {{networking.service_endpoints.host_port}},
+          "protocol": "{{networking.service_endpoints.protocol}}" 
+        }
+      ]
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 30,
+      "maxConsecutiveFailures": 0,
+      "path": "/service/{{service.name}}/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "timeoutSeconds": 5
+    }
+  ],
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "ZK_HOSTS": "{{environment.zk}}",
+    "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
+    "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
+    "APPLICATION_SECRET": {
+      "secret": "applicationkey"
+    }
+  },
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "secrets": {
+    "applicationkey": {
+      "source": "{{environment.application_secret}}"
+    }
+  }
+}

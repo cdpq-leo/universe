@@ -1,0 +1,41 @@
+{
+  "id": "/{{service.name}}",
+  "cpus": {{service.cpus}},
+  "disk": {{service.disk}},
+  "mem": {{service.mem}},
+  "container": {
+    "portMappings": [
+      {
+        {{#networking.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.load_balance_port}}"
+        }, 
+        {{/networking.load_balance_port}}
+        "containerPort": {{networking.container_port}},
+        "hostPort": {{networking.host_port}},
+        "protocol": "{{networking.protocol}}"
+      }
+    ],
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true
+    }
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "healthChecks": [],
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "CASSANDRA_HOSTNAMES": "{{environment.cassandra_hostnames}}",
+    "ELASTIC_HOSTNAME": "{{environment.elastic_hostname}}",
+    "KEYSPACE": "{{environment.keyspace}}",
+    "READ_ONLY": "{{environment.read_only}}"
+  }
+}

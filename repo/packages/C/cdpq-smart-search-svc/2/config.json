@@ -1,0 +1,208 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS smart-search-svc service specifications",
+      "properties": {
+        "name": {
+          "description": "Name of smart-search-svc instances as seen in DC/OS.",
+          "type": "string",
+          "default": "smart-search-svc"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 0.3
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 2048
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8080
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8080
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "HTTP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "default": 0
+            },
+            "path": {
+              "type": "string",
+              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
+              "default": "/smart-search-search-svc/api/health/"
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 3
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 5
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "environment variables",
+      "properties": {
+        "HTTP_HOSTNAME": {
+          "description": "Hostname",
+          "type": "string",
+          "default": "0.0.0.0"
+        },
+        "HTTP_PORT": {
+          "description": "HTTP_PORT",
+          "type": "string",
+          "default": "8080"
+        },
+        "ELASTICSEARCH_SCHEME": {
+          "description": "ELASTICSEARCH_SCHEME",
+          "type": "string",
+          "default": "http"
+        },
+        "ELASTICSEARCH_PORT": {
+          "description": "ELASTICSEARCH_PORT",
+          "type": "string",
+          "default": "9200"
+        },
+        "ELASTICSEARCH_HOST": {
+          "description": "Hostname of the ES host to connect to.",
+          "type": "string",
+          "default": ""
+        },
+        "GRAKN_HOSTNAME": {
+          "description": "GRAKN_HOSTNAME",
+          "type": "string",
+          "default": ""
+        },
+        "GRAKN_PORT": {
+          "description": "GRAKN_PORT",
+          "type": "string",
+          "default": "48555"
+        },
+        "GRAKN_ATTRIBUTE": {
+          "description": "GRAKN_ATTRIBUTE",
+          "type": "string",
+          "default": "a_name"
+        },
+        "GRAKN_MAX_RESULTS": {
+          "description": "Grakn max results.",
+          "type": "string",
+          "default": "10"
+        },
+        "GRAKN_KEYSPACE": {
+          "description": "Grakn keyspace",
+          "type": "string",
+          "default": "calais_articles"
+        }
+      }
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

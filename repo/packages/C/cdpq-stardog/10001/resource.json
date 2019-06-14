@@ -1,0 +1,14 @@
+{
+  "images": {
+    "icon-small": "https://www.stardog.com/img/favicon.png",
+    "icon-medium": "https://www.stardog.com/img/favicon.png",
+    "icon-large": "https://www.stardog.com/img/favicon.png"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cdpqleo/stardog:6.1.3"
+      }
+    }
+  }
+}

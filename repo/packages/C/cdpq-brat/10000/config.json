@@ -1,0 +1,302 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "Brat service configuration properties.",
+      "properties": {
+        "name": {
+          "description": "Name of the service.",
+          "type": "string",
+          "default": "brat"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 0.5
+        },
+        "mem": {
+          "description": "Memory to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 256
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 8192
+        },
+        "instances": {
+          "description": "Number of instances of Alluxio.",
+          "type": "number",
+          "default": 1,
+          "minimum": 1
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": "/usr/bin/supervisord"
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 80
+            },
+            "service_endpoint_name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "name"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "description": "The volumes accessible to the container.",
+      "type": "object",
+      "properties": {
+        "data_volume": {
+          "type": "object",
+          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the Local Persistant Volume section, the volume type will be local persistant",
+          "properties": {
+            "local_persistant_volume": {
+              "type": "object",
+              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+              "properties": {
+                "container_path": {
+                  "type": "string",
+                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+                },
+                "size_MiB": {
+                  "type": "number",
+                  "description": "The size of the persistent volume in MiBs."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                },
+                "constraints": {
+                  "type": "array",
+                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "profileName": {
+                  "type": "string",
+                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                }
+              }
+            },
+            "host_volume": {
+              "type": "object",
+              "description": "A host volume is a directory on the local agent mapped to one in a container.",
+              "properties": {
+                "host_path": {
+                  "type": "string",
+                  "description": "Path on the host filesystem to the location of the data you mounted",
+                  "default": "/var/lib/data"
+                },
+                "container_path": {
+                  "type": "string",
+                  "description": "Path, in the container, where you wish to have the data mounted",
+                  "default": "/data"
+                }
+              }
+            }
+          }
+        },
+        "config_volume": {
+          "type": "object",
+          "description": "A volume for your config. By default, the volume type is host. If you enter a host path in the Local Persistant Volume  section, the volume type will be local persistant",
+          "properties": {
+            "local_persistant_volume": {
+              "type": "object",
+              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+              "properties": {
+                "container_path": {
+                  "type": "string",
+                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+                },
+                "size_MiB": {
+                  "type": "number",
+                  "description": "The size of the persistent volume in MiBs."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                },
+                "constraints": {
+                  "type": "array",
+                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "profileName": {
+                "type": "string",
+                "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+              }
+            },
+            "host_volume": {
+              "type": "object",
+              "description": "A host volume is a directory on the local agent mapped to one in a container.",
+              "properties": {
+                "host_path": {
+                  "type": "string",
+                  "description": "Path on the host filesystem to the location of the data you mounted",
+                  "default": "/var/lib/config"
+                },
+                "container_path": {
+                  "type": "string",
+                  "description": "Path, in the container, where you wish to have the data mounted",
+                  "default": "/config"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "TCP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "description": "Specifies the port index in the ports array that is used for health requests.",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "brat parameters",
+      "properties": {
+        "username": {
+          "description": "brat username",
+          "type": "string",
+          "default": "brat"
+        }, 
+        "secret_password": {
+          "description": "brat user password",
+          "type": "string",
+          "default": "brat"
+        },
+        "email": {
+          "description": "brat user email",
+          "type": "string",
+          "default": "brat@example.com"
+        },
+        "HAPROXY_0_VHOST": {
+          "type": "string",
+          "description": "Exposed endpoint to the application",
+          "default": ""
+        },
+        "HAPROXY_0_PATH": {
+          "type": "string",
+          "default": "/brat"
+        }
+      },
+      "required": [
+        "username",
+        "password",
+        "HAPROXY_0_VHOST",
+        "HAPROXY_0_PATH"
+      ]
+    }
+  }
+}

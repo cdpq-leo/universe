@@ -1,0 +1,81 @@
+{
+   "id": "{{service.name}}",
+   "cpus": {{service.cpus}},
+   "mem": {{service.mem}},
+   "disk":{{service.disk}},
+   "instances": {{service.instances}},
+   "fetch": 
+   [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+   ],
+   "container":{
+      "type": "DOCKER",
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":true,
+         "privileged": false
+      },
+      "volumes": [],
+      "portMappings":[
+         {
+            {{#networking.service_endpoints.load_balance_port}}   
+            "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+            }, 
+            {{/networking.service_endpoints.load_balance_port}}
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}",      
+            "name": "{{networking.service_endpoints.name}}" 
+         }
+      ] 
+   },
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
+   "healthChecks": 
+   [
+    {
+      "gracePeriodSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.IP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.delay_seconds}},
+      "portIndex": 0,
+      "protocol": "{{health_checks.IP_protocol.protocol}}",
+      "ipProtocol": "{{health_checks.IP_protocol.IP_version}}"
+    }
+   ],
+   "labels":{},
+   "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+      {{/placement.region}}
+      "MYSQL_DATABASE": "{{environment.MYSQL_DATABASE}}",
+      "MYSQL_PASSWORD": {
+         "secret": "mysqlpassword"
+      },
+      "MYSQL_USERNAME": "{{environment.MYSQL_USERNAME}}",
+      "MYSQL_HOST": "{{environment.MYSQL_HOST}}",
+      "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
+      "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
+      "SIMILARITY_ENDPOINT": "{{environment.SIMILARITY_ENDPOINT}}",
+      "LOG_REQUEST_BODIES": "{{environment.LOG_REQUEST_BODIES}}"
+  },
+  "secrets": {
+    "mysqlpassword": {
+      "source": "{{environment.MYSQL_PASSWORD}}"
+    }
+  },
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "packagingVersion": "4.0",
+  "name": "cdpq-partners-article-viewer-svc",
+  "version": "1.0.0-1.0.0",
+  "maintainer": "leo@cdpq.com",
+  "description": "partners-article-viewer-svc",
+  "minDcosReleaseVersion": "1.9.0",
+  "tags": ["partners-article-viewer-svc"],
+  "preInstallNotes": "This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies. Preview packages should never be used in production!",
+  "postInstallNotes": "partners-article-viewer-svc installed!",
+  "postUninstallNotes": "partners-article-viewer-svc uninstalled!"
+}

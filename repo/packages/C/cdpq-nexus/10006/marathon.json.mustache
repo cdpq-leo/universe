@@ -1,0 +1,78 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "acceptedResourceRoles": [ "{{service.resource_role}}" ],
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": {{networking.container_port}},
+          "hostPort": {{networking.host_port}}
+        }
+      ]
+    },
+    "volumes": [
+      {{#volumes.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.local_persistant_volume.type}},
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            "profileName": {{volumes.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+      {{^volumes.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.host_volume.container_path}}",
+        "hostPath": "{{volumes.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+    ]
+  },
+  "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "curl --user admin:admin123 --fail --request GET ${HOST}:${PORT0}/service/metrics/ping"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 5
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 0
+  },
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    {{#networking.proxy_vhost}}
+    "HAPROXY_0_GROUP": "external",
+    "HAPROXY_0_STICKY": "true",
+    "HAPROXY_0_VHOST": "{{networking.proxy_vhost}}",
+    {{/networking.proxy_vhost}}
+    "MARATHON_SINGLE_INSTANCE_APP": "true"
+  },
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+  }
+  {{#networking.pinned_hostname}},
+  "constraints": [
+    [
+      "hostname", "CLUSTER", "{{networking.pinned_hostname}}"
+    ]
+  ]
+  {{/networking.pinned_hostname}}
+}

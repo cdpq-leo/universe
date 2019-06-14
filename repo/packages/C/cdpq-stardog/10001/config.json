@@ -1,0 +1,179 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS Stardog service specifications",
+      "properties": {
+        "name": {
+          "description": "Name of Stardog instace as seen in DCOS.",
+          "type": "string",
+          "default": "stardog"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 8
+        },
+        "disk": {
+          "description": "Disk",
+          "type": "number",
+          "default": 0
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 65536
+        },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\",\"UNIQUE\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "VIP_0": {
+          "description": "VIP_0 hostname",
+          "type": "string",
+          "default": "data-servicestardog"
+        },
+        "container_port": {
+          "description": "Container port number",
+          "type": "number",
+          "default": 5821
+        },
+        "external_access": {
+          "type": "object",
+          "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
+          "properties": {
+            "enabled": {
+              "description": "Enable or disable external access through a public node via Marathon-LB.",
+              "type": "boolean",
+              "default": false
+            },
+            "external_public_agent_hostname": {
+              "description": "For external access, Virtual Host URL to be used in the external load balancer.",
+              "type": "string",
+              "default": ""
+            }
+          },
+          "required": [
+            "enabled"
+          ]
+        }
+      }
+    },
+    "volumes": {
+      "description": "Storage properties for the your service on DC/OS.",
+      "type": "object",
+      "properties": {
+        "persist": {
+          "description": "Whether to use volumes to persist your service data. If false, all your service data and state is ephemeral and will not be shared between service instances. By default, this is false.",
+          "type": "boolean",
+          "default": false
+        },
+        "local_backup_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+          "type": "object",
+          "properties": {
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": ""
+            },
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/var/opt/backups"
+            }
+          }
+        },
+        "local_data_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+          "type": "object",
+          "properties": {
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/var/lib/mesos/Stardog"
+            },
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/stardog"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Configure any environment values to be attached to each instance that is launched.",
+      "properties": {
+        "DEPLOYMENT_TYPE": {
+          "description": "Development type variable",
+          "type": "string",
+          "default": "sandbox"
+        },
+        "DEPLOYMENT_NODE_TYPE": {
+          "description": "Development node type variable",
+          "type": "string",
+          "default": "sandbox"
+        }
+      }
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

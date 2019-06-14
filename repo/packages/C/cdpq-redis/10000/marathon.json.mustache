@@ -1,0 +1,62 @@
+{
+ "id": "{{service.name}}",
+ "instances": 1,
+ "cpus": {{service.cpus}},
+ "mem": {{service.mem}},
+ "disk": {{service.disk}},
+ "container": {
+   "type": "DOCKER",
+   "volumes": [
+      {{#volumes.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.local_persistant_volume.type}},
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            "profileName": {{volumes.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+      {{^volumes.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.host_volume.container_path}}",
+        "hostPath": "{{volumes.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+    ],
+   "docker": {
+     "image": "{{resource.assets.container.docker.image}}",
+     "network": "BRIDGE",
+     "portMappings": [
+       {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"
+       }
+     ]
+   }
+ },
+ "healthChecks": [
+   {
+   "protocol": "TCP",
+   "gracePeriodSeconds": 60,
+   "intervalSeconds": 5,
+   "portIndex": 0,
+   "timeoutSeconds": 5,
+   "maxConsecutiveFailures": 3
+   }
+ ],
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+  }
+}

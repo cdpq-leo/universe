@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service specifications",
+      "properties": {
+        "name": {
+          "description": "Name of your instances as seen in DC/OS.",
+          "type": "string",
+          "default": "janusgraph"
+        },
+        "cpus": {
+          "description": "Number of logical cores to allocate to each service instance.",
+          "type": "number",
+          "default": 0.5
+        },
+        "mem": {
+          "description": "Memory in Mb to allocate to each service instance.",
+          "type": "number",
+          "default": 512
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the janusgraph instance.",
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "container_port": {
+          "description": "Container port number",
+          "type": "number",
+          "default": 8182
+        },
+        "name": {
+          "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+          "type": "string",
+          "default": "name"
+        },
+        "host_port": {
+          "description": "Host port number",
+          "type": "number",
+          "default": 0
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+          "default": "tcp"
+        },
+        "load_balance_port": {
+          "type": "number",
+          "description": "This port will be used to load balance this service address internally",
+          "default": 8182
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "List of environment variables",
+      "properties": {
+        "cassandra_hostnames": {
+          "description": "Comma seperated values of the hostnames of the cassandra nodes to connect to.",
+          "type": "string",
+          "default": ""
+        },
+        "elastic_hostname": {
+          "description": "Elastic hostname.",
+          "type": "string"
+        },
+        "keyspace": {
+          "description": "Keyspace.",
+          "type": "string",
+          "default": "janusgraph"
+        },
+        "read_only": {
+          "description": "Read only?",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Brat/Images/icon-service-brat-small.png",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Brat/Images/icon-service-brat-medium.png",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Brat/Images/icon-service-brat-large.png"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cassj/brat"
+      }
+    }
+  }
+}
