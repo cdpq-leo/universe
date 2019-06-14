@@ -1,0 +1,13 @@
+{
+  "packagingVersion": "4.0",
+  "name": "cdpq-stardog",
+  "version": "1.0.1-7.0.0",
+  "maintainer": "leo@cdpq.com",
+  "website": "https://www.stardog.com/",
+  "description": "Stardog's Knowledge Graph platform enables fast and flexible data unification so you can query, analyze, and uncover hidden insights.",
+  "tags": [
+    "graph"
+  ],
+  "postInstallNotes": "template installed!",
+  "postUninstallNotes": "template uninstalled!"
+}

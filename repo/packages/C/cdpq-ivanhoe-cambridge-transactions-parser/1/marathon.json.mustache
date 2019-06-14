@@ -1,0 +1,38 @@
+{
+   "id": "{{service.name}}",
+   "cpus": {{service.cpus}},
+   "mem": {{service.mem}},
+   "disk":{{service.disk}},
+   "instances": {{service.instances}},
+   "container":{
+      "type": "DOCKER",
+      "docker":{
+         "image":"{{resource.assets.container.docker.image}}",
+         "forcePullImage":false,
+         "privileged": false
+      },
+      "portMappings":[
+         {
+            {{#networking.service_endpoints.load_balance_port}}   
+            "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+            }, 
+            {{/networking.service_endpoints.load_balance_port}}
+            "containerPort": {{networking.service_endpoints.container_port}},
+            "hostPort": {{networking.service_endpoints.host_port}},
+            "protocol": "{{networking.service_endpoints.protocol}}"     
+         }
+      ] 
+   },
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
+   "portDefinitions": [],
+   "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}"
+      {{/placement.region}}
+  }
+}

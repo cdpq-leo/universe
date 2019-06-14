@@ -1,0 +1,58 @@
+{
+  "id":"{{service.name}}",
+  "cpus":{{service.cpus}},
+  "mem":{{service.mem}},
+  "instances":{{service.instances}},
+  "disk": {{service.disk}},
+  "container":{
+    "type":"DOCKER",
+    "volumes":[
+      {
+        "containerPath":"data",
+        "mode":"RW",
+        "persistent":{
+          "type":"root",
+          "size":{{service.disk}}
+        }
+      },
+      {
+        "containerPath":"/data",
+        "hostPath":"data",
+        "mode":"RW"
+      }
+    ],
+    "docker":{
+      "image":"{{resource.assets.container.docker.image}}",
+      "network":"USER"
+    }
+  },
+  "env":{
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "NEO4J_AUTH":"{{environment.auth_username}}",
+    "NEO4J_AUTH_PASSWORD": {
+      "secret": "neo4jauthpassword"
+    }
+    "NEO4J_dbms_mode":"READ_REPLICA"
+  },
+  "secrets": {
+    "neo4jauthpassword": {
+      "source": "{{environment.auth_password}}"
+    }
+  },
+  "ipAddress":{
+    "networkName":"{{networking.network_name}}"
+  },
+  "healthChecks":[
+    {
+      "protocol":"HTTP",
+      "path":"/",
+      "port":7474,
+      "timeoutSeconds":10,
+      "gracePeriodSeconds":240,
+      "intervalSeconds":10,
+      "maxConsecutiveFailures":10
+    }
+  ]
+}

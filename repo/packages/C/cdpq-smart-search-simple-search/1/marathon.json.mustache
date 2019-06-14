@@ -1,0 +1,68 @@
+{
+   "id": "{{service.name}}",
+   "cpus": {{service.cpus}},
+   "mem": {{service.mem}},
+   "disk":{{service.disk}},
+   "instances": {{service.instances}},
+   {{#service.cmd}}
+   "cmd": "{{service.cmd}}",
+   {{/service.cmd}}
+   "container":{
+      "type": "DOCKER",
+      "docker": {
+         "forcePullImage": true,
+         "image": "{{resource.assets.container.docker.image}}",
+         "parameters": [],
+         "privileged": false
+      },
+      "volumes": [],
+      "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+         "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+         }, 
+         {{/networking.service_endpoints.load_balance_port}}
+         "containerPort": {{networking.service_endpoints.container_port}},
+         "hostPort": {{networking.service_endpoints.host_port}},
+         "protocol": "{{networking.service_endpoints.protocol}}",      
+         "servicePort": {{networking.service_endpoints.service_port}}
+      }
+    ]
+   },
+   "networks":[
+      {
+         "mode":"container/bridge"
+      }
+   ],
+   "healthChecks": 
+   [
+    {
+      "gracePeriodSeconds": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.delay}},
+      "portIndex": 0,
+      "path": "{{health_checks.MESOS_HTTP.path}}",
+      "protocol": "MESOS_HTTP"
+    }
+   ],
+   "env": {
+      "SMART_SEARCH_URL": "{{environment.SMART_SEARCH_URL}}"
+   },
+   "labels" : {
+     "DCOS_SERVICE_PORT_INDEX": "0",
+     "DCOS_PACKAGE_VERSION": "{{package.version}}",
+     "DCOS_PACKAGE_NAME": "{{package.name}}"
+   },
+  "fetch": 
+   [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+   ]
+}

@@ -1,0 +1,102 @@
+{
+  "id": "/{{service.name}}",
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "mem": {{service.mem}},
+  "cpus": {{service.cpus}},
+  "disk": {{service.disk}},
+  "instances": {{service.instances}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "volumes": [
+      {{#volumes.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.local_persistant_volume.type}},
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            "profileName": {{volumes.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+      {{^volumes.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.host_volume.container_path}}",
+        "hostPath": "{{volumes.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+    ],
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}",      
+        "name": "{{networking.service_endpoints.name}}"            
+      }
+    ]
+  },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "VIEWER_URL": "{{environment.VIEWER_URL}}",
+    "MARKLOGIC_USERNAME": "{{environment.MARKLOGIC_USERNAME}}",
+    "MARKLOGIC_PASSWORD": {
+      "secret": "marklogicpassword"
+    },
+    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
+    "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
+    "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}",
+    "KAFKA_CONSUMER_TOPIC": "{{environment.KAFKA_CONSUMER_TOPIC}}"
+  },
+  "secrets": {
+    "marklogicpassword": {
+      "source": "{{environment.MARKLOGIC_PASSWORD}}"
+    }
+  },
+  "executor": "",
+  "labels": {},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  },
+  "version": "2019-05-23T11:07:26.750Z",
+  "versionInfo": {
+    "lastScalingAt": "2019-05-23T11:07:26.750Z",
+    "lastConfigChangeAt": "2019-05-23T11:07:26.750Z"
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0,
+    "expungeAfterSeconds": 0
+  },
+  "fetch": 
+  [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "/{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "backoffFactor": {{service.back_off_factor}},
+  "backoffSeconds": {{service.back_off_seconds}},
+  "cmd": "{{service.cmd}}",
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "portMappings": [
+      {
+        "containerPort": {{networking.service_endpoints.service_endpoint_01.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_01.host_port}},
+        {{#networking.service_endpoints.service_endpoint_01.load_balance_port}}
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_01.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_01.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_01.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_01.service_port}}
+      },
+      {
+        "containerPort": {{networking.service_endpoints.service_endpoint_02.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_02.host_port}},
+        {{#networking.service_endpoints.service_endpoint_02.load_balance_port}}
+        "labels": {
+          "VIP_1": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_02.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_02.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_02.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_02.service_port}}
+      },
+      {
+        "containerPort": {{networking.service_endpoints.service_endpoint_03.container_port}},
+        "hostPort": {{networking.service_endpoints.service_endpoint_03.host_port}},
+        {{#networking.service_endpoints.service_endpoint_03.load_balance_port}}
+        "labels": {
+          "VIP_2": "/{{service.name}}:{{networking.service_endpoints.service_endpoint_03.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.service_endpoint_03.load_balance_port}}
+        "protocol": {{networking.service_endpoints.service_endpoint_03.protocol}},
+        "servicePort": {{networking.service_endpoints.service_endpoint_03.service_port}}
+      }
+    ]
+  },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "ALLUXIO_UNDERFS_ADDRESS": "{{environment.underfs_address}}",
+    "ALLUXIO_MASTER_HOSTNAME": "{{service.name}}.marathon.mesos",
+    "ALLUXIO_UNDERFS_HDFS_CONFIGURATION": "{{environment.underfs_hdfs_configuration}}",
+    "ALLUXIO_LICENSE_BASE64": "{{alluxio.license}}",
+    "ALLUXIO_SECURITY_AUTHENTICATION_TYPE": "{{environment.auth_type}}",
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS": "*",
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "*"
+  },
+  "executor": "",
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
+    }
+  ],
+  "labels": {
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}"
+  },
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}

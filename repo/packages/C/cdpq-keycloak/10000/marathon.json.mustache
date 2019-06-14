@@ -1,0 +1,66 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "instances": {{service.instances}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": false,
+      "image": "{{resource.assets.container.docker.image}}",
+      "parameters": [],
+      "privileged": false
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"           
+      }
+    ]
+  },
+  "env": {
+      {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+      {{/placement.region}}
+      "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
+      "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
+      "KEYCLOAK_PASSWORD": {
+         "secret": "keycloakpassword"
+      },
+      "PROXY_ADDRESS_FORWARDING": "true"
+  },
+  "secrets": {
+    "keycloakpassword": {
+      "source": "{{environment.KEYCLOAK_PASSWORD}}"
+    }
+  },
+  "labels": {
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.HA_PROXY.VHOST}}",
+    "HAPROXY_0_PATH": "{{networking.HA_PROXY.path}}",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "healthChecks": [
+    {
+      "portIndex": {{health_checks.port_index}},
+      "protocol": "{{health_checks.protocol}}",
+      "path": "{{health_checks.path}}"
+    }
+  ]
+}

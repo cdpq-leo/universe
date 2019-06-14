@@ -1,0 +1,98 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "container": {
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}   
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        }, 
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"      
+      }
+    ],
+    "type": "DOCKER",
+    "volumes": [
+      {{#volumes.volume.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": {{volumes.volume.local_persistant_volume.type}},
+            "size": {{volumes.volume.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.volume.local_persistant_volume.constraints}},
+            "profileName": {{volumes.volume.local_persistant_volume.profileName}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.volume.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
+      {{^volumes.volume.local_persistant_volume.container_path}}
+      {
+        "containerPath": "{{volumes.volume.host_volume.container_path}}",
+        "hostPath": "{{volumes.volume.host_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.volume.local_persistant_volume.container_path}}
+        
+    ],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    }
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}",
+    "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
+    "CUSTOM_SEARCH_ID": "{{environment.CUSTOM_SEARCH_ID}}",
+    "SEARCH_LIMIT": "{{environment.SEARCH_LIMIT}}",
+    "SEARCH_LANGUAGE": "{{environment.SEARCH_LANGUAGE}}",
+    "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
+    "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
+    "SCOPES": "{{environment.SCOPES}}",
+    "GOOGLE_APPLICATION_CREDENTIALS": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}"
+  },
+  "fetch": [
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    },
+    {
+      "uri": "{{fetch.google_service_account_credentials_URI.uri}}",
+      "extract": {{fetch.google_service_account_credentials_URI.extract}},
+      "executable": {{fetch.google_service_account_credentials_URI.executable}},
+      "cache": {{fetch.google_service_account_credentials_URI.cache}}
+    }
+  ],
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      "path": "{{environment.SERVICE_PREFIX}}{{health_checks.HTTP_protocol.path}}",
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
+    }
+  ]
+}

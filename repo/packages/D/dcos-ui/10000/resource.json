@@ -1,0 +1,7 @@
+{
+  "assets": {
+    "uris": {
+      "dcos-ui-bundle": "https://leo-temp-folder.s3.amazonaws.com/release.tar.gz"
+    }
+  }
+}
