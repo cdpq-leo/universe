@@ -19,7 +19,7 @@
                 "mem": {
                     "description": "Memory in Mb to allocate to each service instance.",
                     "type": "number",
-                    "default": 512
+                    "default": 1024
                 },
                 "instances": {
                     "description": "Number of instances of your service.",
