@@ -1,0 +1,163 @@
+{
+    "type": "object",
+    "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
+    "properties": {
+        "service": {
+            "type": "object",
+            "description": "DC/OS service configuration properties",
+            "properties": {
+                "name": {
+                    "description": "Name of this service instance as shown in DC/OS",
+                    "type": "string",
+                    "default": "keycloak"
+                },
+                "cpus": {
+                    "description": "Number of logical cores to allocate to each service instance.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "mem": {
+                    "description": "Memory in Mb to allocate to each service instance.",
+                    "type": "number",
+                    "default": 1024
+                },
+                "instances": {
+                    "description": "Number of instances of your service.",
+                    "type": "number",
+                    "default": 1.0
+                },
+                "disk": {
+                    "description": "Number of disks to allocate to each service instance.",
+                    "type": "number",
+                    "default": 0
+                }
+            },
+            "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+            ]
+        },
+        "placement": {
+            "type": "object",
+            "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+            "properties": {
+                "constraints": {
+                    "type": "string",
+                    "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+                    "default": "[]",
+                    "media": {
+                        "type": "application/x-zone-constraints+json"
+                    }
+                },
+                "region": {
+                    "type": "string",
+                    "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+                    "default": "",
+                    "media": {
+                        "type": "application/x-region+string"
+                    }
+                }
+            }
+        },
+        "networking": {
+            "type": "object",
+            "description": "Configure the networking for your service.",
+            "properties": {
+                "service_endpoints": {
+                    "type": "object",
+                    "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+                    "properties": {
+                        "container_port": {
+                            "description": "Container port number",
+                            "type": "number",
+                            "default": 8080
+                        },
+                        "host_port": {
+                            "description": "Host port number",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "default": "tcp"
+                        },
+                        "load_balance_port": {
+                            "type": "number",
+                            "description": "This port will be used to load balance this service address internally"
+                        }
+                    }
+                },
+                "Marathon_Lb_Proxy": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "Vhost": {
+                            "type": "string"
+                        },
+                        "path": {
+                            "type": "string",
+                            "default": "/keycloak"
+                        }
+                    }
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "description": "Additional configuration options for environment variables.",
+            "properties": {
+                "KEYCLOAK_HOSTNAME": {
+                    "description": "Hostname of the service",
+                    "type": "string",
+                    "default": ""
+                },
+                "KEYCLOAK_USER": {
+                    "description": "Name of the DC/OS Secret storing the username of the repository",
+                    "type": "string",
+                    "default": "keycloak-user"
+                },
+                "KEYCLOAK_PASSWORD": {
+                    "description": "Name of the DC/OS Secret storing the password (or API token) of the repository",
+                    "type": "string",
+                    "default": "secret_keycloak_password"
+                },
+                "DB_VENDOR": {
+                    "description": "Database vendor",
+                    "type": "string",
+                    "default": "mysql"
+                },
+                "DB_ADDR": {
+                    "description": "Database address",
+                    "type": "string",
+                    "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
+                },
+                "DB_PORT": {
+                    "description": "Database port",
+                    "type": "string",
+                    "default": "3306"
+                },
+                "DB_NAME": {
+                    "description": "Database name",
+                    "type": "string",
+                    "default": "keycloak"
+                },
+                "DB_USER": {
+                    "description": "Name of the DC/OS Secret storing the username of the repository",
+                    "type": "string",
+                    "default": "db-user"
+                },
+                "DB_PASSWORD": {
+                    "description": "Name of the DC/OS Secret storing the password (or API token) of the repository",
+                    "type": "string",
+                    "default": "db-password"
+                }
+            }
+        }
+    }
+}
