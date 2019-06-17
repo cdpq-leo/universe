@@ -35,6 +35,7 @@
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
+<<<<<<< HEAD
       "KEYCLOAK_USER": {
          "secret": "keycloakuser"
       },
@@ -65,24 +66,45 @@
     },
     "dbpassword": {
       "source": "{{environment.DB_PASSWORD}}"
+=======
+      "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
+      "KEYCLOAK_PASSWORD": {
+         "secret": "keycloakpassword"
+      },
+      "PROXY_ADDRESS_FORWARDING": "true"
+  },
+  "secrets": {
+    "keycloakpassword": {
+      "source": "{{environment.KEYCLOAK_PASSWORD}}"
+>>>>>>> 3219c31c8cfc0321a41bb89fcbc43a32d07f95e8
     }
   },
   "labels": {
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+<<<<<<< HEAD
     {{#networking.Marathon_Lb_Proxy.enabled}}
     "HAPROXY_0_VHOST": "{{networking.Marathon_Lb_Proxy.Vhost}}",
     "HAPROXY_0_PATH": "{{networking.Marathon_Lb_Proxy.path}}",
      {{/networking.Marathon_Lb_Proxy.enabled}}
+=======
+    "HAPROXY_0_VHOST": "{{networking.HA_PROXY.VHOST}}",
+    "HAPROXY_0_PATH": "{{networking.HA_PROXY.path}}",
+>>>>>>> 3219c31c8cfc0321a41bb89fcbc43a32d07f95e8
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
     {
+<<<<<<< HEAD
       "portIndex": 0,
       "protocol": "MESOS_HTTP",
+=======
+      "portIndex": {{health_checks.port_index}},
+      "protocol": "{{health_checks.protocol}}",
+>>>>>>> 3219c31c8cfc0321a41bb89fcbc43a32d07f95e8
       "path": "{{health_checks.path}}"
     }
   ]

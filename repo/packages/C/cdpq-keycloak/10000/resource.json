@@ -1,0 +1,14 @@
+{
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cdpqleo/dcos-keycloak:1.0.3-6.0.1"
+      }
+    }
+  },
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-small.png",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-medium.png",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Keycloak/Images/keycloak-icon-large.png"
+   }
+}

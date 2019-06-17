@@ -1,0 +1,91 @@
+{
+  "id": "{{service.name}}",
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  "container": {
+    "type": "DOCKER",
+    "portMappings": [
+      {
+        "containerPort": 4567,
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/{{service.name}}:4567"
+        },
+        "protocol": "tcp"
+      }, 
+      {
+        "containerPort": 48555,
+        "hostPort": 0,
+        "labels": {
+          "VIP_1": "/{{service.name}}:48555"
+        },
+        "protocol": "tcp"
+      }
+    ],
+    "volumes": [
+      {{#volumes.persist}}
+      {{#volumes.external_volume.enable}}
+      {
+        "external": {
+            "name": "{{volumes.external_volume.external.name}}",
+            "provider": "{{volumes.external_volume.external.provider}}",
+            "options": {
+               "dvdi/driver": "{{volumes.external_volume.external.options.dvdi_driver}}"
+            }
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.external_volume.container_path}}"
+      }
+      {{/volumes.external_volume.enable}}
+      {{^volumes.external_volume.enable}}
+      {
+        "containerPath": "{{volumes.local_volume.container_path}}",
+        "hostPath": "{{volumes.local_volume.host_path}}",
+        "mode": "RW"
+      }
+      {{/volumes.external_volume.enable}}
+      {{/volumes.persist}}
+    ],
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    }
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "healthChecks":[
+    {
+      "protocol":"HTTP",
+      "path":"{{health_checks.HTTP_protocol.path}}",
+      "port":{{health_checks.HTTP_protocol.port}},
+      "timeoutSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "gracePeriodSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "maxConsecutiveFailures":{{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
+    }
+  ],
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "DCOS_SERVICE_SCHEME": "http"
+  },
+  "env": {
+    "GREMLIN_GRAPH_READER": "{{environment.gremlin_graph_reader}}",
+    "START_LOCAL_STORAGE": "{{environment.start_local_storage}}",
+    "STORAGE_HOSTNAME": "{{environment.storage_hostname}}",
+    "KEYSPACE": "{{environment.keyspace}}",
+    "START_LOCAL_QUEUE": "{{environment.start_local_queue}}",
+    "QUEUE_HOST": "{{environment.queue_host}}",
+    "INDEX_SEARCH_BACKEND": "{{environment.index_search_backend}}",
+    "INDEX_SEARCH_HOSTNAME": "{{environment.index_search_hostname}}",
+    "SPARK_MASTER": "{{environment.spark_master}}",
+    "BACKGROUND_TASKS_THREADS" : "{{environment.background_tasks_threads}}",
+    "LOG_LEVEL": "{{environment.log_level}}"
+  }
+}

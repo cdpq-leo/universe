@@ -1,0 +1,126 @@
+{
+    "properties": {
+        "service": {
+            "type": "object",
+            "description": "DC/OS service configuration properties",
+            "properties": {
+                "name": {
+                    "description": "Name of this service instance.",
+                    "type": "string",
+                    "default": "grafana"
+                },
+                "cpus": {
+                    "description": "CPU shares to allocate to each service instance.",
+                    "type": "number",
+                    "default": 0.3,
+                    "minimum": 0.3
+                },
+                "mem": {
+                    "description": "Memory to allocate to each service instance.",
+                    "type": "number",
+                    "default": 512.0,
+                    "minimum": 512.0
+                },
+                "instances": {
+                    "description": "Number of instances of your service.",
+                    "type": "number",
+                    "default": 1.0
+                }
+            },
+            "required": [
+                "cpus",
+                "mem"
+            ]
+        },
+        "placement": {
+            "type": "object",
+            "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+            "properties": {
+                "constraints": {
+                    "type": "string",
+                    "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+                    "default": "[]",
+                    "media": {
+                        "type": "application/x-zone-constraints+json"
+                    }
+                },
+                "region": {
+                    "type": "string",
+                    "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+                    "default": "",
+                    "media": {
+                        "type": "application/x-region+string"
+                    }
+                }
+            }
+        },
+        "networking": {
+            "type": "object",
+            "description": "Grafana networking configuration properties",
+            "properties": {
+                "service_endpoints": {
+                    "type": "object",
+                    "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+                    "properties": {
+                        "container_port": {
+                            "description": "Container port number",
+                            "type": "number",
+                            "default": 3000
+                        },
+                        "service_endpoint_name": {
+                            "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+                            "type": "string",
+                            "default": "name"
+                        },
+                        "host_port": {
+                            "description": "Host port number",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                            "default": "tcp"
+                        },
+                        "load_balance_port": {
+                            "type": "number",
+                            "description": "This port will be used to load balance this service address internally"
+                        }
+                    }
+                },
+                "external_access": {
+                    "type": "object",
+                    "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
+                    "properties": {
+                        "enable": {
+                            "description": "Enable or disable creating a VIP for external access through a public node running Marathon-LB.",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "virtual_host": {
+                            "description": "For external access, Virtual Host URL to be used in the external load balancer.",
+                            "type": "string",
+                            "default": "grafana.example.org"
+                        }
+                    }
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "description": "grafana service configuration properties",
+            "properties": {
+                "secret_admin_password": {
+                    "description": "Name of admin password in secret store.",
+                    "type": "string",
+                    "default": "admin"
+                },
+                "plugins": {
+                    "description": "Comma separated Grafana plugins which will be installed via `grafana-cli plugins install grafana-example-app,grafana-clock-panel`. See https://grafana.com/plugins",
+                    "type": "string",
+                    "default": ""
+                }
+            }
+        }
+    }
+}

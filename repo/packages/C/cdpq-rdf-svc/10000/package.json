@@ -1,0 +1,12 @@
+{
+    "packagingVersion": "4.0",
+    "name": "cdpq-rdf-svc",
+    "maintainer": "leo@cdpq.com",
+    "version": "1.0.0-1.0.1",
+    "description": "Service to query RDF database.",
+    "minDcosReleaseVersion": "1.9.0",
+    "tags": ["rdf-svc"],
+    "preInstallNotes": "This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies. Preview packages should never be used in production!",
+    "postInstallNotes": "rdf-svc installed!",
+    "postUninstallNotes": "rdf-svc uninstalled!"
+}

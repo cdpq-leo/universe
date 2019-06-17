@@ -14,7 +14,7 @@ SCRIPTS_DIR = os.path.dirname(os.path.realpath(__file__))
 UNIVERSE_DIR = os.path.join(SCRIPTS_DIR, "..")
 PKG_DIR = os.path.join(UNIVERSE_DIR, "repo/packages")
 SCHEMA_DIR = os.path.join(UNIVERSE_DIR, "repo/meta/schema")
-LETTER_PATTERN = re.compile("^[A-Z]$")
+LETTER_PATTERN = re.compile("^[A-Z]+$")
 PACKAGE_FOLDER_PATTERN = re.compile("^[a-z][a-z0-9-]*[a-z0-9]$")
 ESCAPED_UNICODE_LITERAL = re.compile("\\\[u][a-fA-F0-9]{4}")
 

@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service configuration properties",
+      "properties": {
+        "name": {
+          "description": "Name of this service instance",
+          "type": "string",
+          "default": "jupyterhub"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to each service instance.",
+          "type": "number",
+          "default": 0.5,
+          "minimum": 0.1
+        },
+        "mem": {
+          "description": "Memory to allocate to each service instance.",
+          "type": "number",
+          "default": 512.0,
+          "minimum": 256.0
+        }
+      },
+      "required": [
+        "name",
+        "cpus",
+        "mem"
+      ]
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "notebook": {
+      "type": "object",
+      "description": "JupyterHub service configuration properties.",
+      "properties": {
+        "cpus": {
+          "description": "CPU to allocate to each notebook instance.",
+          "type": "number",
+          "default": 2.0,
+          "minimum": 1.0
+        },
+        "mem": {
+          "description": "Memory to allocate to each notebook instance.",
+          "type": "string",
+          "default": "2G"
+        },
+        "docker_image": {
+          "description": "The docker image to be used for the users' notebook.",
+          "type": "string",
+          "default": "jupyterhub/singleuser"
+        }
+      }
+    },
+    "networking": {
+      "description": "Networking-related configuration properties for JupyterHub on DC/OS.",
+      "type": "object",
+      "properties": {
+        "virtual_host": {
+          "description": "The virtual host address to configure for integration with Marathon-lb.",
+          "type": "string"
+        },
+        "ssl_cert": {
+          "description": "The path to the SSL certificate for the domain.",
+          "type": "string"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "admin_users": {
+          "description": "List of admin users, separated by a comma.",
+          "type": "string"
+        },
+        "whitelisted_users": {
+          "description": "List of whitelisted users, seperated by a comma.",
+          "type": "string",
+          "default": ""
+        },
+        "api_tokens": {
+          "description": "List of API tokens, seperated by a comma e.g. token1:user1,token2:user2",
+          "type": "string",
+          "default": ""
+        },
+        "env_vars": {
+          "description": "The list of environment variables for JupyterHub as a.",
+          "type": "array",
+          "additionalProperties": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "var_name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "var_name",
+              "value"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

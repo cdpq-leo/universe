@@ -1,0 +1,59 @@
+{
+  "id":"{{service.name}}",
+  "cpus":{{service.cpus}},
+  "mem":{{service.mem}},
+  "instances":{{service.instances}},
+  "disk": {{service.disk}},
+  "container":{
+    "type":"DOCKER",
+    "volumes":[
+      {
+        "containerPath":"{{volumes.local_persistant_volume.container_path}}",
+        "mode":"RW",
+        "persistent":{
+          "type":"root",
+          "size":{{volumes.local_persistant_volume.size_MiB}}
+        }
+      },
+      {
+        "containerPath":"{{volumes.host_volume.host_path}}",
+        "hostPath":"{{volumes.host_volume.container_path}}",
+        "mode":"{{volumes.host_volume.mode}}"
+      }
+    ],
+    "docker":{
+      "image":"{{resource.assets.container.docker.image}}",
+      "network":"USER"
+    }
+  },
+  "env":{
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "NEO4J_AUTH":"{{environment.auth_username}}",
+    "NEO4J_AUTH_PASSWORD": {
+      "secret": "neo4jauthpassword"
+    }
+    "NEO4J_dbms_mode":"CORE",
+    "NEO4J_causalClustering_expectedCoreClusterSize":"{{environment.expected_cluster_size}}"
+  },
+  "secrets": {
+    "neo4jauthpassword": {
+      "source": "{{environment.auth_password}}"
+    }
+  },
+  "ipAddress":{
+    "networkName":"{{environment.network_name}}"
+  },
+  "healthChecks":[
+    {
+      "protocol":"HTTP",
+      "path":"{{health_checks.HTTP_protocol.path}}",
+      "port":{{health_checks.HTTP_protocol.port}},
+      "timeoutSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "gracePeriodSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds":{{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "maxConsecutiveFailures":{{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
+    }
+  ]
+}

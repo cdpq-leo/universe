@@ -1,0 +1,14 @@
+{
+  "images": {
+    "icon-small": "https://downloads.mesosphere.com/assets/universe/000/neo4j-icon-small.png",
+    "icon-medium": "https://downloads.mesosphere.com/assets/universe/000/neo4j-icon-medium.png",
+    "icon-large": "https://downloads.mesosphere.com/assets/universe/000/neo4j-icon-large.png"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cdpqleo/neo4j-dcos:1.0.0-3.3.3"
+      }
+    }
+  }
+}
