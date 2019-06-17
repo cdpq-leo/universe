@@ -59,12 +59,17 @@
     },
     "KAFKA_PRODUCER_TOPIC_SUBMIT": "{{environment.KAFKA_PRODUCER_TOPIC_SUBMIT}}",
     "MARKLOGIC_COL": "{{environment.MARKLOGIC_COL}}",
-    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
+    "MARKLOGIC_URL": {
+      "secret": "marklogicuser"
+    },
     "MARKLOGIC_USR": "{{environment.MARKLOGIC_USR}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}"
   },
   "secrets": {
+    "marklogicuser": {
+      "source": "{{environment.MARKLOGIC_USR}}"
+    },
     "marklogicpassword": {
       "source": "{{environment.MARKLOGIC_PWD}}"
     }

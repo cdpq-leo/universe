@@ -55,7 +55,9 @@
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "VIEWER_URL": "{{environment.VIEWER_URL}}",
-    "MARKLOGIC_USERNAME": "{{environment.MARKLOGIC_USERNAME}}",
+    "MARKLOGIC_USERNAME": {
+      "secret": "marklogicusername"
+    },
     "MARKLOGIC_PASSWORD": {
       "secret": "marklogicpassword"
     },
@@ -65,6 +67,9 @@
     "KAFKA_CONSUMER_TOPIC": "{{environment.KAFKA_CONSUMER_TOPIC}}"
   },
   "secrets": {
+    "marklogicusername": {
+      "source": "{{environment.MARKLOGIC_USERNAME}}"
+    },
     "marklogicpassword": {
       "source": "{{environment.MARKLOGIC_PASSWORD}}"
     }

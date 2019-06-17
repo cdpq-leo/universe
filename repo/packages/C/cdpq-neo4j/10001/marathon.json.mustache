@@ -30,7 +30,9 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "NEO4J_AUTH":"{{environment.auth_username}}",
+    "NEO4J_AUTH":{
+      "secret": "neo4juser"
+    },
     "NEO4J_AUTH_PASSWORD": {
       "secret": "neo4jauthpassword"
     }
@@ -38,6 +40,9 @@
     "NEO4J_causalClustering_expectedCoreClusterSize":"{{environment.expected_cluster_size}}"
   },
   "secrets": {
+     "neo4juser": {
+      "source": "{{environment.auth_username}}"
+    },
     "neo4jauthpassword": {
       "source": "{{environment.auth_password}}"
     }

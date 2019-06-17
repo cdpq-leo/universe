@@ -184,7 +184,9 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "MARKLOGIC_USR": "{{environment.marklogic.username}}",
+    "MARKLOGIC_USR": {
+      "secret": "marklogicuser"
+    },
     "MARKLOGIC_PWD": {
       "secret": "marklogicpassword"
     },
@@ -193,6 +195,9 @@
     "HDFS_CONFIG_URL": "{{environment.hdfs.config_url}}"
   },
   "secrets": {
+    "marklogicuser": {
+      "source": "{{environment.marklogic.username}}"
+    },
     "marklogicpassword": {
       "source": "{{environment.marklogic.password}}"
     }

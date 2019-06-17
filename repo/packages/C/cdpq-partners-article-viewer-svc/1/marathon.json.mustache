@@ -62,7 +62,9 @@
       "MYSQL_PASSWORD": {
          "secret": "mysqlpassword"
       },
-      "MYSQL_USERNAME": "{{environment.MYSQL_USERNAME}}",
+      "MYSQL_USERNAME":{
+         "secret": "mysqluser"
+      },
       "MYSQL_HOST": "{{environment.MYSQL_HOST}}",
       "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
       "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
@@ -70,6 +72,9 @@
       "LOG_REQUEST_BODIES": "{{environment.LOG_REQUEST_BODIES}}"
   },
   "secrets": {
+     "mysqluser": {
+      "source": "{{environment.MYSQL_USERNAME}}"
+    },
     "mysqlpassword": {
       "source": "{{environment.MYSQL_PASSWORD}}"
     }

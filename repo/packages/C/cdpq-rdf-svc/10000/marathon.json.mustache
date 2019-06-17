@@ -41,7 +41,9 @@
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
     "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
-    "USERNAME": "{{environment.USERNAME}}",
+    "USERNAME": {
+      "secret": "secretusername"
+    },
     "PASSWORD": {
       "secret": "secretpassword"
     },
@@ -53,6 +55,9 @@
       "DCOS_SERVICE_SCHEME": "http"
   },
   "secrets": {
+    "secretusername": {
+      "source": "{{environment.USERNAME}}"
+    },
     "secretpassword": {
       "source": "{{environment.PASSWORD}}"
     }
