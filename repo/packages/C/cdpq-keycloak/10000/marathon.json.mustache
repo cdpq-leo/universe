@@ -35,31 +35,54 @@
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
-      "KEYCLOAK_USER": "{{environment.KEYCLOAK_USER}}",
+      "KEYCLOAK_USER": {
+         "secret": "keycloakuser"
+      },
       "KEYCLOAK_PASSWORD": {
          "secret": "keycloakpassword"
+      },
+      "DB_VENDOR": "{{environment.KEYCLOAK_USER}}",
+      "DB_ADDR": "{{environment.KEYCLOAK_USER}}",
+      "DB_PORT": "{{environment.KEYCLOAK_USER}}",
+      "DB_NAME": "{{environment.KEYCLOAK_USER}}",
+      "DB_USER": {
+         "secret": "dbuser"
+      },
+      "DB_PASSWORD": {
+         "secret": "dbpassword"
       },
       "PROXY_ADDRESS_FORWARDING": "true"
   },
   "secrets": {
+    "keycloakuser": {
+      "source": "{{environment.KEYCLOAK_USER}}"
+    },
     "keycloakpassword": {
       "source": "{{environment.KEYCLOAK_PASSWORD}}"
+    },
+    "dbuser": {
+      "source": "{{environment.DB_USER}}"
+    },
+    "dbpassword": {
+      "source": "{{environment.DB_PASSWORD}}"
     }
   },
   "labels": {
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_VHOST": "{{networking.HA_PROXY.VHOST}}",
-    "HAPROXY_0_PATH": "{{networking.HA_PROXY.path}}",
+    {{#networking.Marathon_Lb_Proxy.enabled}}
+    "HAPROXY_0_VHOST": "{{networking.Marathon_Lb_Proxy.Vhost}}",
+    "HAPROXY_0_PATH": "{{networking.Marathon_Lb_Proxy.path}}",
+     {{/networking.Marathon_Lb_Proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
     {
-      "portIndex": {{health_checks.port_index}},
-      "protocol": "{{health_checks.protocol}}",
+      "portIndex": 0,
+      "protocol": "MESOS_HTTP",
       "path": "{{health_checks.path}}"
     }
   ]

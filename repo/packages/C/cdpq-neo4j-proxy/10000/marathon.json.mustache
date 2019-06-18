@@ -22,7 +22,9 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "DCOS_NEO4J_USER":"{{environment.auth_username}}",
+    "DCOS_NEO4J_USER":{
+      "secret": "neo4juser"
+    },
     "DCOS_NEO4J_PASS": {
       "secret": "neo4jpassword"
     }
@@ -33,6 +35,9 @@
      "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "secrets": {
+     "neo4juser": {
+      "source": "{{environment.auth_username}}"
+    },
     "neo4jpassword": {
       "source": "{{environment.auth_password}}"
     }
