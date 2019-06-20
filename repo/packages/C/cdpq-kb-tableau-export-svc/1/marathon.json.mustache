@@ -15,26 +15,36 @@
       "parameters": [],
       "privileged": false
     },
-    "volumes": [
-      {{#volumes.local_persistant_volume.container_path}}
-      {
-         "persistent": {
-            "type": {{volumes.local_persistant_volume.type}},
-            "size": {{volumes.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.local_persistant_volume.constraints}},
-            "profileName": {{volumes.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.local_persistant_volume.container_path}}
-      {{^volumes.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.host_volume.container_path}}",
-        "hostPath": "{{volumes.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.local_persistant_volume.container_path}}
+    "volumes": 
+      [
+         {{^volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "data",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_data.size}},
+            "type": "{{volumes.volume_data.type}}",
+            "profileName": "{{volumes.volume_data.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_data.container_path}}/data",
+           "hostPath": "data",
+           "mode": "RW"
+        }
+        {{/volumes.volume_data.external_volume_name}}
+        {{#volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_data.external_volume_name}}
     ],
     "portMappings": [
       {
@@ -75,7 +85,15 @@
     }
   },
   "executor": "",
-  "labels": {},
+   "labels":{
+      {{#networking.marathon_lb_proxy.enabled}}
+      "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+      "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      "DCOS_SERVICE_SCHEME": "http",
+      "DCOS_SERVICE_NAME": "{{service.name}}",
+      "DCOS_SERVICE_PORT_INDEX": "0"
+   },
   "networks": [
     {
       "mode": "container/bridge"
