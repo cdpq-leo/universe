@@ -22,49 +22,65 @@
       }
     ],
     "type": "DOCKER",
-    "volumes": [
-      {{! data volume}}
-      {{#volumes.data_volume.local_persistant_volume.container_path}}
-      {
-         "persistent": {
-            "type": {{volumes.data_volume.local_persistant_volume.type}},
-            "size": {{volumes.data_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.data_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.data_volume.local_persistant_volume.profileName}}
+    "volumes": 
+      [
+         {{^volumes.volume_data.external_volume_name}}
+         {
+            "containerPath": "data",
+            "mode": "RW",
+            "persistent": {
+                        "type": "{{volumes.volume_data.type}}",
+                        "profileName": "{{volumes.volume_data.profile}}",
+                        "size": "{{volumes.volume_data.size}}"
+                        "constraints": []
+            }
          },
-         "mode": "RW",
-         "containerPath": "{{volumes.data_volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
-      {{^volumes.data_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.data_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.data_volume.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
-      ,
-      {{! config volume }}
-      {{#volumes.config_volume.local_persistant_volume.container_path}}
-      {        
-         "persistent": {
-            "type": {{volumes.config_volume.local_persistant_volume.type}},
-            "size": {{volumes.config_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.config_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.config_volume.local_persistant_volume.profileName}}
+         {
+            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "hostPath": "data",
+            "mode": "RW"
+         }
+         {{/volumes.volume_data.external_volume_name}}
+         {{#volumes.volume_data.external_volume_name}}
+         {
+            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "external": {
+                  "name": "{{volumes.volume_data.external_volume_name}}",
+                  "provider": "dvdi",
+                  "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+         }     
+         {{/volumes.volume_data.external_volume_name}},
+         {{^volumes.volume_grakn.external_volume_name}}
+         {
+            "containerPath": "grakn",
+            "mode": "RW",
+            "persistent": {
+                       "type": "{{volumes.volume_grakn.type}}",
+                       "profileName": "{{volumes.volume_grakn.profile}}",
+                       "size": "{{volumes.volume_grakn.size}}"
+                       "constraints": []
+            }
          },
-         "mode": "RW",
-         "containerPath": "{{volumes.config_volume.local_persistant_volume.container_path}}",
-      }
-        {{/volumes.config_volume.local_persistant_volume.container_path}}
-        {{^volumes.config_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.config_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.config_volume.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.config_volume.local_persistant_volume.container_path}}
-    ],
+         {
+            "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+            "hostPath": "grakn",
+            "mode": "RW"
+         }
+         {{/volumes.volume_grakn.external_volume_name}}
+         {{#volumes.volume_grakn.external_volume_name}}
+         {
+            "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+            "external": {
+                  "name": "{{volumes.volume_grakn.external_volume_name}}",
+                  "provider": "dvdi",
+                  "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+         }
+         {{/volumes.volume_grakn.external_volume_name}}
+      ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
@@ -74,7 +90,7 @@
   },
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "BRAT_USERNAME": "{{environment.username}}",
     "BRAT_PASSWORD": {
@@ -87,8 +103,10 @@
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_ENABLED": "true",
-    "HAPROXY_0_VHOST": "{{environment.HAPROXY_0_VHOST}}",
-    "HAPROXY_0_PATH": "/{{service.name}}",
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_SCHEME": "http"
   },

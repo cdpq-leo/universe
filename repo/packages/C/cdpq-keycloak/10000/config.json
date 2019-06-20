@@ -90,7 +90,7 @@
                         }
                     }
                 },
-                "Marathon_Lb_Proxy": {
+                "marathon_lb_proxy": {
                     "type": "object",
                     "properties": {
                         "enabled": {

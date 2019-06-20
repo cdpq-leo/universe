@@ -24,41 +24,78 @@
          "forcePullImage":false,
          "privileged": false
       },
-      "volumes": [
-      {{! data volume}}
-      {{#volumes.volume.local_persistant_volume.container_path}}
-      {
-         "persistent": {
-            "type": {{volumes.volume.local_persistant_volume.type}},
-            "size": {{volumes.volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.volume.local_persistant_volume.container_path}}
-      {{^volumes.volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.volume.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.volume.local_persistant_volume.container_path}}
-      ],
-      "portMappings":[
+      "volumes": 
+      [
+         {{^volumes.volume_data.external_volume_name}}
          {
-            {{#networking.service_endpoints.load_balance_port}}   
-            "labels": {
-               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-            }, 
-            {{/networking.service_endpoints.load_balance_port}}
-            "containerPort": {{networking.service_endpoints.container_port}},
-            "hostPort": {{networking.service_endpoints.host_port}},
-            "protocol": "{{networking.service_endpoints.protocol}}",      
-            "name": "{{networking.service_endpoints.name}}"            
+            "containerPath": "data",
+            "mode": "RW",
+            "persistent": {
+                        "type": "{{volumes.volume_data.type}}",
+                        "profileName": "{{volumes.volume_data.profile}}",
+                        "size": "{{volumes.volume_data.size}}"
+                        "constraints": []
+            }
+         },
+         {
+            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "hostPath": "data",
+            "mode": "RW"
          }
-      ] 
+         {{/volumes.volume_data.external_volume_name}}
+         {{#volumes.volume_data.external_volume_name}}
+         {
+            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "external": {
+                  "name": "{{volumes.volume_data.external_volume_name}}",
+                  "provider": "dvdi",
+                  "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+         }     
+         {{/volumes.volume_data.external_volume_name}},
+         {{^volumes.volume_log.external_volume_name}}
+         {
+            "containerPath": "log",
+            "mode": "RW",
+            "persistent": {
+                       "type": "{{volumes.volume_log.type}}",
+                       "profileName": "{{volumes.volume_log.profile}}",
+                       "size": "{{volumes.volume_log.size}}"
+                       "constraints": []
+            }
+         },
+         {
+            "containerPath": "{{volumes.volume_log.container_path}}/log",
+            "hostPath": "log",
+            "mode": "RW"
+         }
+         {{/volumes.volume_log.external_volume_name}}
+         {{#volumes.volume_log.external_volume_name}}
+         {
+            "containerPath": "{{volumes.volume_log.container_path}}/log",
+            "external": {
+                  "name": "{{volumes.volume_log.external_volume_name}}",
+                  "provider": "dvdi",
+                  "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+         }
+         {{/volumes.volume_log.external_volume_name}}
+      ],
+      "portMappings": 
+      [
+         {
+           {{#networking.service_endpoints.load_balance_port}}
+           "labels": {
+               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+           },
+           {{/networking.service_endpoints.load_balance_port}}
+           "containerPort": {{networking.service_endpoints.container_port}},
+           "hostPort": {{networking.service_endpoints.host_port}},
+           "protocol": "{{networking.service_endpoints.protocol}}"
+         }
+      ],
    },
    "networks":[
       {
@@ -92,6 +129,10 @@
    ],
    "labels":{
       {{! UPDATE this section if you added labels in the config.json file}}
+      {{#networking.marathon_lb_proxy.enabled}}
+      "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+      "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
       "DCOS_SERVICE_SCHEME": "http",
       "DCOS_SERVICE_NAME": "{{service.name}}",
       "DCOS_SERVICE_PORT_INDEX": "0"

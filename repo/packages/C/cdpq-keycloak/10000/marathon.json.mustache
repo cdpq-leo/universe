@@ -71,10 +71,10 @@
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    {{#networking.Marathon_Lb_Proxy.enabled}}
-    "HAPROXY_0_VHOST": "{{networking.Marathon_Lb_Proxy.Vhost}}",
-    "HAPROXY_0_PATH": "{{networking.Marathon_Lb_Proxy.path}}",
-     {{/networking.Marathon_Lb_Proxy.enabled}}
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.Vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"

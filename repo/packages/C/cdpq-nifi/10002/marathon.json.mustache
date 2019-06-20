@@ -111,5 +111,14 @@
   "killSelection": "YOUNGEST_FIRST",
   "unreachableStrategy": "disabled",
   "healthChecks": [],
-  "fetch": []
+  "fetch": 
+  [  {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+      {{/fetch.artifact_URI.uri}}
+  ]
 }
