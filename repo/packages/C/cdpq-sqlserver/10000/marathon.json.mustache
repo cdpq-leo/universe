@@ -36,7 +36,7 @@
     	  "persistent": {
     		"type": "{{volumes.volume_data.type}}",
     		"profileName": "{{volumes.volume_data.profile}}",
-    		"size": "{{volumes.volume_data.size}}"
+    		"size": {{volumes.volume_data.size}},
     		"constraints": []
     	  }
     	},
@@ -64,7 +64,7 @@
     	  "persistent": {
     		"type": "{{volumes.volume_log.type}}",
     		"profileName": "{{volumes.volume_log.profile}}",
-    		"size": "{{volumes.volume_log.size}}"
+    		"size": {{volumes.volume_log.size}},
     		"constraints": []
     	  }
     	},
@@ -92,7 +92,7 @@
     	  "persistent": {
     		"type": "{{volumes.volume_tempdb.type}}",
     		"profileName": "{{volumes.volume_tempdb.profile}}",
-    		"size": "{{volumes.volume_tempdb.size}}"
+    		"size": {{volumes.volume_tempdb.size}},
     		"constraints": []
     	  }
     	},
@@ -121,7 +121,7 @@
     	  "persistent": {
     		"type": "{{volumes.volume_backup.type}}",
     		"profileName": "{{volumes.volume_backup.profile}}",
-    		"size": "{{volumes.volume_backup.size}}"
+    		"size": {{volumes.volume_backup.size}},
     		"constraints": []
     	  }
     	},

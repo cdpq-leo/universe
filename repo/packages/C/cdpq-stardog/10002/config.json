@@ -13,7 +13,7 @@
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
           "type": "number",
-          "default": 8
+          "default": 1
         },
         "disk": {
           "description": "Disk",
@@ -23,7 +23,7 @@
         "mem": {
           "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
-          "default": 65536
+          "default": 4096
         },
         "instances": {
           "description": "Number of instances of your service.",
@@ -55,81 +55,86 @@
       }
     },
     "networking": {
-      "type": "object",
-      "description": "Configure the networking for your service.",
-      "properties": {
-        "VIP_0": {
-          "description": "VIP_0 hostname",
-          "type": "string",
-          "default": "data-servicestardog"
-        },
-        "container_port": {
-          "description": "Container port number",
-          "type": "number",
-          "default": 5821
-        },
-        "external_access": {
-          "type": "object",
-          "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
-          "properties": {
-            "enabled": {
-              "description": "Enable or disable external access through a public node via Marathon-LB.",
-              "type": "boolean",
-              "default": false
+        "type": "object",
+        "description": "Configure the networking for your service.",
+        "properties": {
+            "service_endpoints": {
+                "type": "object",
+                "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+                "properties": {
+                    "container_port": {
+                        "description": "Container port number",
+                        "type": "number",
+                        "default": 5821
+                    },
+                    "host_port": {
+                        "description": "Host port number",
+                        "type": "number",
+                        "default": 0
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                        "default": "tcp"
+                    },
+                    "load_balance_port": {
+                        "type": "number",
+                        "description": "This port will be used to load balance this service address internally"
+                    }
+                }
             },
-            "external_public_agent_hostname": {
-              "description": "For external access, Virtual Host URL to be used in the external load balancer.",
-              "type": "string",
-              "default": ""
+            "marathon_lb_proxy": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "default": true
+                    },
+                    "vhost": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string",
+                        "default": "/stardog"
+                    }
+                }
             }
-          },
-          "required": [
-            "enabled"
-          ]
         }
-      }
     },
     "volumes": {
-      "description": "Storage properties for the your service on DC/OS.",
-      "type": "object",
-      "properties": {
-        "persist": {
-          "description": "Whether to use volumes to persist your service data. If false, all your service data and state is ephemeral and will not be shared between service instances. By default, this is false.",
-          "type": "boolean",
-          "default": false
-        },
-        "local_backup_volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
-          "type": "object",
-          "properties": {
-            "host_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": ""
-            },
-            "container_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "/var/opt/backups"
-            }
-          }
-        },
-        "local_data_volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
-          "type": "object",
-          "properties": {
-            "host_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "/var/lib/mesos/Stardog"
-            },
-            "container_path": {
-              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "/stardog"
-            }
-          }
-        }
+			"type": "object",
+			"description": "SQL Server storage configuration properties",
+			"properties": {
+				"volume_data": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/stardog"
+						},
+						"type": {
+							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "root"
+						},
+						"size": {
+							"type": "integer",
+		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+		          "default": 0
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+							"default": ""
+						}
+					}
+				}
       }
     },
     "environment": {
@@ -145,6 +150,16 @@
           "description": "Development node type variable",
           "type": "string",
           "default": "sandbox"
+        },
+        "STARDOG_SERVER_JAVA_ARGS": {
+          "description": "Development node type variable",
+          "type": "string",
+          "default": "-Xmx1g -Xms1g -XX:MaxDirectMemorySize=2g"
+        },
+        "MEMORY_MODE": {
+          "description": "Memory consumption modes",
+          "type": "string",
+          "default": "read_optimized"
         }
       }
     },
