@@ -141,6 +141,37 @@
               "default": ""
             }
           }
+        },
+        "volume_log": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/var/opt/service"
+            },
+            "type": {
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "root"
+            },
+            "size": {
+              "type": "integer",
+              "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+              "default": 0
+            },
+            "profile": {
+              "type": "string",
+              "description": "Disk profile to be used for volume.",
+              "default": ""
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
         }
       }
     },

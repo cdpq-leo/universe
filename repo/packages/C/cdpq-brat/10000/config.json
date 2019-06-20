@@ -141,9 +141,9 @@
               "default": "/var/opt/brat"
             },
             "type": {
-              "description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
               "type": "string",
-              "default": "ROOT"
+              "default": "root"
             },
             "size": {
               "type": "integer",
@@ -170,9 +170,9 @@
               "default": "/var/opt/brat"
             },
             "type": {
-              "description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
               "type": "string",
-              "default": "ROOT"
+              "default": "root"
             },
             "size": {
               "type": "integer",

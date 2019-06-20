@@ -34,63 +34,63 @@
     "type": "DOCKER",
     "volumes": 
       [
-          {{#volumes.volume_data.external_volume_name}}
-         {
-            "containerPath": "{{volumes.volume_data.container_path}}/data",
-            "external": {
-              "name": "{{volumes.volume_data.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-         }     
-         {{/volumes.volume_data.external_volume_name}}
          {{^volumes.volume_data.external_volume_name}}
-         {
-            "containerPath": "data",
-            "mode": "RW",
-            "persistent": {
-              "type": "{{volumes.volume_data.type}}",
-              "profileName": "{{volumes.volume_data.profile}}",
-              "size": "{{volumes.volume_data.size}}"
-              "constraints": []
-            }
-         },
-         {
-            "containerPath": "{{volumes.volume_data.container_path}}/data",
-            "hostPath": "data",
-            "mode": "RW"
-         }
-         {{/volumes.volume_data.external_volume_name}}
-         ,
-         {{#volumes.volume_grakn.external_volume_name}}
-         {
-            "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
-            "external": {
-              "name": "{{volumes.volume_grakn.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-         }
-         {{/volumes.volume_grakn.external_volume_name}}
-         {{^volumes.volume_grakn.external_volume_name}}
-         {
-            "containerPath": "grakn",
-            "mode": "RW",
-            "persistent": {
-              "type": "{{volumes.volume_grakn.type}}",
-              "profileName": "{{volumes.volume_grakn.profile}}",
-              "size": "{{volumes.volume_grakn.size}}"
-              "constraints": []
-            }
-         },
-         {
-            "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
-            "hostPath": "grakn",
-            "mode": "RW"
-         }
-         {{/volumes.volume_grakn.external_volume_name}}
+        {
+          "containerPath": "data",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_data.size}},
+            "type": "{{volumes.volume_data.type}}",
+            "profileName": "{{volumes.volume_data.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_data.container_path}}/data",
+           "hostPath": "data",
+           "mode": "RW"
+        }
+        {{/volumes.volume_data.external_volume_name}}
+        {{#volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_data.external_volume_name}}
+        ,
+        {{^volumes.volume_grakn.external_volume_name}}
+        {
+          "containerPath": "grakn",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_grakn.size}},
+            "type": "{{volumes.volume_grakn.type}}",
+            "profileName": "{{volumes.volume_grakn.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+           "hostPath": "grakn",
+           "mode": "RW"
+        }
+        {{/volumes.volume_grakn.external_volume_name}}
+        {{#volumes.volume_grakn.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+          "external": {
+            "name": "{{volumes.volume_grakn.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_grakn.external_volume_name}}
       ],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",

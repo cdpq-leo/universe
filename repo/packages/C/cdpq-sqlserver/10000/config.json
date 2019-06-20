@@ -22,9 +22,9 @@
 					"minimum": 4096.0
 				},
 				"instances": {
-						"description": "Number of instances of your service.",
-						"type": "number",
-						"default": 1.0
+					"description": "Number of instances of your service.",
+					"type": "number",
+					"default": 1.0
 				}
 			},
 			"required": [
@@ -75,8 +75,8 @@
 						},
 						"size": {
 							"type": "integer",
-		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-		          "default": 0
+							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+							"default": 0
 						},
 						"profile": {
 							"type": "string",
@@ -104,8 +104,8 @@
 						},
 						"size": {
 							"type": "integer",
-		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-		          "default": 0
+							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+							"default": 0
 						},
 						"profile": {
 							"type": "string",
@@ -178,51 +178,51 @@
 			}
 		},
 		"networking": {
-				"type": "object",
-				"description": "Configure the networking for your service.",
-				"properties": {
-						"service_endpoints": {
-								"type": "object",
-								"description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
-								"properties": {
-										"container_port": {
-												"description": "Container port number",
-												"type": "number",
-												"default": 1433
-										},
-										"host_port": {
-												"description": "Host port number",
-												"type": "number",
-												"default": 0
-										},
-										"protocol": {
-												"type": "string",
-												"description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-												"default": "tcp"
-										},
-										"load_balance_port": {
-												"type": "number",
-												"description": "This port will be used to load balance this service address internally"
-										}
-								}
+			"type": "object",
+			"description": "Configure the networking for your service.",
+			"properties": {
+				"service_endpoints": {
+					"type": "object",
+					"description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+					"properties": {
+						"container_port": {
+							"description": "Container port number",
+							"type": "number",
+							"default": 1433
 						},
-						"marathon_lb_proxy": {
-								"type": "object",
-								"properties": {
-										"enabled": {
-												"type": "boolean",
-												"default": false
-										},
-										"vhost": {
-												"type": "string"
-										},
-										"path": {
-												"type": "string",
-												"default": "/sql-server"
-										}
-								}
+						"host_port": {
+							"description": "Host port number",
+							"type": "number",
+							"default": 0
+						},
+						"protocol": {
+							"type": "string",
+							"description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+							"default": "tcp"
+						},
+						"load_balance_port": {
+							"type": "number",
+							"description": "This port will be used to load balance this service address internally"
 						}
+					}
+				},
+				"marathon_lb_proxy": {
+					"type": "object",
+					"properties": {
+						"enabled": {
+							"type": "boolean",
+							"default": false
+						},
+						"vhost": {
+							"type": "string"
+						},
+						"path": {
+							"type": "string",
+							"default": "/sql-server"
+						}
+					}
 				}
+			}
 		},
 		"environment": {
 			"type": "object",
