@@ -57,11 +57,6 @@
               "type": "number",
               "default": 8080
             },
-            "service_endpoint_name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": "name"
-            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -76,6 +71,22 @@
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
               "default": 5000
+            }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/geocoding-svc"
             }
           }
         }

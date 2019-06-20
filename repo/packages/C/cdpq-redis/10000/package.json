@@ -1,5 +1,5 @@
 {
- "packagingVersion": "3.0",
+ "packagingVersion": "4.0",
  "name": "cdpq-redis",
  "version": "1.0.0-4.0.8",
  "maintainer": "joerg@mesosphere.io",

@@ -1,5 +1,5 @@
 {
-  "packagingVersion": "3.0",
+  "packagingVersion": "4.0",
   "minDcosReleaseVersion": "1.7",
   "name": "cdpq-jupyterhub",
   "version": "1.0.1-0.8.1",

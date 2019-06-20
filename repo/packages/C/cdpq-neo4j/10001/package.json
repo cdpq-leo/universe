@@ -1,5 +1,5 @@
 {
-  "packagingVersion": "3.0",
+  "packagingVersion": "4.0",
   "name": "cdpq-neo4j",
   "version": "1.0.0-3.3.3",
   "minDcosReleaseVersion" : "1.8",
