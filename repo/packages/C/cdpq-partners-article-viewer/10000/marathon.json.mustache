@@ -31,7 +31,7 @@
             "containerPort": {{networking.service_endpoints.container_port}},
             "hostPort": {{networking.service_endpoints.host_port}},
             "protocol": "{{networking.service_endpoints.protocol}}",      
-            "name": "{{networking.service_endpoints.name}}" 
+            "name": "{{networking.service_endpoints.name}}"   
          }
       ] 
    },
@@ -53,31 +53,20 @@
       "ipProtocol": "{{health_checks.IP_protocol.IP_version}}"
     }
    ],
-   "labels":{},
+   "labels":{
+      "DCOS_SERVICE_SCHEME": "http",
+      "DCOS_SERVICE_NAME": "{{service.name}}",
+      "DCOS_SERVICE_PORT_INDEX": "0",
+      {{#networking.marathon_lb_proxy.enabled}}
+      "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+      "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}"
+      {{/networking.marathon_lb_proxy.enabled}}
+   },
    "env": {
       {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
-      "MYSQL_DATABASE": "{{environment.MYSQL_DATABASE}}",
-      "MYSQL_PASSWORD": {
-         "secret": "mysqlpassword"
-      },
-      "MYSQL_USERNAME":{
-         "secret": "mysqluser"
-      },
-      "MYSQL_HOST": "{{environment.MYSQL_HOST}}",
-      "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
-      "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
-      "SIMILARITY_ENDPOINT": "{{environment.SIMILARITY_ENDPOINT}}",
-      "LOG_REQUEST_BODIES": "{{environment.LOG_REQUEST_BODIES}}"
-  },
-  "secrets": {
-     "mysqluser": {
-      "source": "{{environment.MYSQL_USERNAME}}"
-    },
-    "mysqlpassword": {
-      "source": "{{environment.MYSQL_PASSWORD}}"
-    }
+     "ENDPOINT": "{{environment.ENDPOINT}}"
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 1,

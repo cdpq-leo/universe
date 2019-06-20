@@ -8,17 +8,17 @@
         "name": {
           "description": "Name of application instance as seen in DC/OS.",
           "type": "string",
-          "default": "partners-article-viewer"
+          "default": "partners-article-viewer-svc"
         },
         "cpus": {
           "description": "Number of logical cores to allocate to each service instance.",
           "type": "number",
-          "default": 0.1
+          "default": 1
         },
         "mem": {
           "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
-          "default": 512
+          "default": 1024
         },
         "disk": {
           "description": "Number of disks to allocate to each service instance.",
@@ -87,6 +87,22 @@
               "description": "This port will be used to load balance this service address internally"
             }
           }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/"
+            }
+          }
         }
       }
     },
@@ -100,7 +116,7 @@
             "protocol": {
               "type": "string",
               "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
-              "default": "MESOS_TCP",
+              "default": "MESOS_HTTP",
               "enum": [
                 "MESOS_HTTP",
                 "MESOS_HTTPS",
@@ -154,17 +170,38 @@
     "environment": {
       "type": "object",
       "properties": {
-        "ENDPOINT": {
+        "MYSQL_DATABASE": {
+          "type": "string",
+          "default": "s"
+        },
+        "MYSQL_PASSWORD": {
+          "type": "string",
+          "description": "Name of the secret in the secret store containing the password for authentication",
+          "default": ""
+        },
+        "MYSQL_USERNAME": {
+          "type": "string",
+          "default": "appuser"
+        },
+        "MYSQL_HOST": {
           "type": "string",
           "default": ""
         },
-        "HAPROXY_0_VHOST": {
+        "SIMILARITY_TIMEOUT_SECONDS": {
+          "type": "string",
+          "default": "5"
+        },
+        "ELASTIC_ENDPOINT": {
           "type": "string",
           "default": ""
         },
-        "HAPROXY_0_GROUP": {
+        "SIMILARITY_ENDPOINT": {
           "type": "string",
-          "default": "external"
+          "default": ""
+        },
+        "LOG_REQUEST_BODIES": {
+          "type": "string",
+          "default": "True"
         }
       }
     },
