@@ -16,6 +16,10 @@
    ],
   "container":{
     "type":"DOCKER",
+    "docker":{
+      "image":"{{resource.assets.container.docker.image}}",
+      "network":"USER"
+    },
     "volumes":[
       {
         "containerPath":"data",
@@ -30,11 +34,7 @@
         "hostPath":"data",
         "mode":"RW"
       }
-    ],
-    "docker":{
-      "image":"{{resource.assets.container.docker.image}}",
-      "network":"USER"
-    }
+    ]
   },
   "env":{
     {{#placement.region}}
@@ -45,7 +45,7 @@
     },
     "NEO4J_AUTH_PASSWORD": {
       "secret": "neo4jauthpassword"
-    }
+    },
     "NEO4J_dbms_mode":"READ_REPLICA"
   },
   "secrets": {

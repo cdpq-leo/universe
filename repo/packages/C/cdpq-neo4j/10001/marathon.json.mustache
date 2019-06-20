@@ -40,12 +40,12 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "NEO4J_AUTH":{
+    "NEO4J_AUTH": {
       "secret": "neo4juser"
     },
     "NEO4J_AUTH_PASSWORD": {
       "secret": "neo4jauthpassword"
-    }
+    },
     "NEO4J_dbms_mode":"CORE",
     "NEO4J_causalClustering_expectedCoreClusterSize":"{{environment.expected_cluster_size}}"
   },
