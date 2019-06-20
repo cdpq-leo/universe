@@ -91,7 +91,7 @@
             "service_endpoint_name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": "name"
+              "default": "brat"
             },
             "host_port": {
               "description": "Host port number",
@@ -107,21 +107,21 @@
               "type": "number",
               "description": "This port will be used to load balance this service address internally"
             }
-          },
-          "marathon_lb_proxy": {
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean",
-                "default": false
-              },
-              "vhost": {
-                "type": "string"
-              },
-              "path": {
-                "type": "string",
-                "default": "/brat"
-              }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/brat"
             }
           }
         }
@@ -239,12 +239,12 @@
         "secret_username": {
           "description": "Name of brat secret username",
           "type": "string",
-          "default": "brat"
+          "default": "brat_username"
         },
         "secret_password": {
           "description": "Name of brat secret password",
           "type": "string",
-          "default": "brat"
+          "default": "brat_password"
         },
         "email": {
           "description": "brat user email",
@@ -256,6 +256,33 @@
         "secret_username",
         "secret_password"
       ]
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
     }
   }
 }
