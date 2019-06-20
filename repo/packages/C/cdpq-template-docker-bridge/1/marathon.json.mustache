@@ -27,61 +27,61 @@
       "volumes": 
       [
          {{^volumes.volume_data.external_volume_name}}
-         {
-            "containerPath": "data",
-            "mode": "RW",
-            "persistent": {
-               "type": "{{volumes.volume_data.type}}",
-               "profileName": "{{volumes.volume_data.profile}}",
-               "size": "{{volumes.volume_data.size}}"
-               "constraints": []
-            }
-         },
-         {
-            "containerPath": "{{volumes.volume_data.container_path}}/data",
-            "hostPath": "data",
-            "mode": "RW"
-         }
-         {{/volumes.volume_data.external_volume_name}}
-         {{#volumes.volume_data.external_volume_name}}
-         {
-            "containerPath": "{{volumes.volume_data.container_path}}/data",
-            "external": {
-               "name": "{{volumes.volume_data.external_volume_name}}",
-               "provider": "dvdi",
-               "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-         }     
-         {{/volumes.volume_data.external_volume_name}},
-         {{^volumes.volume_log.external_volume_name}}
-         {
-            "containerPath": "log",
-            "mode": "RW",
-            "persistent": {
-               "type": "{{volumes.volume_log.type}}",
-               "profileName": "{{volumes.volume_log.profile}}",
-               "size": "{{volumes.volume_log.size}}"
-               "constraints": []
-            }
-         },
-         {
-            "containerPath": "{{volumes.volume_log.container_path}}/log",
-            "hostPath": "log",
-            "mode": "RW"
-         }
-         {{/volumes.volume_log.external_volume_name}}
-         {{#volumes.volume_log.external_volume_name}}
-         {
-            "containerPath": "{{volumes.volume_log.container_path}}/log",
-            "external": {
-               "name": "{{volumes.volume_log.external_volume_name}}",
-               "provider": "dvdi",
-               "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-         }
-         {{/volumes.volume_log.external_volume_name}}
+        {
+          "containerPath": "data",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_data.size}},
+            "type": "{{volumes.volume_data.type}}",
+            "profileName": "{{volumes.volume_data.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_data.container_path}}/data",
+           "hostPath": "data",
+           "mode": "RW"
+        }
+        {{/volumes.volume_data.external_volume_name}}
+        {{#volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_data.external_volume_name}},
+        {{^volumes.volume_log.external_volume_name}}
+        {
+          "containerPath": "log",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_log.size}},
+            "type": "{{volumes.volume_log.type}}",
+            "profileName": "{{volumes.volume_log.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_log.container_path}}/log",
+           "hostPath": "log",
+           "mode": "RW"
+        }
+        {{/volumes.volume_log.external_volume_name}}
+        {{#volumes.volume_log.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_log.container_path}}/log",
+          "external": {
+            "name": "{{volumes.volume_log.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_log.external_volume_name}}
       ],
       "portMappings": 
       [
