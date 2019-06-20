@@ -52,9 +52,13 @@
       "SMART_SEARCH_URL": "{{environment.SMART_SEARCH_URL}}"
    },
    "labels" : {
-     "DCOS_SERVICE_PORT_INDEX": "0",
-     "DCOS_PACKAGE_VERSION": "{{package.version}}",
-     "DCOS_PACKAGE_NAME": "{{package.name}}"
+      {{#networking.marathon_lb_proxy.enabled}}
+      "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+      "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      "DCOS_SERVICE_PORT_INDEX": "0",
+      "DCOS_PACKAGE_VERSION": "{{package.version}}",
+      "DCOS_PACKAGE_NAME": "{{package.name}}"
    },
   "fetch": 
    [

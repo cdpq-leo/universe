@@ -85,6 +85,22 @@
               "description": "This port will be used to load balance this service address internally"
             }
           }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/"
+            }
+          }
         }
       }
     },
