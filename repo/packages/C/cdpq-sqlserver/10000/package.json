@@ -1,9 +1,9 @@
 {
-  "packagingVersion": "3.0",
+  "packagingVersion": "4.0",
   "name": "cdpq-sqlserver",
-  "version": "2019-CTP3.0",
-  "maintainer": "https://dcos.io/community/",
-  "website": "https://www.microsoft.com/en-us/sql-server/sql-server-2016",
+  "version": "1.0.0-2019-CTP3.0",
+  "maintainer": "leo@cdpq.com",
+  "website": "https://www.microsoft.com/en-us/sql-server/sql-server-2019",
   "description": "Official container images for Microsoft SQL Server on Linux for Docker Engine.",
   "tags": [
     "database",

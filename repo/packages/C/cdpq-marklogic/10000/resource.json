@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "marklogic": "cdpqleo/marklogic:1.0.0-9.0-6.2"
+        "image": "cdpqleo/marklogic:1.0.2-9.0-7.2"
       }
     }
   }

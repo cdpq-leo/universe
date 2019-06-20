@@ -5,22 +5,24 @@
   "mem": {{service.mem}},
   "container": {
     "portMappings": [
-      {
-        {{#networking.load_balance_port}}   
-        "labels": {
-            "VIP_0": "/{{service.name}}:{{networking.load_balance_port}}"
-        }, 
-        {{/networking.load_balance_port}}
-        "containerPort": {{networking.container_port}},
-        "hostPort": {{networking.host_port}},
-        "protocol": "{{networking.protocol}}"
-      }
+    {
+      {{#networking.service_endpoints.load_balance_port}}
+      "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+      },
+      {{/networking.service_endpoints.load_balance_port}}
+      "containerPort": {{networking.service_endpoints.container_port}},
+      "hostPort": {{networking.service_endpoints.host_port}},
+      "protocol": "{{networking.service_endpoints.protocol}}"
+    }
     ],
     "type": "DOCKER",
     "volumes": [],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true
+      "forcePullImage": true,
+      "parameters": [],
+      "privileged": false
     }
   },
   "networks": [
@@ -33,9 +35,9 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "CASSANDRA_HOSTNAMES": "{{environment.cassandra_hostnames}}",
-    "ELASTIC_HOSTNAME": "{{environment.elastic_hostname}}",
-    "KEYSPACE": "{{environment.keyspace}}",
-    "READ_ONLY": "{{environment.read_only}}"
+    "CASSANDRA_HOSTNAMES": "{{environment.CASSANDRA_HOSTNAMES}}",
+    "ELASTIC_HOSTNAME": "{{environment.ELASTIC_HOSTNAME}}",
+    "KEYSPACE": "{{environment.KEYSPACE}}",
+    "READ_ONLY": "{{environment.READ_ONLY}}"
   }
 }

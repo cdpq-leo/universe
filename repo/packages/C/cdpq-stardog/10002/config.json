@@ -58,143 +58,75 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "service_endpoints": {
+        "VIP_0": {
+          "description": "VIP_0 hostname",
+          "type": "string",
+          "default": "data-servicestardog"
+        },
+        "container_port": {
+          "description": "Container port number",
+          "type": "number",
+          "default": 5821
+        },
+        "external_access": {
           "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
           "properties": {
-            "container_port": {
-              "description": "Container port number",
-              "type": "number",
-              "default": 5821
+            "enabled": {
+              "description": "Enable or disable external access through a public node via Marathon-LB.",
+              "type": "boolean",
+              "default": false
             },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+            "external_public_agent_hostname": {
+              "description": "For external access, Virtual Host URL to be used in the external load balancer.",
               "type": "string",
-              "default": "name"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
-            },
-            "protocol": {
-              "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-              "default": "tcp"
-            },
-            "load_balance_port": {
-              "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "default": ""
             }
-          }
+          },
+          "required": [
+            "enabled"
+          ]
         }
       }
     },
     "volumes": {
-      "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "description": "Storage properties for the your service on DC/OS.",
       "type": "object",
       "properties": {
-        "data_volume": {
+        "persist": {
+          "description": "Whether to use volumes to persist your service data. If false, all your service data and state is ephemeral and will not be shared between service instances. By default, this is false.",
+          "type": "boolean",
+          "default": false
+        },
+        "local_backup_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
           "type": "object",
-          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
-            "local_persistant_volume": {
-              "type": "object",
-              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-              "properties": {
-                "container_path": {
-                  "type": "string",
-                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
-                },
-                "size_MiB": {
-                  "type": "number",
-                  "description": "The size of the persistent volume in MiBs."
-                },
-                "type": {
-                  "type": "string",
-                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
-                },
-                "constraints": {
-                  "type": "array",
-                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-                  "items": {
-                    "type": "string"
-                  },
-                  "default": []
-                },
-                "profileName": {
-                  "type": "string",
-                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
-                }
-              }
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": ""
             },
-            "host_volume": {
-              "type": "object",
-              "description": "A host volume is a directory on the local agent mapped to one in a container.",
-              "properties": {
-                "host_path": {
-                  "type": "string",
-                  "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": "/var/lib/mesos/Stardog"
-                },
-                "container_path": {
-                  "type": "string",
-                  "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/stardog"
-                }
-              }
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/var/opt/backups"
             }
           }
         },
-        "backup_volume": {
+        "local_data_volume": {
+          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
           "type": "object",
-          "description": "A volume for backup. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
-            "local_persistant_volume": {
-              "type": "object",
-              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-              "properties": {
-                "container_path": {
-                  "type": "string",
-                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
-                },
-                "size_MiB": {
-                  "type": "number",
-                  "description": "The size of the persistent volume in MiBs."
-                },
-                "type": {
-                  "type": "string",
-                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
-                },
-                "constraints": {
-                  "type": "array",
-                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-                  "items": {
-                    "type": "string"
-                  },
-                  "default": []
-                },
-                "profileName": {
-                  "type": "string",
-                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
-                }
-              }
+            "host_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/var/lib/mesos/Stardog"
             },
-            "host_volume": {
-              "type": "object",
-              "description": "A host volume is a directory on the local agent mapped to one in a container.",
-              "properties": {
-                "host_path": {
-                  "type": "string",
-                  "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": ""
-                },
-                "container_path": {
-                  "type": "string",
-                  "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/var/opt/backups"
-                }
-              }
+            "container_path": {
+              "description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "/stardog"
             }
           }
         }

@@ -20,9 +20,15 @@
 					"type": "number",
 					"default": 4096.0,
 					"minimum": 4096.0
+				},
+				"instances": {
+						"description": "Number of instances of your service.",
+						"type": "number",
+						"default": 1.0
 				}
 			},
 			"required": [
+				"name",
 				"cpus",
 				"mem"
 			]
@@ -51,94 +57,181 @@
 		},
 		"volumes": {
 			"type": "object",
-			"description": "sqlserver storage configuration properties",
+			"description": "SQL Server storage configuration properties",
 			"properties": {
-				"local_backup_volume": {
-					"description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+				"volume_data": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
 					"type": "object",
 					"properties": {
-						"host_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+						"container_path": {
+							"description": "The path of a volume on the container.",
 							"type": "string",
-							"default": "/"
+							"default": "/var/opt/mssql"
+						},
+						"type": {
+							"description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "ROOT"
+						},
+						"size": {
+							"type": "integer",
+		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+		          "default": 0
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types."
 						}
 					}
 				},
-				"local_data_volume": {
-					"description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+				"volume_log": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
 					"type": "object",
 					"properties": {
-						"host_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+						"container_path": {
+							"description": "The path of a volume on the container.",
 							"type": "string",
-							"default": "/"
+							"default": "/var/opt/mssql"
+						},
+						"type": {
+							"description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "ROOT"
+						},
+						"size": {
+							"type": "integer",
+		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+		          "default": 0
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types."
 						}
 					}
 				},
-				"local_logs_volume": {
-					"description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+				"volume_tempdb": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
 					"type": "object",
 					"properties": {
-						"host_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+						"container_path": {
+							"description": "The path of a volume on the container.",
 							"type": "string",
-							"default": "/"
+							"default": "/var/opt/mssql"
+						},
+						"type": {
+							"description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "ROOT"
+						},
+						"size": {
+							"type": "integer",
+							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+							"default": 0
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types."
 						}
 					}
 				},
-				"local_temp_db_volume": {
-					"description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+				"volume_backup": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
 					"type": "object",
 					"properties": {
-						"host_path": {
-							"description": "The location of a volume on the host to be used for persisting your service configuration and data.",
+						"container_path": {
+							"description": "The path of a volume on the container.",
 							"type": "string",
-							"default": "/"
+							"default": "/var/opt/mssql"
+						},
+						"type": {
+							"description": "The type of a volume (ROOT, MOUNT, External) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "ROOT"
+						},
+						"size": {
+							"type": "integer",
+							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+							"default": 0
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types."
 						}
 					}
 				}
 			}
 		},
 		"networking": {
-			"type": "object",
-			"description": "sqlserver networking configuration properties",
-			"properties": {
-				"port": {
-					"description": "Port number to be used for clear communication internally to the cluster. Currently unused and fixed to be 3306.",
-					"type": "number",
-					"default": 1433
-				},
-				"host_mode": {
-					"description": "Enable or disable host networking mode. NOTE: this requires the default port to be available on the target host. This also forces to have a single instance per node.",
-					"type": "boolean",
-					"default": false
-				},
-				"external_access": {
-					"type": "object",
-					"description": "Enable access from outside the cluster through Marathon-LB.\nNOTE: this connection is unencrypted.",
-					"properties": {
-						"enable": {
-							"description": "Enable or disable creating a VIP for external access through a public node running Marathon-LB.",
-							"type": "boolean",
-							"default": false
+				"type": "object",
+				"description": "Configure the networking for your service.",
+				"properties": {
+						"service_endpoints": {
+								"type": "object",
+								"description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+								"properties": {
+										"container_port": {
+												"description": "Container port number",
+												"type": "number",
+												"default": 1433
+										},
+										"host_port": {
+												"description": "Host port number",
+												"type": "number",
+												"default": 0
+										},
+										"protocol": {
+												"type": "string",
+												"description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+												"default": "tcp"
+										},
+										"load_balance_port": {
+												"type": "number",
+												"description": "This port will be used to load balance this service address internally"
+										}
+								}
 						},
-						"external_access_port": {
-							"description": "For external access, port number to be used for clear communication in the external Marathon-LB load balancer",
-							"type": "number",
-							"default": 11433
+						"marathon_lb_proxy": {
+								"type": "object",
+								"properties": {
+										"enabled": {
+												"type": "boolean",
+												"default": false
+										},
+										"vhost": {
+												"type": "string"
+										},
+										"path": {
+												"type": "string",
+												"default": "/sql-server"
+										}
+								}
 						}
-					}
 				}
-			}
 		},
 		"environment": {
 			"type": "object",
 			"description": "List of environment variables.",
 			"properties": {
-				"SA_PASSWORD": {
+				"SA_PASSWORD_SECRET": {
 					"description": "Give the name of the corresponding secret in the secret store. A_PASSWORD is the database system administrator (userid = 'sa') password used to connect to SQL Server once the container is running. Important note: This password needs to include at least 8 characters of at least three of these four categories: uppercase letters, lowercase letters, numbers and non-alphanumeric symbols.",
 					"type": "string",
-					"default": "my_secret"
+					"default": "sqlserver-sa-password"
 				},
 				"MSSQL_PID ": {
 					"description": "MSSQL_PID is the Product ID (PID) or Edition that the container will run with.",
@@ -157,25 +250,20 @@
 					"type": "string",
 					"default": "1033"
 				},
-				"MSSQL_BACKUP_DIR": {
-					"description": "Set the Default backup directory location.",
+				"MSSQL_COLLATION": {
+					"description": "Sets the default collation for SQL Server. This overrides the default mapping of language id (LCID) to collation. To se all options, visit the https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-fulltext-languages-transact-sql?view=sql-server-2017",
 					"type": "string",
-					"default": "/tmp/backup"
+					"default": "SQL_Latin1_General_CP1_CI_AS"
 				},
-				"MSSQL_LOG_DIR": {
-					"description": "Change the directory where the new SQL Server database log (.ldf) files are created.",
+				"MSSQL_AGENT_ENABLED": {
+					"description": "Enable SQL Server Agent. For example, 'true' is enabled and 'false' is disabled. By default, agent is disabled. To se all options, visit the https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-fulltext-languages-transact-sql?view=sql-server-2017",
 					"type": "string",
-					"default": "/tmp/log"
+					"default": "false"
 				},
 				"MSSQL_DUMP_DIR": {
 					"description": "Change the directory where SQL Server will deposit the memory dumps and other troubleshooting files by default.",
 					"type": "string",
-					"default": "/tmp/dump"
-				},
-				"MSSQL_DATA_DIR": {
-					"description": "Change the directory where the new SQL Server database data files (.mdf) are created.",
-					"type": "string",
-					"default": "/tmp/data"
+					"default": "/var/opt/mssql/dump"
 				}
 			}
 		}
