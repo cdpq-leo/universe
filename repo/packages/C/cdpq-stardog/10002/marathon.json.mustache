@@ -7,6 +7,11 @@
   "acceptedResourceRoles": [
     "*"
   ],
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -16,59 +21,45 @@
       "privileged": false
     },
     "volumes": [
-      {{! back_up volume}}
-      {{#volumes.backup_volume.local_persistant_volume.container_path}}
+    {{^volumes.volume_data.external_volume_name}}
+  	{
+  	  "containerPath": "data",
+  	  "mode": "RW",
+  	  "persistent": {
+  		"type": "{{volumes.volume_data.type}}",
+  		"profileName": "{{volumes.volume_data.profile}}",
+  		"size": {{volumes.volume_data.size}},
+  		"constraints": []
+  	  }
+  	},
+  	{
+  	  "containerPath": "{{volumes.volume_data.container_path}}/data",
+  	  "hostPath": "data",
+  	  "mode": "RW"
+  	}
+  	{{/volumes.volume_data.external_volume_name}}
+  	{{#volumes.volume_data.external_volume_name}}
       {
-         "persistent": {
-            "type": {{volumes.backup_volume.local_persistant_volume.type}},
-            "size": {{volumes.backup_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.backup_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.backup_volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.backup_volume.local_persistant_volume.container_path}}",
+          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
       }
-      {{/volumes.backup_volume.local_persistant_volume.container_path}}
-      {{^volumes.backup_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.backup_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.backup_volume.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.backup_volume.local_persistant_volume.container_path}}
-      ,
-      {{! data volume}}
-      {{#volumes.data_volume.local_persistant_volume.container_path}}
-      {
-         "persistent": {
-            "type": {{volumes.data_volume.local_persistant_volume.type}},
-            "size": {{volumes.data_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.data_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.data_volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.data_volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
-      {{^volumes.data_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.data_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.data_volume.host_volume.host_path}}",
-        "mode": "RW"
-      }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
+  	{{/volumes.volume_data.external_volume_name}}
     ],
     "portMappings": [
       {
-        {{#networking.service_endpoints.load_balance_port}}   
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
-        "protocol": "{{networking.service_endpoints.protocol}}",      
-        "name": "{{networking.service_endpoints.name}}" 
+        "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ]
   },
@@ -77,25 +68,24 @@
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "DEPLOYMENT_TYPE": "{{environment.DEPLOYMENT_TYPE}}",
-    "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}"
+    "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}",
+    "STARDOG_SERVER_JAVA_ARGS": "{{environment.STARDOG_SERVER_JAVA_ARGS}}",
+    "MEMORY_MODE": "{{environment.MEMORY_MODE}}",
   },
   "labels": {
-    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
-    "HAPROXY_0_VHOST": "{{service.name}}",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+	   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
-  "portDefinitions": [],
-  "fetch": 
+  "fetch":
    [
     {
       "uri": "{{fetch.artifact_URI.uri}}",
