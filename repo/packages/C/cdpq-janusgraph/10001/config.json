@@ -50,56 +50,57 @@
       }
     },
     "networking": {
-      "type": "object",
-      "description": "Configure the networking for your service.",
-      "properties": {
-        "container_port": {
-          "description": "Container port number",
-          "type": "number",
-          "default": 8182
-        },
-        "name": {
-          "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-          "type": "string",
-          "default": "name"
-        },
-        "host_port": {
-          "description": "Host port number",
-          "type": "number",
-          "default": 0
-        },
-        "protocol": {
-          "type": "string",
-          "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-          "default": "tcp"
-        },
-        "load_balance_port": {
-          "type": "number",
-          "description": "This port will be used to load balance this service address internally",
-          "default": 8182
+        "type": "object",
+        "description": "Configure the networking for your service.",
+        "properties": {
+            "service_endpoints": {
+                "type": "object",
+                "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+                "properties": {
+                    "container_port": {
+                        "description": "Container port number",
+                        "type": "number",
+                        "default": 8080
+                    },
+                    "host_port": {
+                        "description": "Host port number",
+                        "type": "number",
+                        "default": 0
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                        "default": "tcp"
+                    },
+                    "load_balance_port": {
+                        "type": "number",
+                        "description": "This port will be used to load balance this service address internally"
+                    }
+                }
+            }
         }
-      }
     },
     "environment": {
       "type": "object",
       "description": "List of environment variables",
       "properties": {
-        "cassandra_hostnames": {
+        "CASSANDRA_HOSTNAMES": {
           "description": "Comma seperated values of the hostnames of the cassandra nodes to connect to.",
           "type": "string",
           "default": ""
         },
-        "elastic_hostname": {
-          "description": "Elastic hostname.",
-          "type": "string"
+        "ELASTIC_HOSTNAME": {
+          "description": "Elastic Master Hostname",
+          "type": "string",
+          "default": "master.elastic.l4lb.thisdcos.directory"
         },
-        "keyspace": {
-          "description": "Keyspace.",
+        "KEYSPACE": {
+          "description": "Cassandra Keyspace",
           "type": "string",
           "default": "janusgraph"
         },
-        "read_only": {
-          "description": "Read only?",
+        "READ_ONLY": {
+          "description": "Read only",
           "type": "boolean",
           "default": false
         }

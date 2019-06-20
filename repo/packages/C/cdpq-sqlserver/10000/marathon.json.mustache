@@ -2,114 +2,190 @@
   "id": "{{service.name}}",
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
-  "instances": 1,
+  "instances": {{service.instances}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+    "forcePullImage": false,
+    "image": "{{resource.assets.container.docker.image}}",
+    "parameters": [],
+    "privileged": false
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ],
+    "volumes": [
+    	{{^volumes.volume_data.external_volume_name}}
+    	{
+    	  "containerPath": "data",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_data.type}}",
+    		"profileName": "{{volumes.volume_data.profile}}",
+    		"size": "{{volumes.volume_data.size}}"
+    		"constraints": []
+    	  }
+    	},
+    	{
+    	  "containerPath": "{{volumes.volume_data.container_path}}/data",
+    	  "hostPath": "data",
+    	  "mode": "RW"
+    	}
+    	{{/volumes.volume_data.external_volume_name}}
+    	{{#volumes.volume_data.external_volume_name}}
+        {
+            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "external": {
+              "name": "{{volumes.volume_data.external_volume_name}}",
+              "provider": "dvdi",
+              "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+        }
+    	{{/volumes.volume_data.external_volume_name}},
+    	{{^volumes.volume_log.external_volume_name}}
+    	{
+    	  "containerPath": "log",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_log.type}}",
+    		"profileName": "{{volumes.volume_log.profile}}",
+    		"size": "{{volumes.volume_log.size}}"
+    		"constraints": []
+    	  }
+    	},
+    	{
+    	  "containerPath": "{{volumes.volume_log.container_path}}/log",
+    	  "hostPath": "log",
+    	  "mode": "RW"
+    	}
+    	{{/volumes.volume_log.external_volume_name}}
+    	{{#volumes.volume_log.external_volume_name}}
+        {
+            "containerPath": "{{volumes.volume_log.container_path}}/log",
+            "external": {
+              "name": "{{volumes.volume_log.external_volume_name}}",
+              "provider": "dvdi",
+              "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+        }
+    	{{/volumes.volume_log.external_volume_name}},
+    	{{^volumes.volume_tempdb.external_volume_name}}
+    	{
+    	  "containerPath": "tempdb",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_tempdb.type}}",
+    		"profileName": "{{volumes.volume_tempdb.profile}}",
+    		"size": "{{volumes.volume_tempdb.size}}"
+    		"constraints": []
+    	  }
+    	},
+    	{
+    	  "containerPath": "{{volumes.volume_tempdb.container_path}}/tempdb",
+    	  "hostPath": "tempdb",
+    	  "mode": "RW"
+    	}
+    	{{/volumes.volume_tempdb.external_volume_name}}
+    	{{#volumes.volume_tempdb.external_volume_name}}
+        {
+            "containerPath": "{{volumes.volume_tempdb.container_path}}/tempdb",
+            "external": {
+              "name": "{{volumes.volume_tempdb.external_volume_name}}",
+              "provider": "dvdi",
+              "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+        }
+    	{{/volumes.volume_tempdb.external_volume_name}},
+
+    	{{^volumes.volume_backup.external_volume_name}}
+    	{
+    	  "containerPath": "backup",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_backup.type}}",
+    		"profileName": "{{volumes.volume_backup.profile}}",
+    		"size": "{{volumes.volume_backup.size}}"
+    		"constraints": []
+    	  }
+    	},
+    	{
+    	  "containerPath": "{{volumes.volume_backup.container_path}}/backup",
+    	  "hostPath": "backup",
+    	  "mode": "RW"
+    	}
+    	{{/volumes.volume_backup.external_volume_name}}
+    	{{#volumes.volume_backup.external_volume_name}}
+        {
+            "containerPath": "{{volumes.volume_backup.container_path}}/backup",
+            "external": {
+              "name": "{{volumes.volume_backup.external_volume_name}}",
+              "provider": "dvdi",
+              "options": { "dvdi/driver": "rexray" }
+            },
+            "mode": "RW"
+        }
+    	{{/volumes.volume_backup.external_volume_name}}
+     ]
+  },
   "env": {
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "ACCEPT_EULA": "Y",
-    "SA_PASSWORD": {
-      "secret": "sapassword"
-    },
+    "SA_PASSWORD": {"secret": "sapassword"},
     "MSSQL_PID": "{{environment.MSSQL_PID}}",
-    "MSSQL_TCP_PORT": "{{networking.port}}",
+    "MSSQL_TCP_PORT": "{{networking.container_port}}",
     "MSSQL_LCID": "{{environment.MSSQL_LCID}}",
-    "MSSQL_BACKUP_DIR": "{{environment.MSSQL_BACKUP_DIR}}",
-    "MSSQL_LOG_DIR": "{{environment.MSSQL_LOG_DIR}}",
+    "MSSQL_COLLATION": "{{environment.MSSQL_COLLATION}}",
+    "MSSQL_AGENT_ENABLED": "{{environment.MSSQL_AGENT_ENABLED}}",
     "MSSQL_DUMP_DIR": "{{environment.MSSQL_DUMP_DIR}}",
-    "MSSQL_DATA_DIR": "{{environment.MSSQL_DATA_DIR}}"
+    "MSSQL_DATA_DIR": "{{volumes.volume_data.container_path}}/data",
+    "MSSQL_LOG_DIR": "{{volumes.volume_log.container_path}}/log",
+    "MSSQL_BACKUP_DIR": "{{volumes.volume_backup.container_path}}/backup",
+    "MSSQL_TEMPDB_DIR": "{{volumes.volume_tempdb.container_path}}/tempdb"
   },
   "secrets": {
     "sapassword": {
-      "source": "{{environment.SA_PASSWORD}}"
+      "source": "{{environment.SA_PASSWORD_SECRET}}"
     }
   },
-  "container": {
-    "type": "DOCKER",
-    "volumes": [
-      {
-        "containerPath": "{{environment.MSSQL_BACKUP_DIR}}",
-        "hostPath": "{{volumes.local_backup_volume.host_path}}",
-        "mode": "RW"
-      },
-      {
-        "containerPath": "{{environment.MSSQL_DATA_DIR}}",
-        "hostPath": "{{volumes.local_data_volume.host_path}}",
-        "mode": "RW"
-      },
-      {
-        "containerPath": "{{environment.MSSQL_LOG_DIR}}",
-        "hostPath": "{{volumes.local_logs_volume.host_path}}",
-        "mode": "RW"
-      },
-      {
-        "containerPath": "{{environment.MSSQL_DUMP_DIR}}",
-        "hostPath": "{{volumes.local_temp_db_volume.host_path}}",
-        "mode": "RW"
-      }
-    ],
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      {{#networking.host_mode}}
-      "network": "HOST",
-      {{/networking.host_mode}}            
-      {{^networking.host_mode}}
-      "network": "BRIDGE",
-      "portMappings": [{
-        "containerPort": 1433,
-        "hostPort": 0,
-        {{#networking.external_access.enable}}
-        "servicePort": {{networking.external_access.external_access_port}},
-        {{/networking.external_access.enable}}
-        "protocol": "tcp",
-        "name": "sqlserver",
-        "labels": {
-          "VIP_0": "/{{service.name}}:{{networking.port}}"
-        }
-      }],
-      {{/networking.host_mode}}
-      "forcePullImage": false
-    }
-  },
-  {{#networking.host_mode}}
-  "portDefinitions": [{
-      "protocol": "tcp",
-      "port": 1433,
-      "name": "sqlserver",
-      {{#networking.external_access.enable}}
-      "servicePort": {{networking.external_access.external_access_port}},
-      {{/networking.external_access.enable}}
-      "labels": {
-        "VIP_0": "/{{service.name}}:{{networking.port}}"
-      }
-  }],
-  "requirePorts": true,
   "constraints": [["hostname", "UNIQUE"]],
-  {{/networking.host_mode}}
   "healthChecks": [{
     "protocol": "TCP",
-    {{#networking.host_mode}}
-    "port": 1433,
-    {{/networking.host_mode}}
-    {{^networking.host_mode}}
     "portIndex": 0,
-    {{/networking.host_mode}}    
     "gracePeriodSeconds": 300,
     "intervalSeconds": 60,
     "timeoutSeconds": 20,
     "maxConsecutiveFailures": 3
   }],
   "labels": {
-    "DCOS_PACKAGE_VERSION": "{{package.version}}",
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "MARATHON_SINGLE_INSTANCE_APP": "true",
-    {{#networking.external_access.enable}}
+    {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
-    {{/networking.external_access.enable}}
-    "DCOS_PACKAGE_IS_FRAMEWORK": "false"
-  },
-  "upgradeStrategy":{
-    "minimumHealthCapacity": 0,
-    "maximumOverCapacity": 0
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+     {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_WEB_PATH": "/auth",
+    "DCOS_SERVICE_PORT_INDEX": "0"
   }
 }

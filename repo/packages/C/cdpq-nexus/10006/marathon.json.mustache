@@ -2,40 +2,42 @@
   "id": "{{service.name}}",
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
-  "acceptedResourceRoles": [ "{{service.resource_role}}" ],
+  "acceptedResourceRoles": [ "{{service.resource-role}}" ],
+
   "instances": 1,
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
+      "image": "{{resource.assets.container.docker.nexus3}}",
       "network": "BRIDGE",
       "portMappings": [
         {
-          "containerPort": {{networking.container_port}},
-          "hostPort": {{networking.host_port}}
+          "containerPort": 8081,
+          "hostPort": {{networking.host-port}}
         }
       ]
     },
     "volumes": [
-      {{#volumes.local_persistant_volume.container_path}}
+      {{#storage.persist}}
+      {{^storage.external-volume.enable}}
       {
-         "persistent": {
-            "type": {{volumes.local_persistant_volume.type}},
-            "size": {{volumes.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.local_persistant_volume.constraints}},
-            "profileName": {{volumes.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.local_persistant_volume.container_path}}
-      {{^volumes.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.host_volume.container_path}}",
-        "hostPath": "{{volumes.host_volume.host_path}}",
+        "containerPath": "/nexus-data",
+        "hostPath": "{{storage.local-volume.host-volume}}",
         "mode": "RW"
       }
-      {{/volumes.local_persistant_volume.container_path}}
+      {{/storage.external-volume.enable}}
+      {{#storage.external-volume.enable}}
+      {
+        "containerPath": "/nexus-data",
+        "external": {
+          "name": "{{storage.external-volume.volume-name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }
+      {{/storage.external-volume.enable}}
+      {{/storage.persist}}
     ]
   },
   "healthChecks": [
@@ -56,23 +58,13 @@
   },
   "labels": {
     "DCOS_SERVICE_NAME": "{{service.name}}",
-    {{#networking.proxy_vhost}}
-    "HAPROXY_0_GROUP": "external",
-    "HAPROXY_0_STICKY": "true",
-    "HAPROXY_0_VHOST": "{{networking.proxy_vhost}}",
-    {{/networking.proxy_vhost}}
     "MARATHON_SINGLE_INSTANCE_APP": "true"
-  },
-  "env": {
-      {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}"
-      {{/placement.region}}
   }
-  {{#networking.pinned_hostname}},
+  {{#networking.pinned-hostname}},
   "constraints": [
     [
-      "hostname", "CLUSTER", "{{networking.pinned_hostname}}"
+      "hostname", "CLUSTER", "{{networking.pinned-hostname}}"
     ]
   ]
-  {{/networking.pinned_hostname}}
+  {{/networking.pinned-hostname}}
 }

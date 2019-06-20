@@ -6,7 +6,7 @@
       "description": "DC/OS marklogic service specifications",
       "properties": {
         "name": {
-          "description": "Name of SmartSearchService instances as seen in DC/OS.",
+          "description": "Name of marklogic instances as seen in DC/OS.",
           "type": "string",
           "default": "marklogic"
         },
@@ -21,123 +21,445 @@
           "default": 0
         },
         "mem": {
-          "description":  "Memory in Mb to allocate to each service instance.",
+          "description": "Memory in Mb to allocate to each service instance.",
           "type": "number",
           "default": 4096
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
         },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoint_01": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 7997
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_02": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 7998
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_03": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 7999
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoints_04": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8000
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_05": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8001
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_06": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8002
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_07": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8003
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        },
+        "service_endpoint_08": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8004
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally"
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "properties": {
         "backup_volume": {
           "type": "object",
-          "description": "Marklogic backup volume config",
+          "description": "A volume for bakcup. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": "/var/opt/Backups"
+            "local_persistant_volume": {
+              "type": "object",
+              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+              "properties": {
+                "container_path": {
+                  "type": "string",
+                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+                },
+                "size_MiB": {
+                  "type": "number",
+                  "description": "The size of the persistent volume in MiBs."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                },
+                "constraints": {
+                  "type": "array",
+                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "profileName": {
+                  "type": "string",
+                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                }
+              }
             },
-            "host_path": {
-              "description": "Host path",
-              "type": "string",
-              "default": "/mnt/azurefileshare/data/marklogic/backups"
+            "host_volume": {
+              "type": "object",
+              "description": "A host volume is a directory on the local agent mapped to one in a container.",
+              "properties": {
+                "host_path": {
+                  "type": "string",
+                  "description": "Path on the host filesystem to the location of the data you mounted",
+                  "default": "/var/lib/backup"
+                },
+                "container_path": {
+                  "type": "string",
+                  "description": "Path, in the container, where you wish to have the data mounted",
+                  "default": "/backup"
+                }
+              }
             }
           }
         },
         "data_volume": {
           "type": "object",
-          "description": "Marklogic data volume config",
+          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
-            "container_path": {
-              "description": "Container path",
-              "type": "string",
-              "default": "/var/opt/MarkLogic"
+            "local_persistant_volume": {
+              "type": "object",
+              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+              "properties": {
+                "container_path": {
+                  "type": "string",
+                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+                },
+                "size_MiB": {
+                  "type": "number",
+                  "description": "The size of the persistent volume in MiBs."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                },
+                "constraints": {
+                  "type": "array",
+                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "profileName": {
+                  "type": "string",
+                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                }
+              }
             },
-            "host_path": {
-              "description": "Host path",
-              "type": "string",
-              "default": "/var/lib/marklogic"
+            "host_volume": {
+              "type": "object",
+              "description": "A host volume is a directory on the local agent mapped to one in a container.",
+              "properties": {
+                "host_path": {
+                  "type": "string",
+                  "description": "Path on the host filesystem to the location of the data you mounted",
+                  "default": "/var/lib/data"
+                },
+                "container_path": {
+                  "type": "string",
+                  "description": "Path, in the container, where you wish to have the data mounted",
+                  "default": "/data"
+                }
+              }
+            }
+          }
+        },
+        "external_volume": {
+          "type": "object",
+          "description": "An external volume. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
+          "properties": {
+            "local_persistant_volume": {
+              "type": "object",
+              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+              "properties": {
+                "container_path": {
+                  "type": "string",
+                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
+                },
+                "size_MiB": {
+                  "type": "number",
+                  "description": "The size of the persistent volume in MiBs."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                },
+                "constraints": {
+                  "type": "array",
+                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "profileName": {
+                  "type": "string",
+                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                }
+              }
+            },
+            "host_volume": {
+              "type": "object",
+              "description": "A host volume is a directory on the local agent mapped to one in a container.",
+              "properties": {
+                "host_path": {
+                  "type": "string",
+                  "description": "Path on the host filesystem to the location of the data you mounted",
+                  "default": "/var/lib/external"
+                },
+                "container_path": {
+                  "type": "string",
+                  "description": "Path, in the container, where you wish to have the data mounted",
+                  "default": "/external"
+                }
+              }
             }
           }
         }
       }
     },
-    "marklogic" : {
+    "environment": {
       "type": "object",
-      "description": "Marklogic config",
-      "required": [
-        "username",
-        "password"
-      ],
+      "description": "Environment configuration",
       "properties": {
-        "username": {
-          "description": "Admin username",
-          "type": "string",
-          "default": ""
+        "marklogic": {
+          "type": "object",
+          "description": "Marklogic configuration",
+          "properties": {
+            "username": {
+              "description": "Admin username",
+              "type": "string",
+              "default": "admin"
+            },
+            "password": {
+              "description": "Name of the secret in the secret store containing the marklogic password",
+              "type": "string",
+              "default": "secret_marklogic_password"
+            },
+            "auth_mode": {
+              "description": "Auth mode",
+              "type": "string",
+              "default": "digest"
+            },
+            "realm": {
+              "description": "Realm",
+              "type": "string",
+              "default": "public"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ]
         },
-        "password": {
-          "description": "Admin password",
-          "type": "string",
-          "default": ""
-        },
-        "auth_mode": {
-          "description": "Auth mode",
-          "type": "string",
-          "default": "digest"
-        },
-        "realm": {
-          "description": "Realm",
-          "type": "string",
-          "default": "public"
-        }
-      }
-    },
-    "hdfs" : {
-      "type": "object",
-      "description": "HDFS config",
-      "properties": {
-        "config_url": {
-          "description": "Base URL that serves HDFS config files (core-site.xml and hdfs-site.xml)",
-          "type": "string",
-          "default": ""
-        }
-      }
-    },
-    "marathon-lb" : {
-      "type": "object",
-      "description": "Marathon-lb ports config",
-      "properties": {
-        "vhost": {
-          "description":  "Virtual host.",
-          "type": "string",
-          "default": ""
-        },
-        "port0": {
-          "description": "Health check",
-          "type": "number",
-          "default": 10195
-        },
-        "port1": {
-          "description": "Foreign bind port",
-          "type": "number",
-          "default": 10196
-        },
-        "port2": {
-          "description": "Bind port",
-          "type": "number",
-          "default": 10197
-        },
-        "port3": {
-          "description": "App-Services",
-          "type": "number",
-          "default": 10198
-        },
-        "port4": {
-          "description": "Admin",
-          "type": "number",
-          "default": 10199
-        },
-        "port5": {
-          "description": "Manage",
-          "type": "number",
-          "default": 10200
+        "hdfs": {
+          "type": "object",
+          "description": "HDFS config",
+          "properties": {
+            "config_url": {
+              "description": "Base URL that serves HDFS config files (core-site.xml and hdfs-site.xml)",
+              "type": "string",
+              "default": ""
+            }
+          }
         }
       }
     }

@@ -97,7 +97,7 @@
                             "type": "boolean",
                             "default": true
                         },
-                        "Vhost": {
+                        "vhost": {
                             "type": "string"
                         },
                         "path": {
@@ -117,45 +117,45 @@
                     "type": "string",
                     "default": ""
                 },
-                "KEYCLOAK_USER": {
+                "KEYCLOAK_USER_SECRET": {
                     "description": "Name of the DC/OS Secret storing the username of the repository",
                     "type": "string",
-                    "default": "keycloak-user"
+                    "default": "keycload-user"
                 },
-                "KEYCLOAK_PASSWORD": {
+                "KEYCLOAK_PASSWORD_SECRET": {
                     "description": "Name of the DC/OS Secret storing the password (or API token) of the repository",
                     "type": "string",
-                    "default": "secret_keycloak_password"
+                    "default": "keycload-password"
                 },
                 "DB_VENDOR": {
-                    "description": "Database vendor",
+                    "description": "Database Vendor",
                     "type": "string",
                     "default": "mysql"
                 },
                 "DB_ADDR": {
-                    "description": "Database address",
+                    "description": "Database Address",
                     "type": "string",
                     "default": "keycloak-mysql.marathon.l4lb.thisdcos.directory"
                 },
                 "DB_PORT": {
-                    "description": "Database port",
+                    "description": "Database Port",
                     "type": "string",
                     "default": "3306"
                 },
                 "DB_NAME": {
-                    "description": "Database name",
+                    "description": "Database Name",
                     "type": "string",
                     "default": "keycloak"
                 },
-                "DB_USER": {
+                "DB_USER_SECRET": {
                     "description": "Name of the DC/OS Secret storing the username of the repository",
                     "type": "string",
-                    "default": "db-user"
+                    "default": "keycload-db-user"
                 },
-                "DB_PASSWORD": {
+                "DB_PASSWORD_SECRET": {
                     "description": "Name of the DC/OS Secret storing the password (or API token) of the repository",
                     "type": "string",
-                    "default": "db-password"
+                    "default": "keycload-db-password"
                 }
             }
         }

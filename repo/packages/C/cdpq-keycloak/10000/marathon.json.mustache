@@ -12,21 +12,21 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "forcePullImage": false,
+      "forcePullImage": true,
       "image": "{{resource.assets.container.docker.image}}",
       "parameters": [],
       "privileged": false
     },
     "portMappings": [
       {
-        {{#networking.service_endpoints.load_balance_port}}   
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
-        "protocol": "{{networking.service_endpoints.protocol}}"           
+        "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ]
   },
@@ -35,48 +35,46 @@
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
-      "KEYCLOAK_USER": {
-         "secret": "keycloakuser"
-      },
-      "KEYCLOAK_PASSWORD": {
-         "secret": "keycloakpassword"
-      },
-      "DB_VENDOR": "{{environment.KEYCLOAK_USER}}",
-      "DB_ADDR": "{{environment.KEYCLOAK_USER}}",
-      "DB_PORT": "{{environment.KEYCLOAK_USER}}",
-      "DB_NAME": "{{environment.KEYCLOAK_USER}}",
-      "DB_USER": {
-         "secret": "dbuser"
-      },
-      "DB_PASSWORD": {
-         "secret": "dbpassword"
-      },
+      "KEYCLOAK_USER": {"secret": "keycloakuser"},
+      "KEYCLOAK_PASSWORD": {"secret": "keycloakpassword"},
+      "DB_VENDOR": "{{environment.DB_VENDOR}}",
+      "DB_ADDR": "{{environment.DB_ADDR}}",
+      "DB_PORT": "{{environment.DB_PORT}}",
+      "DB_NAME": "{{environment.DB_NAME}}",
+      "DB_USER": {"secret": "keycloakdbuser"},
+      "DB_PASSWORD": {"secret": "keycloakdbpassword"},
       "PROXY_ADDRESS_FORWARDING": "true"
   },
   "secrets": {
     "keycloakuser": {
-      "source": "{{environment.KEYCLOAK_USER}}"
+      "source": "{{environment.KEYCLOAK_USER_SECRET}}"
     },
     "keycloakpassword": {
-      "source": "{{environment.KEYCLOAK_PASSWORD}}"
+      "source": "{{environment.KEYCLOAK_PASSWORD_SECRET}}"
     },
-    "dbuser": {
-      "source": "{{environment.DB_USER}}"
+    "keycloakdbuser": {
+      "source": "{{environment.DB_USER_SECRET}}"
     },
-    "dbpassword": {
-      "source": "{{environment.DB_PASSWORD}}"
+    "keycloakdbpassword": {
+      "source": "{{environment.DB_PASSWORD_SECRET}}"
     }
   },
   "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+<<<<<<< HEAD
     {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.Vhost}}",
+=======
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+>>>>>>> 8cfa12d289a745d30b4b7224631c2586a0f72d83
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
      {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_WEB_PATH": "/auth",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
