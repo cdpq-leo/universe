@@ -92,7 +92,9 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "BRAT_USERNAME": "{{environment.username}}",
+    "BRAT_USERNAME": {
+      "secret": "bratuser"
+    },
     "BRAT_PASSWORD": {
       "secret": "bratpassword"
     },
@@ -111,6 +113,9 @@
     "DCOS_SERVICE_SCHEME": "http"
   },
   "secrets": {
+     "bratuser": {
+      "source": "{{environment.secret_username}}"
+    }
     "bratpassword": {
       "source": "{{environment.secret_password}}"
     }

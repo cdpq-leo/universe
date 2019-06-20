@@ -64,12 +64,7 @@
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-<<<<<<< HEAD
-    {{#networking.marathon_lb_proxy.enabled}}
-    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.Vhost}}",
-=======
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
->>>>>>> 8cfa12d289a745d30b4b7224631c2586a0f72d83
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
      {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",

@@ -236,13 +236,13 @@
       "type": "object",
       "description": "brat parameters",
       "properties": {
-        "username": {
-          "description": "brat username",
+        "secret_username": {
+          "description": "Name of brat secret username",
           "type": "string",
           "default": "brat"
         },
         "secret_password": {
-          "description": "brat user password",
+          "description": "Name of brat secret password",
           "type": "string",
           "default": "brat"
         },
@@ -250,22 +250,11 @@
           "description": "brat user email",
           "type": "string",
           "default": "brat@example.com"
-        },
-        "HAPROXY_0_VHOST": {
-          "type": "string",
-          "description": "Exposed endpoint to the application",
-          "default": ""
-        },
-        "HAPROXY_0_PATH": {
-          "type": "string",
-          "default": "/brat"
         }
       },
       "required": [
-        "username",
-        "password",
-        "HAPROXY_0_VHOST",
-        "HAPROXY_0_PATH"
+        "secret_username",
+        "secret_password"
       ]
     }
   }
