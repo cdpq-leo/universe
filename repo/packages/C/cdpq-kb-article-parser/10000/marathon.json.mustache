@@ -15,37 +15,6 @@
       "parameters": [],
       "privileged": false
     },
-    "volumes": 
-      [
-         {{^volumes.volume_data.external_volume_name}}
-        {
-          "containerPath": "data",
-          "mode": "RW",
-          "persistent": {
-            "size": {{volumes.volume_data.size}},
-            "type": "{{volumes.volume_data.type}}",
-            "profileName": "{{volumes.volume_data.profile}}",
-            "constraints": []
-          }
-        },
-        {
-           "containerPath": "{{volumes.volume_data.container_path}}/data",
-           "hostPath": "data",
-           "mode": "RW"
-        }
-        {{/volumes.volume_data.external_volume_name}}
-        {{#volumes.volume_data.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_data.container_path}}/data",
-          "external": {
-            "name": "{{volumes.volume_data.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        }     
-        {{/volumes.volume_data.external_volume_name}}
-    ],
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}   
@@ -57,6 +26,37 @@
         "hostPort": {{networking.service_endpoints.host_port}},
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
+    ],
+    "volumes": 
+    [
+       {{^volumes.volume_data.external_volume_name}}
+      {
+        "containerPath": "data",
+        "mode": "RW",
+        "persistent": {
+          "size": {{volumes.volume_data.size}},
+          "type": "{{volumes.volume_data.type}}",
+          "profileName": "{{volumes.volume_data.profile}}",
+          "constraints": []
+        }
+      },
+      {
+         "containerPath": "{{volumes.volume_data.container_path}}/data",
+         "hostPath": "data",
+         "mode": "RW"
+      }
+      {{/volumes.volume_data.external_volume_name}}
+      {{#volumes.volume_data.external_volume_name}}
+      {
+        "containerPath": "{{volumes.volume_data.container_path}}/data",
+        "external": {
+          "name": "{{volumes.volume_data.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }     
+      {{/volumes.volume_data.external_volume_name}}
     ]
   },
   "env": {
@@ -112,7 +112,6 @@
       "mode": "container/bridge"
     }
   ],
-  "requirePorts": false,
   "upgradeStrategy": {
     "maximumOverCapacity": 1,
     "minimumHealthCapacity": 1
