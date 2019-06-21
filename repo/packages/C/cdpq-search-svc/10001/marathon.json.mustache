@@ -4,6 +4,12 @@
   "mem": {{service.mem}},
   "container": {
     "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    },
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}   
@@ -16,63 +22,13 @@
         "protocol": "{{networking.service_endpoints.protocol}}"      
       }
     ],
-    "volumes":[
-      {{^volumes.volume_data.external_volume_name}}
-      {
-        "containerPath": "data",
-        "mode": "RW",
-        "persistent": {
-          "size": {{volumes.volume_data.size}},
-          "type": "{{volumes.volume_data.type}}",
-          "profileName": "{{volumes.volume_data.profile}}",
-          "constraints": []
-        }
-      },
-      {
-         "containerPath": "{{volumes.volume_data.container_path}}/data",
-         "hostPath": "data",
-         "mode": "RW"
-      }
-      {{/volumes.volume_data.external_volume_name}}
-      {{#volumes.volume_data.external_volume_name}}
-      {
-        "containerPath": "{{volumes.volume_data.container_path}}/data",
-        "external": {
-          "name": "{{volumes.volume_data.external_volume_name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
-      }     
-      {{/volumes.volume_data.external_volume_name}}
-    ],
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "privileged": false,
-      "parameters": []
-    }
+    "volumes": []
   },
   "networks": [
     {
       "mode": "container/bridge"
     }
   ],
-  "env": {
-    {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
-    {{/placement.region}}
-    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
-    "HTTP_PORT": "{{environment.HTTP_PORT}}",
-    "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
-    "CUSTOM_SEARCH_ID": "{{environment.CUSTOM_SEARCH_ID}}",
-    "SEARCH_LIMIT": "{{environment.SEARCH_LIMIT}}",
-    "SEARCH_LANGUAGE": "{{environment.SEARCH_LANGUAGE}}",
-    "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
-    "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
-    "SCOPES": "{{environment.SCOPES}}",
-    "GOOGLE_APPLICATION_CREDENTIALS": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}"
-  },
   "fetch": [
     {
       "uri": "{{fetch.artifact_URI.uri}}",
@@ -82,11 +38,27 @@
     },
     {
       "uri": "{{fetch.google_service_account_credentials_URI.uri}}",
+      "destPath": "{{fetch.google_service_account_credentials_URI.destPath}}",
       "extract": {{fetch.google_service_account_credentials_URI.extract}},
       "executable": {{fetch.google_service_account_credentials_URI.executable}},
       "cache": {{fetch.google_service_account_credentials_URI.cache}}
     }
   ],
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}",
+    "CUSTOM_SEARCH_ID": "{{environment.CUSTOM_SEARCH_ID}}",
+    "SEARCH_LIMIT": "{{environment.SEARCH_LIMIT}}",
+    "SEARCH_LANGUAGE": "{{environment.SEARCH_LANGUAGE}}",
+    "SERVICE_PREFIX": "{{environment.SERVICE_PREFIX}}",
+    "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
+    "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
+    "SCOPES": "{{environment.SCOPES}}",
+    "GOOGLE_APPLICATION_CREDENTIALS": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}"
+  },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",

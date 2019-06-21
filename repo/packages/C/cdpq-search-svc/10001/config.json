@@ -96,40 +96,34 @@
       "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "volume": {
+        "volume_data": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
-          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
           "properties": {
-            "volume_data": {
-              "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-              "type": "object",
-              "properties": {
-                "container_path": {
-                  "description": "The path of a volume on the container.",
-                  "type": "string",
-                  "default": "/var/opt/search-svc"
-                },
-                "type": {
-                  "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-                  "type": "string",
-                  "default": "root"
-                },
-                "size": {
-                  "type": "integer",
-                  "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-                  "default": 0
-                },
-                "profile": {
-                  "type": "string",
-                  "description": "Disk profile to be used for volume.",
-                  "default": ""
-                },
-                "external_volume_name": {
-                  "type": "string",
-                  "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-                  "default": ""
-                }
-              }
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/var/opt/search-svc"
+            },
+            "type": {
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "root"
+            },
+            "size": {
+              "type": "integer",
+              "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
+              "default": 0
+            },
+            "profile": {
+              "type": "string",
+              "description": "Disk profile to be used for volume.",
+              "default": ""
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
             }
           }
         }
@@ -259,30 +253,30 @@
               "type": "boolean",
               "default": false
             }
-          },
-          "google_service_account_credentials_URI": {
-            "type": "object",
-            "properties": {
-              "uri": {
-                "type": "string",
-                "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/google-credentials.json"
-              },
-              "extract": {
-                "type": "boolean",
-                "default": false
-              },
-              "destPath": {
-                "type": "string",
-                "default": "/var/opt/data/google"
-              },
-              "executable": {
-                "type": "boolean",
-                "default": false
-              },
-              "cache": {
-                "type": "boolean",
-                "default": false
-              }
+          }
+        },
+        "google_service_account_credentials_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/google-credentials.json"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": false
+            },
+            "destPath": {
+              "type": "string",
+              "default": "/var/opt/data/google"
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
             }
           }
         }
