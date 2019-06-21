@@ -156,7 +156,8 @@
             },
             "external_volume_name": {
               "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types."
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
             }
           }
         },
@@ -185,7 +186,8 @@
             },
             "external_volume_name": {
               "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types."
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
             }
           }
         }
