@@ -32,7 +32,12 @@
       {
          "portIndex":0,
          "protocol":"MESOS_HTTP",
-         "path":"{{health_checks.MESOS_HTTP.path}}"
+         {{#networking.marathon_lb_proxy.enabled}}
+         "path": "{{networking.marathon_lb_proxy.path}}",
+         {{/networking.marathon_lb_proxy.enabled}}
+         {{^networking.marathon_lb_proxy.enabled}}
+         "path": "{{health_checks.MESOS_HTTP.path}}"
+         {{/networking.marathon_lb_proxy.enabled}}
       }
    ],
    "env":{

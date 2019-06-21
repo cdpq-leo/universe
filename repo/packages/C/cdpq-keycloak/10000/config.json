@@ -108,6 +108,34 @@
                 }
             }
         },
+        "health_checks": {
+            "type": "object",
+            "description": "Health checks may be specified per application to be run against the application's instances.",
+            "properties": {
+              "IP_protocol": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+                    "default": "MESOS_HTTP",
+                    "enum": [
+                      "MESOS_HTTP",
+                      "MESOS_HTTPS",
+                      "MESOS_TCP",
+                      "HTTP",
+                      "HTTPS"
+                    ]
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, \"/path/to/health\".",
+                    "default": "/"
+                  }
+                }
+              }
+            }
+          },
         "environment": {
             "type": "object",
             "description": "Additional configuration options for environment variables.",

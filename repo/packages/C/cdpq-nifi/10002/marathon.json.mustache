@@ -77,17 +77,6 @@
         "protocol": "{{networking.service_endpoint_03.protocol}}"
     }
   ],
-  "residency": {
-    "relaunchEscalationTimeoutSeconds": 3600,
-    "taskLostBehavior": "WAIT_FOREVER"
-  },
-  "requirePorts": true,
-  "upgradeStrategy": {
-    "maximumOverCapacity": 0,
-    "minimumHealthCapacity": 0.5
-  },
-  "killSelection": "YOUNGEST_FIRST",
-  "unreachableStrategy": "disabled",
   "healthChecks": [],
   "fetch": 
   [  {{#fetch.artifact_URI.uri}}

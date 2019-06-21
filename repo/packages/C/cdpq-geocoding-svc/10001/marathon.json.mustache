@@ -52,7 +52,13 @@
     {
       "protocol": "HTTP",
       "portIndex": 0,
-      "path": "{{environment.SERVICE_PREFIX}}{{health_checks.health_url}}",
+      {{#networking.marathon_lb_proxy.enabled}}
+      "path": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
+      "path": "{{health_checks.health_url}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      "path": "{{environment.SERVICE_PREFIX}}",
       "gracePeriodSeconds": 120,
       "intervalSeconds": 30,
       "maxConsecutiveFailures": 3,

@@ -100,7 +100,12 @@
     {
       "protocol": "HTTP",
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      {{#networking.marathon_lb_proxy.enabled}}
+      "path": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
       "path": "{{environment.SERVICE_PREFIX}}{{health_checks.HTTP_protocol.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
       "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},

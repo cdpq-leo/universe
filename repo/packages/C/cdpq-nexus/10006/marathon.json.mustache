@@ -5,14 +5,14 @@
   "acceptedResourceRoles": [ "{{service.resource-role}}" ],
   "instances": 1,
   "fetch": [
-      {{#fetch.artifact_URI.uri}}
+    {{#fetch.artifact_URI.uri}}
     {
       "uri": "{{fetch.artifact_URI.uri}}",
       "extract": {{fetch.artifact_URI.extract}},
       "executable": {{fetch.artifact_URI.executable}},
       "cache": {{fetch.artifact_URI.cache}}
     }
-      {{/fetch.artifact_URI.uri}}
+    {{/fetch.artifact_URI.uri}}
    ],
   "container": {
     "type": "DOCKER",
@@ -65,15 +65,15 @@
     "minimumHealthCapacity": 0,
     "maximumOverCapacity": 0
   },
-  "labels": {
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "MARATHON_SINGLE_INSTANCE_APP": "true"
-  }
   {{#networking.pinned-hostname}},
   "constraints": [
     [
       "hostname", "CLUSTER", "{{networking.pinned-hostname}}"
     ]
-  ]
+  ],
   {{/networking.pinned-hostname}}
+  "labels": {
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "MARATHON_SINGLE_INSTANCE_APP": "true"
+  }
 }

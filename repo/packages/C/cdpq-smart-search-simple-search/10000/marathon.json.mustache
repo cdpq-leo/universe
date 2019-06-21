@@ -44,7 +44,12 @@
       "maxConsecutiveFailures": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.max_failures}},
       "delaySeconds": {{health_checks.MESOS_HTTP.advanced_health_checking_settings.delay}},
       "portIndex": 0,
+      {{#networking.marathon_lb_proxy.enabled}}
+      "path": "{{networking.marathon_lb_proxy.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
       "path": "{{health_checks.MESOS_HTTP.path}}",
+      {{/networking.marathon_lb_proxy.enabled}}
       "protocol": "MESOS_HTTP"
     }
    ],
