@@ -37,39 +37,99 @@
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}}          
       }
-    ]
+    ],
+    "volumes": 
+      [
+        {{^volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "data",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_data.size}},
+            "type": "{{volumes.volume_data.type}}",
+            "profileName": "{{volumes.volume_data.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_data.container_path}}/data",
+           "hostPath": "data",
+           "mode": "RW"
+        }
+        {{/volumes.volume_data.external_volume_name}}
+        {{#volumes.volume_data.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_data.external_volume_name}}
+        ,
+        {{^volumes.volume_grakn.external_volume_name}}
+        {
+          "containerPath": "grakn",
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_grakn.size}},
+            "type": "{{volumes.volume_grakn.type}}",
+            "profileName": "{{volumes.volume_grakn.profile}}",
+            "constraints": []
+          }
+        },
+        {
+           "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+           "hostPath": "grakn",
+           "mode": "RW"
+        }
+        {{/volumes.volume_grakn.external_volume_name}}
+        {{#volumes.volume_grakn.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
+          "external": {
+            "name": "{{volumes.volume_grakn.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }     
+        {{/volumes.volume_grakn.external_volume_name}}
+      ]
   },
-  "secrets": {
+  "env": {
+    {{#placement.region}}
+    "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "BRAT_USERNAME": {
+      "secret": "bratuser"
+    },
+    "BRAT_PASSWORD": {
+      "secret": "bratpassword"
+    },
+    "BRAT_EMAIL": "{{environment.email}}"
+  },
+  "labels": {
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_ENABLED": "true",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_SCHEME": "http"
+  },
+   "secrets": {
      "bratuser": {
       "source": "{{environment.secret_username}}"
     }
     "bratpassword": {
       "source": "{{environment.secret_password}}"
     }
-  },
-  "env": {
-    {{#placement.region}}
-    "SERVICE_REGION": "{{placement.region}}",
-    {{/placement.region}}
-    "BRAT_EMAIL": "{{environment.email}}",
-    "BRAT_USERNAME": {
-      "secret": "bratuser"
-    },
-    "BRAT_PASSWORD": {
-      "secret": "bratpassword"
-    }
-  },
-  "labels": {
-    {{#networking.marathon_lb_proxy.enabled}}
-    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-    "HAPROXY_GROUP": "external",
-    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_ENABLED": "true",   
-    {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}"
   },
   "healthChecks": [
     {
@@ -86,9 +146,5 @@
     {
       "mode": "container/bridge"
     }
-  ],
-  "upgradeStrategy": {
-    "maximumOverCapacity": 1,
-    "minimumHealthCapacity": 1
-  }
+  ]
 }
