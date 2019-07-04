@@ -2,43 +2,63 @@
     "type": "object",
     "description": "Keycloak, an open source software product to allow single sign-on with Identity Management and Access Management aimed at modern applications and services.",
     "properties": {
-        "service": {
-            "type": "object",
-            "description": "DC/OS service configuration properties",
-            "properties": {
-                "name": {
-                    "description": "Name of this service instance as shown in DC/OS",
-                    "type": "string",
-                    "default": "keycloak"
-                },
-                "cpus": {
-                    "description": "Number of logical cores to allocate to each service instance.",
-                    "type": "number",
-                    "default": 1.0
-                },
-                "mem": {
-                    "description": "Memory in Mb to allocate to each service instance.",
-                    "type": "number",
-                    "default": 1024
-                },
-                "instances": {
-                    "description": "Number of instances of your service.",
-                    "type": "number",
-                    "default": 1.0
-                },
-                "disk": {
-                    "description": "Number of disks to allocate to each service instance.",
-                    "type": "number",
-                    "default": 0
-                }
+      "service": {
+          "type": "object",
+          "description": "DC/OS service specifications",
+          "properties": {
+              "name": {
+                  "description": "Name of application instance as seen in DC/OS.",
+                  "type": "string",
+                  "default": "keycloak"
+              },
+              "instances": {
+                  "description": "Number of instances of your service.",
+                  "type": "number",
+                  "default": 1.0
+              },
+              "cpus": {
+                  "description": "Number of logical cores to allocate to each service instance.",
+                  "type": "number",
+                  "default": 1
+              },
+              "mem": {
+                  "description": "Memory in Mb to allocate to each service instance.",
+                  "type": "number",
+                  "default": 1024
+              },
+              "disk": {
+                  "description": "Number of disks to allocate to each service instance.",
+                  "type": "number",
+                  "default": 0
+              },
+              "cmd": {
+                  "description": "A shell command for your container to execute.",
+                  "type": "string",
+                  "default": ""
+              },
+              "back_off_seconds": {
+                  "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                  "type": "number",
+                  "default": 1.0
+              },
+              "back_off_factor": {
+                  "description": "The multiplicand to apply to the backoffSeconds value.",
+                  "type": "number",
+                  "default": 1.15
+              },
+              "max_launch_delay_seconds": {
+                  "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                  "type": "number",
+                  "default": 3600
+              }
             },
             "required": [
-                "name",
-                "cpus",
-                "mem",
-                "instances"
+                  "name",
+                  "cpus",
+                  "mem",
+                  "instances"
             ]
-        },
+      },
         "placement": {
             "type": "object",
             "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
@@ -46,7 +66,7 @@
                 "constraints": {
                     "type": "string",
                     "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-                    "default": "[]",
+                    "default": "[[\"hostname\",\"UNIQUE\"]]",
                     "media": {
                         "type": "application/x-zone-constraints+json"
                     }

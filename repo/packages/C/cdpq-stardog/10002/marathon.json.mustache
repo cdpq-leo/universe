@@ -1,16 +1,22 @@
 {
   "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "instances": {{service.instances}},
-  "acceptedResourceRoles": [
-    "*"
-  ],
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
   "networks": [
     {
       "mode": "container/bridge"
     }
+  ],
+  "acceptedResourceRoles": [
+    "*"
   ],
   "container": {
     "type": "DOCKER",
@@ -27,7 +33,9 @@
   	  "mode": "RW",
   	  "persistent": {
   		"type": "{{volumes.volume_data.type}}",
+      {{^volumes.volume_data.profile}}
   		"profileName": "{{volumes.volume_data.profile}}",
+      {{/volumes.volume_data.profile}}
   		"size": {{volumes.volume_data.size}},
   		"constraints": []
   	  }
@@ -71,6 +79,12 @@
     "DEPLOYMENT_NODE_TYPE": "{{environment.DEPLOYMENT_NODE_TYPE}}",
     "STARDOG_SERVER_JAVA_ARGS": "{{environment.STARDOG_SERVER_JAVA_ARGS}}",
     "MEMORY_MODE": "{{environment.MEMORY_MODE}}",
+    "ADMIN_PASSWORD": {"secret": "stardogadminpassword"}
+  },
+  "secrets": {
+    "stardogadminpassword": {
+      "source": "{{environment.ADMIN_PASSWORD_SECRET}}"
+    }
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
@@ -78,20 +92,27 @@
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-	   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
-     {{/networking.marathon_lb_proxy.enabled}}
+    {{/networking.marathon_lb_proxy.path}}
+	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
-  "fetch":
-   [
+  "fetch": [
+    {{#fetch.artifact_URI.uri}}
     {
       "uri": "{{fetch.artifact_URI.uri}}",
       "extract": {{fetch.artifact_URI.extract}},
       "executable": {{fetch.artifact_URI.executable}},
       "cache": {{fetch.artifact_URI.cache}}
     }
-   ]
+    {{/fetch.artifact_URI.uri}}
+   ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 0,
+    "minimumHealthCapacity": 0.5
+  }
 }

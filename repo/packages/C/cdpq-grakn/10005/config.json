@@ -2,28 +2,81 @@
   "type": "object",
   "properties": {
     "service": {
+        "type": "object",
+        "description": "DC/OS service specifications",
+        "properties": {
+            "name": {
+                "description": "Name of application instance as seen in DC/OS.",
+                "type": "string",
+                "default": "grakn"
+            },
+            "instances": {
+                "description": "Number of instances of your service.",
+                "type": "number",
+                "default": 1.0
+            },
+            "cpus": {
+                "description": "Number of logical cores to allocate to each service instance.",
+                "type": "number",
+                "default": 0.5
+            },
+            "mem": {
+                "description": "Memory in Mb to allocate to each service instance.",
+                "type": "number",
+                "default": 4096
+            },
+            "disk": {
+                "description": "Number of disks to allocate to each service instance.",
+                "type": "number",
+                "default": 0
+            },
+            "cmd": {
+                "description": "A shell command for your container to execute.",
+                "type": "string",
+                "default": ""
+            },
+            "back_off_seconds": {
+                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                "type": "number",
+                "default": 1.0
+            },
+            "back_off_factor": {
+                "description": "The multiplicand to apply to the backoffSeconds value.",
+                "type": "number",
+                "default": 1.15
+            },
+            "max_launch_delay_seconds": {
+                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                "type": "number",
+                "default": 3600
+            }
+          },
+          "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+          ]
+    },
+    "placement": {
       "type": "object",
-      "description": "DC/OS service configuration properties",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
       "properties": {
-        "name": {
-          "description": "Name of this service instance.",
+        "constraints": {
           "type": "string",
-          "default": "grakn"
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\",\"UNIQUE\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
         },
-        "cpus": {
-          "description": "CPU shares to allocate to the Grakn instance.",
-          "type": "number",
-          "default": 0.5
-        },
-        "mem": {
-          "description": "Memory to allocate to the Grakn instance.",
-          "type": "number",
-          "default": 8096
-        },
-        "disk": {
-          "description": "Disk (MB) to allocate to the Grakn instance.",
-          "type": "number",
-          "default": 4096
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
         }
       }
     },
@@ -31,7 +84,7 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "service_endpoint_01": {
+        "service_endpoint_server": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
@@ -57,7 +110,33 @@
             }
           }
         },
-        "service_endpoint_02": {
+        "service_endpoint_api": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 9160
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 9160
+            }
+          }
+        },
+        "service_endpoint_grpc": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
@@ -146,21 +225,41 @@
           "type": "boolean",
           "default": false
         },
-        "BACKGROUND_TASKS_THREADS": {
-          "type": "number",
-          "default": 4
+        "STORAGE_HOSTNAME": {
+          "type": "string",
+          "default": "node-0-server.cassandra.autoip.dcos.thisdcos.directory,node-1-server.cassandra.autoip.dcos.thisdcos.directory,node-2-server.cassandra.autoip.dcos.thisdcos.directory"
+        },
+        "START_LOCAL_QUEUE": {
+          "type": "boolean",
+          "default": false
+        },
+        "QUEUE_HOST": {
+          "type": "string",
+          "default": "redis.marathon.l4lb.thisdcos.directory:6379"
+        },
+        "INDEX_SEARCH_BACKEND": {
+          "type": "string",
+          "default": "elasticsearch"
+        },
+        "INDEX_SEARCH_HOSTNAME": {
+          "type": "string",
+          "default": "master.elastic.l4lb.thisdcos.directory"
         },
         "SPARK_MASTER": {
           "type": "string",
           "default": "local[*]"
         },
+        "GREMLIN_GRAPH_READER": {
+          "type": "string",
+          "default": "org.janusgraph.hadoop.formats.cassandra.Cassandra3InputFormat"
+        },
+        "BACKGROUND_TASKS_THREADS": {
+          "type": "number",
+          "default": 4
+        },
         "LOG_LEVEL": {
           "type": "string",
           "default": "DEBUG"
-        },
-        "STORAGE_HOSTNAME": {
-          "type": "string",
-          "default": ""
         },
         "KEYSPACE": {
           "type": "string",

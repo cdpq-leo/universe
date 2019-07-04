@@ -1,18 +1,23 @@
 {
   "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "fetch": [
-      {{#fetch.artifact_URI.uri}}
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
     {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
+      "mode": "container/bridge"
     }
-      {{/fetch.artifact_URI.uri}}
-   ],
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -21,84 +26,84 @@
     },
     "portMappings": [
       {
-        {{#networking.service_endpoint_01.load_balance_port}}   
+        {{#networking.service_endpoint_01.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoint_01.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_01.load_balance_port}}
         "containerPort": {{networking.service_endpoint_01.container_port}},
         "hostPort": {{networking.service_endpoint_01.host_port}},
-        "protocol": "{{networking.service_endpoint_01.protocol}}"   
+        "protocol": "{{networking.service_endpoint_01.protocol}}"
       },
       {
-        {{#networking.service_endpoint_02.load_balance_port}}   
+        {{#networking.service_endpoint_02.load_balance_port}}
         "labels": {
             "VIP_1": "/{{service.name}}:{{networking.service_endpoint_02.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_02.load_balance_port}}
         "containerPort": {{networking.service_endpoint_02.container_port}},
         "hostPort": {{networking.service_endpoint_02.host_port}},
-        "protocol": "{{networking.service_endpoint_02.protocol}}"   
+        "protocol": "{{networking.service_endpoint_02.protocol}}"
       },
       {
-        {{#networking.service_endpoint_03.load_balance_port}}   
+        {{#networking.service_endpoint_03.load_balance_port}}
         "labels": {
             "VIP_2": "/{{service.name}}:{{networking.service_endpoint_03.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_03.load_balance_port}}
         "containerPort": {{networking.service_endpoint_03.container_port}},
         "hostPort": {{networking.service_endpoint_03.host_port}},
-        "protocol": "{{networking.service_endpoint_03.protocol}}"   
+        "protocol": "{{networking.service_endpoint_03.protocol}}"
       },
       {
-        {{#networking.service_endpoint_04.load_balance_port}}   
+        {{#networking.service_endpoint_04.load_balance_port}}
         "labels": {
             "VIP_3": "/{{service.name}}:{{networking.service_endpoint_04.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_04.load_balance_port}}
         "containerPort": {{networking.service_endpoint_04.container_port}},
         "hostPort": {{networking.service_endpoint_04.host_port}},
-        "protocol": "{{networking.service_endpoint_04.protocol}}"   
+        "protocol": "{{networking.service_endpoint_04.protocol}}"
       },
       {
-        {{#networking.service_endpoint_05.load_balance_port}}   
+        {{#networking.service_endpoint_05.load_balance_port}}
         "labels": {
             "VIP_4": "/{{service.name}}:{{networking.service_endpoint_05.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_05.load_balance_port}}
         "containerPort": {{networking.service_endpoint_05.container_port}},
         "hostPort": {{networking.service_endpoint_05.host_port}},
-        "protocol": "{{networking.service_endpoint_05.protocol}}"   
+        "protocol": "{{networking.service_endpoint_05.protocol}}"
       },
       {
-        {{#networking.service_endpoint_06.load_balance_port}}   
+        {{#networking.service_endpoint_06.load_balance_port}}
         "labels": {
             "VIP_5": "/{{service.name}}:{{networking.service_endpoint_06.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_06.load_balance_port}}
         "containerPort": {{networking.service_endpoint_06.container_port}},
         "hostPort": {{networking.service_endpoint_06.host_port}},
-        "protocol": "{{networking.service_endpoint_06.protocol}}"   
+        "protocol": "{{networking.service_endpoint_06.protocol}}"
       },
       {
-        {{#networking.service_endpoint_07.load_balance_port}}   
+        {{#networking.service_endpoint_07.load_balance_port}}
         "labels": {
             "VIP_6": "/{{service.name}}:{{networking.service_endpoint_07.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_07.load_balance_port}}
         "containerPort": {{networking.service_endpoint_07.container_port}},
         "hostPort": {{networking.service_endpoint_07.host_port}},
-        "protocol": "{{networking.service_endpoint_07.protocol}}"   
+        "protocol": "{{networking.service_endpoint_07.protocol}}"
       },
       {
-        {{#networking.service_endpoint_08.load_balance_port}}   
+        {{#networking.service_endpoint_08.load_balance_port}}
         "labels": {
             "VIP_7": "/{{service.name}}:{{networking.service_endpoint_08.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoint_08.load_balance_port}}
         "containerPort": {{networking.service_endpoint_08.container_port}},
         "hostPort": {{networking.service_endpoint_08.host_port}},
-        "protocol": "{{networking.service_endpoint_08.protocol}}"   
+        "protocol": "{{networking.service_endpoint_08.protocol}}"
       }
     ],
     "volumes": [
@@ -166,11 +171,6 @@
       {{/volumes.external_volume.local_persistant_volume.container_path}}
     ]
   },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
   "healthChecks": [
     {
       "portIndex": 0,
@@ -178,18 +178,6 @@
       "path": "{{networking.marathon_lb.vhost}}"
     }
   ],
-  "labels": {
-    "HAPROXY_3_GROUP": "external",
-    "HAPROXY_3_VHOST": "{{networking.marathon_lb.vhost}}",
-    "HAPROXY_3_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
-    "HAPROXY_3_STICKY": "true",
-    "HAPROXY_4_GROUP": "external",
-    "HAPROXY_4_VHOST": "{{networking.marathon_lb.vhost}}",
-    "HAPROXY_4_STICKY": "true",
-    "HAPROXY_5_GROUP": "external",
-    "HAPROXY_5_VHOST": "{{networking.marathon_lb.vhost}}",
-    "HAPROXY_5_STICKY": "true"
-  },
   "env": {
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
@@ -211,5 +199,51 @@
     "marklogicpassword": {
       "source": "{{environment.marklogic.password}}"
     }
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_STICKY": "true"
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_3_GROUP": "external",
+    "HAPROXY_3_ENABLED": "true",
+    "HAPROXY_3_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_3_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_3_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_3_STICKY": "true",
+    "HAPROXY_4_GROUP": "external",
+    "HAPROXY_4_ENABLED": "true",
+    "HAPROXY_4_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_4_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_4_STICKY": "true",
+    "HAPROXY_5_ENABLED": "true",
+    "HAPROXY_5_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_5_GROUP": "external",
+    "HAPROXY_5_VHOST": "{{networking.marathon_lb.vhost}}",
+    "HAPROXY_5_STICKY": "true"
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
   }
+  {{/fetch.artifact_URI.uri}}
+  ],
+ "upgradeStrategy": {
+   "maximumOverCapacity": 0,
+   "minimumHealthCapacity": 0.5
+ }
 }

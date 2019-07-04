@@ -1,22 +1,22 @@
 {
   "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
-  "instances": {{service.instances}},
-  "fetch": [
-      {{#fetch.artifact_URI.uri}}
-    {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
-    }
-      {{/fetch.artifact_URI.uri}}
-   ],
+  "disk": {{service.disk}},
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
   "networks": [
     {
       "mode": "container/bridge"
     }
+  ],
+  "acceptedResourceRoles": [
+    "*"
   ],
   "container": {
     "type": "DOCKER",
@@ -41,24 +41,21 @@
     "volumes": [
     	{{^volumes.volume_data.external_volume_name}}
     	{
-    	  "containerPath": "data",
+    	  "containerPath": "mssql",
     	  "mode": "RW",
     	  "persistent": {
     		"type": "{{volumes.volume_data.type}}",
+        {{^volumes.volume_data.profile}}
     		"profileName": "{{volumes.volume_data.profile}}",
+        {{/volumes.volume_data.profile}}
     		"size": {{volumes.volume_data.size}},
     		"constraints": []
     	  }
-    	},
-    	{
-    	  "containerPath": "{{volumes.volume_data.container_path}}/data",
-    	  "hostPath": "data",
-    	  "mode": "RW"
     	}
     	{{/volumes.volume_data.external_volume_name}}
     	{{#volumes.volume_data.external_volume_name}}
         {
-            "containerPath": "{{volumes.volume_data.container_path}}/data",
+            "containerPath": "{{volumes.volume_data.container_path}}",
             "external": {
               "name": "{{volumes.volume_data.external_volume_name}}",
               "provider": "dvdi",
@@ -66,92 +63,7 @@
             },
             "mode": "RW"
         }
-    	{{/volumes.volume_data.external_volume_name}},
-    	{{^volumes.volume_log.external_volume_name}}
-    	{
-    	  "containerPath": "log",
-    	  "mode": "RW",
-    	  "persistent": {
-    		"type": "{{volumes.volume_log.type}}",
-    		"profileName": "{{volumes.volume_log.profile}}",
-    		"size": {{volumes.volume_log.size}},
-    		"constraints": []
-    	  }
-    	},
-    	{
-    	  "containerPath": "{{volumes.volume_log.container_path}}/log",
-    	  "hostPath": "log",
-    	  "mode": "RW"
-    	}
-    	{{/volumes.volume_log.external_volume_name}}
-    	{{#volumes.volume_log.external_volume_name}}
-        {
-            "containerPath": "{{volumes.volume_log.container_path}}/log",
-            "external": {
-              "name": "{{volumes.volume_log.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-        }
-    	{{/volumes.volume_log.external_volume_name}},
-    	{{^volumes.volume_tempdb.external_volume_name}}
-    	{
-    	  "containerPath": "tempdb",
-    	  "mode": "RW",
-    	  "persistent": {
-    		"type": "{{volumes.volume_tempdb.type}}",
-    		"profileName": "{{volumes.volume_tempdb.profile}}",
-    		"size": {{volumes.volume_tempdb.size}},
-    		"constraints": []
-    	  }
-    	},
-    	{
-    	  "containerPath": "{{volumes.volume_tempdb.container_path}}/tempdb",
-    	  "hostPath": "tempdb",
-    	  "mode": "RW"
-    	}
-    	{{/volumes.volume_tempdb.external_volume_name}}
-    	{{#volumes.volume_tempdb.external_volume_name}}
-        {
-            "containerPath": "{{volumes.volume_tempdb.container_path}}/tempdb",
-            "external": {
-              "name": "{{volumes.volume_tempdb.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-        }
-    	{{/volumes.volume_tempdb.external_volume_name}},
-
-    	{{^volumes.volume_backup.external_volume_name}}
-    	{
-    	  "containerPath": "backup",
-    	  "mode": "RW",
-    	  "persistent": {
-    		"type": "{{volumes.volume_backup.type}}",
-    		"profileName": "{{volumes.volume_backup.profile}}",
-    		"size": {{volumes.volume_backup.size}},
-    		"constraints": []
-    	  }
-    	},
-    	{
-    	  "containerPath": "{{volumes.volume_backup.container_path}}/backup",
-    	  "hostPath": "backup",
-    	  "mode": "RW"
-    	}
-    	{{/volumes.volume_backup.external_volume_name}}
-    	{{#volumes.volume_backup.external_volume_name}}
-        {
-            "containerPath": "{{volumes.volume_backup.container_path}}/backup",
-            "external": {
-              "name": "{{volumes.volume_backup.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-        }
-    	{{/volumes.volume_backup.external_volume_name}}
+    	{{/volumes.volume_data.external_volume_name}}
      ]
   },
   "env": {
@@ -167,16 +79,30 @@
     "MSSQL_AGENT_ENABLED": "{{environment.MSSQL_AGENT_ENABLED}}",
     "MSSQL_DUMP_DIR": "{{environment.MSSQL_DUMP_DIR}}",
     "MSSQL_DATA_DIR": "{{volumes.volume_data.container_path}}/data",
-    "MSSQL_LOG_DIR": "{{volumes.volume_log.container_path}}/log",
-    "MSSQL_BACKUP_DIR": "{{volumes.volume_backup.container_path}}/backup",
-    "MSSQL_TEMPDB_DIR": "{{volumes.volume_tempdb.container_path}}/tempdb"
+    "MSSQL_LOG_DIR": "{{volumes.volume_data.container_path}}/log",
+    "MSSQL_BACKUP_DIR": "{{volumes.volume_data.container_path}}/backup",
+    "MSSQL_TEMPDB_DIR": "{{volumes.volume_data.container_path}}/tempdb"
   },
   "secrets": {
     "sapassword": {
       "source": "{{environment.SA_PASSWORD_SECRET}}"
     }
   },
-  "constraints": [["hostname", "UNIQUE"]],
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
   "healthChecks": [{
     "protocol": "TCP",
     "portIndex": 0,
@@ -185,17 +111,18 @@
     "timeoutSeconds": 20,
     "maxConsecutiveFailures": 3
   }],
-  "labels": {
-    {{#networking.marathon_lb_proxy.enabled}}
-    "HAPROXY_GROUP": "external",
-    "HAPROXY_0_ENABLED": "true",
-    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-     {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_WEB_PATH": "/auth",
-    "DCOS_SERVICE_PORT_INDEX": "0"
+  "fetch": [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+   ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 0,
+    "minimumHealthCapacity": 0.5
   }
 }

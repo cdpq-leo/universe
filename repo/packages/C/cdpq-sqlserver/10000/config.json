@@ -1,38 +1,62 @@
 {
 	"properties": {
 		"service": {
-			"type": "object",
-			"description": "DC/OS service configuration properties",
-			"properties": {
-				"name": {
-					"description": "Name of this service instance",
-					"type": "string",
-					"default": "sqlserver"
-				},
-				"cpus": {
-					"description": "CPU shares to allocate to each service instance.",
-					"type": "number",
-					"default": 1,
-					"minimum": 1
-				},
-				"mem": {
-					"description": "Memory to allocate to each service instance.",
-					"type": "number",
-					"default": 4096.0,
-					"minimum": 4096.0
-				},
-				"instances": {
-					"description": "Number of instances of your service.",
-					"type": "number",
-					"default": 1.0
-				}
-			},
-			"required": [
-				"name",
-				"cpus",
-				"mem"
-			]
-		},
+        "type": "object",
+        "description": "DC/OS service specifications",
+        "properties": {
+            "name": {
+                "description": "Name of application instance as seen in DC/OS.",
+                "type": "string",
+                "default": "sqlserver"
+            },
+            "instances": {
+                "description": "Number of instances of your service.",
+                "type": "number",
+                "default": 1.0
+            },
+            "cpus": {
+                "description": "Number of logical cores to allocate to each service instance.",
+                "type": "number",
+                "default": 1
+            },
+            "mem": {
+                "description": "Memory in Mb to allocate to each service instance.",
+                "type": "number",
+                "default": 4096
+            },
+            "disk": {
+                "description": "Number of disks to allocate to each service instance.",
+                "type": "number",
+                "default": 0
+            },
+            "cmd": {
+                "description": "A shell command for your container to execute.",
+                "type": "string",
+                "default": ""
+            },
+            "back_off_seconds": {
+                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                "type": "number",
+                "default": 1.0
+            },
+            "back_off_factor": {
+                "description": "The multiplicand to apply to the backoffSeconds value.",
+                "type": "number",
+                "default": 1.15
+            },
+            "max_launch_delay_seconds": {
+                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                "type": "number",
+                "default": 3600
+            }
+          },
+          "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+          ]
+    },
 		"placement": {
 			"type": "object",
 			"description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
@@ -40,7 +64,7 @@
 				"constraints": {
 					"type": "string",
 					"description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-					"default": "[]",
+					"default": "[[\"hostname\",\"UNIQUE\"]]",
 					"media": {
 						"type": "application/x-zone-constraints+json"
 					}
@@ -60,96 +84,6 @@
 			"description": "SQL Server storage configuration properties",
 			"properties": {
 				"volume_data": {
-					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-					"type": "object",
-					"properties": {
-						"container_path": {
-							"description": "The path of a volume on the container.",
-							"type": "string",
-							"default": "/var/opt/mssql"
-						},
-						"type": {
-							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-							"type": "string",
-							"default": "root"
-						},
-						"size": {
-							"type": "integer",
-							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-							"default": 0
-						},
-						"profile": {
-							"type": "string",
-							"description": "Disk profile to be used for volume."
-						},
-						"external_volume_name": {
-							"type": "string",
-							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-							"default": ""
-						}
-					}
-				},
-				"volume_log": {
-					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-					"type": "object",
-					"properties": {
-						"container_path": {
-							"description": "The path of a volume on the container.",
-							"type": "string",
-							"default": "/var/opt/mssql"
-						},
-						"type": {
-							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-							"type": "string",
-							"default": "root"
-						},
-						"size": {
-							"type": "integer",
-							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-							"default": 0
-						},
-						"profile": {
-							"type": "string",
-							"description": "Disk profile to be used for volume."
-						},
-						"external_volume_name": {
-							"type": "string",
-							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-							"default": ""
-						}
-					}
-				},
-				"volume_tempdb": {
-					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-					"type": "object",
-					"properties": {
-						"container_path": {
-							"description": "The path of a volume on the container.",
-							"type": "string",
-							"default": "/var/opt/mssql"
-						},
-						"type": {
-							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-							"type": "string",
-							"default": "root"
-						},
-						"size": {
-							"type": "integer",
-							"description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-							"default": 0
-						},
-						"profile": {
-							"type": "string",
-							"description": "Disk profile to be used for volume."
-						},
-						"external_volume_name": {
-							"type": "string",
-							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-							"default": ""
-						}
-					}
-				},
-				"volume_backup": {
 					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
 					"type": "object",
 					"properties": {

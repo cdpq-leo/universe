@@ -1,7 +1,7 @@
 {
  "packagingVersion": "4.0",
  "name": "cdpq-grakn",
- "version": "1.0.4-dev-1.5.3",
+ "version": "1.0.3-1.5.3",
  "maintainer": "leo@cdpq.com",
  "description": "This is a single grakn container, which is a knowledge graph to organise complex networks of data and make it queryable. See documentation for more details: https://github.com/graknlabs/grakn ",
  "website": "https://grakn.ai/",

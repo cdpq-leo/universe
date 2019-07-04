@@ -1,12 +1,23 @@
 {
-  "id": "/{{service.name}}",
-  "backoffFactor": {{service.back_off_factor}},
-  "backoffSeconds": {{service.back_off_seconds}},
-  "mem": {{service.mem}},
-  "cpus": {{service.cpus}},
-  "disk": {{service.disk}},
+  "id": "{{service.name}}",
   "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
   "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -17,17 +28,17 @@
     },
     "portMappings": [
       {
-        {{#networking.service_endpoints.load_balance_port}}   
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "volumes": 
+    "volumes":
     [
       {{^volumes.volume_data.external_volume_name}}
       {
@@ -55,7 +66,7 @@
           "options": { "dvdi/driver": "rexray" }
         },
         "mode": "RW"
-      }     
+      }
       {{/volumes.volume_data.external_volume_name}}
     ]
   },
@@ -66,7 +77,7 @@
     "KAFKA_PRODUCER_TOPIC_RESET": "{{environment.KAFKA_PRODUCER_TOPIC_RESET}}",
     "KAFKA_PRODUCER_TOPIC_SUBMIT": "{{environment.KAFKA_PRODUCER_TOPIC_SUBMIT}}",
     "MARKLOGIC_COL": "{{environment.MARKLOGIC_COL}}",
-    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",    
+    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}",
      "MARKLOGIC_USR": {
@@ -104,25 +115,31 @@
   ],
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    "DCOS_SERVICE_NAME": "{{service.name}}"
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
   },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
+  }
+  {{/fetch.artifact_URI.uri}}
   ],
-  "fetch": 
-  [
-    {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
-    }
-  ]
+ "upgradeStrategy": {
+   "maximumOverCapacity": 0,
+   "minimumHealthCapacity": 0.5
+ }
 }

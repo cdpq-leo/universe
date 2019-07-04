@@ -1,21 +1,22 @@
 {
-  "id": "/{{service.name}}",
+  "id": "{{service.name}}",
   "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "backoffFactor": {{service.back_off_factor}},
-  "backoffSeconds": {{service.back_off_seconds}},
+  {{#service.cmd}}
   "cmd": "{{service.cmd}}",
-  "fetch": [
-    {{#fetch.artifact_URI.uri}}
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
     {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
+      "mode": "container/bridge"
     }
-    {{/fetch.artifact_URI.uri}}
+  ],
+  "acceptedResourceRoles": [
+    "*"
   ],
   "container": {
     "type": "DOCKER",
@@ -30,19 +31,42 @@
         "hostPort": {{networking.service_endpoints.host_port}},
         "name": "{{networking.service_endpoints.service_endpoint_name}}",
         "protocol": "{{networking.service_endpoints.protocol}}",
-        {{#networking.service_endpoints.load_balance_port}}   
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoints.load_balance_port}}
-        "containerPort": {{networking.service_endpoints.container_port}}          
+        "containerPort": {{networking.service_endpoints.container_port}}
       }
     ],
-    "volumes": 
+    "volumes":
       [
+        {{^volumes.volume_config.external_volume_name}}
+        {
+          "containerPath": {{volumes.volume_config.container_path}},
+          "mode": "RW",
+          "persistent": {
+            "size": {{volumes.volume_config.size}},
+            "type": "{{volumes.volume_config.type}}",
+            "profileName": "{{volumes.volume_config.profile}}",
+            "constraints": []
+          }
+        }
+        {{/volumes.volume_config.external_volume_name}}
+        {{#volumes.volume_config.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_config.container_path}}",
+          "external": {
+            "name": "{{volumes.volume_config.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        }
+        {{/volumes.volume_config.external_volume_name}},
         {{^volumes.volume_data.external_volume_name}}
         {
-          "containerPath": "data",
+          "containerPath": {{volumes.volume_data.container_path}},
           "mode": "RW",
           "persistent": {
             "size": {{volumes.volume_data.size}},
@@ -50,86 +74,51 @@
             "profileName": "{{volumes.volume_data.profile}}",
             "constraints": []
           }
-        },
-        {
-           "containerPath": "{{volumes.volume_data.container_path}}/data",
-           "hostPath": "data",
-           "mode": "RW"
         }
         {{/volumes.volume_data.external_volume_name}}
         {{#volumes.volume_data.external_volume_name}}
         {
-          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "containerPath": "{{volumes.volume_data.container_path}}",
           "external": {
             "name": "{{volumes.volume_data.external_volume_name}}",
             "provider": "dvdi",
             "options": { "dvdi/driver": "rexray" }
           },
           "mode": "RW"
-        }     
-        {{/volumes.volume_data.external_volume_name}}
-        ,
-        {{^volumes.volume_grakn.external_volume_name}}
-        {
-          "containerPath": "grakn",
-          "mode": "RW",
-          "persistent": {
-            "size": {{volumes.volume_grakn.size}},
-            "type": "{{volumes.volume_grakn.type}}",
-            "profileName": "{{volumes.volume_grakn.profile}}",
-            "constraints": []
-          }
-        },
-        {
-           "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
-           "hostPath": "grakn",
-           "mode": "RW"
         }
-        {{/volumes.volume_grakn.external_volume_name}}
-        {{#volumes.volume_grakn.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_grakn.container_path}}/grakn",
-          "external": {
-            "name": "{{volumes.volume_grakn.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        }     
-        {{/volumes.volume_grakn.external_volume_name}}
-      ]
+        {{/volumes.volume_data.external_volume_name}}
+        ]
   },
   "env": {
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "BRAT_USERNAME": {
-      "secret": "bratuser"
-    },
-    "BRAT_PASSWORD": {
-      "secret": "bratpassword"
-    },
-    "BRAT_EMAIL": "{{environment.email}}"
-  },
-  "labels": {
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    {{#networking.marathon_lb_proxy.enabled}}
-    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-    "HAPROXY_GROUP": "external",
-    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-    "HAPROXY_0_ENABLED": "true",
-    {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_SCHEME": "http"
+    "BRAT_USERNAME": {"secret": "bratuser"},
+    "BRAT_PASSWORD": {"secret": "bratpassword"},
+    "BRAT_EMAIL": "{{environment.BRAT_EMAIL}}"
   },
    "secrets": {
      "bratuser": {
-      "source": "{{environment.secret_username}}"
+      "source": "{{environment.BRAT_USERNAME_SECRET}}"
     }
     "bratpassword": {
-      "source": "{{environment.secret_password}}"
+      "source": "{{environment.BRAT_PASSWORD_SECRET}}"
     }
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
     {
@@ -141,10 +130,18 @@
       "protocol": "TCP"
     }
   ],
-  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ]
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
+  }
+  {{/fetch.artifact_URI.uri}}
+  ],
+ "upgradeStrategy": {
+   "maximumOverCapacity": 0,
+   "minimumHealthCapacity": 0.5
+ }
 }

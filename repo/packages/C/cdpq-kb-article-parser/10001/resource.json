@@ -7,7 +7,7 @@
     "assets": {
         "container": {
             "docker": {
-                "image": "cdpqleo/kf-article-parser:1.0.1"
+                "image": "cdpqleo/kb-article-parser:1.0.1"
             }
         }
     }

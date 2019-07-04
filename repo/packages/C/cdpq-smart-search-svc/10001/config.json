@@ -2,25 +2,61 @@
   "type": "object",
   "properties": {
     "service": {
-      "type": "object",
-      "description": "DC/OS smart-search-svc service specifications",
-      "properties": {
-        "name": {
-          "description": "Name of smart-search-svc instances as seen in DC/OS.",
-          "type": "string",
-          "default": "smart-search-svc"
-        },
-        "cpus": {
-          "description": "Number of logical cores to allocate to each service instance.",
-          "type": "number",
-          "default": 0.3
-        },
-        "mem": {
-          "description": "Memory in Mb to allocate to each service instance.",
-          "type": "number",
-          "default": 2048
-        }
-      }
+        "type": "object",
+        "description": "DC/OS service specifications",
+        "properties": {
+            "name": {
+                "description": "Name of application instance as seen in DC/OS.",
+                "type": "string",
+                "default": "smart-search-svc"
+            },
+            "instances": {
+                "description": "Number of instances of your service.",
+                "type": "number",
+                "default": 1.0
+            },
+            "cpus": {
+                "description": "Number of logical cores to allocate to each service instance.",
+                "type": "number",
+                "default": 0.2
+            },
+            "mem": {
+                "description": "Memory in Mb to allocate to each service instance.",
+                "type": "number",
+                "default": 256
+            },
+            "disk": {
+                "description": "Number of disks to allocate to each service instance.",
+                "type": "number",
+                "default": 0
+            },
+            "cmd": {
+                "description": "A shell command for your container to execute.",
+                "type": "string",
+                "default": ""
+            },
+            "back_off_seconds": {
+                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                "type": "number",
+                "default": 1.0
+            },
+            "back_off_factor": {
+                "description": "The multiplicand to apply to the backoffSeconds value.",
+                "type": "number",
+                "default": 1.15
+            },
+            "max_launch_delay_seconds": {
+                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                "type": "number",
+                "default": 3600
+            }
+          },
+          "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+          ]
     },
     "placement": {
       "type": "object",

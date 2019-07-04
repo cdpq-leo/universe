@@ -1,31 +1,32 @@
 {
   "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "instances": 1,
-  "fetch": [
-      {{#fetch.artifact_URI.uri}}
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
     {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
+      "mode": "container/bridge"
     }
-      {{/fetch.artifact_URI.uri}}
-   ],
+  ],
   "acceptedResourceRoles": [
     "*"
   ],
   "container": {
-    "type": "MESOS",
+    "type": "DOCKER",
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
     },
-    "volumes": 
+    "volumes":
       [
         {{^volumes.volume_data.external_volume_name}}
         {
@@ -34,7 +35,9 @@
           "persistent": {
             "size": {{volumes.volume_data.size}},
             "type": "{{volumes.volume_data.type}}",
+            {{^volumes.volume_data.profile}}
             "profileName": "{{volumes.volume_data.profile}}",
+            {{/volumes.volume_data.profile}}
             "constraints": []
           }
         },
@@ -53,54 +56,82 @@
             "options": { "dvdi/driver": "rexray" }
           },
           "mode": "RW"
-        }     
+        }
         {{/volumes.volume_data.external_volume_name}}
       ],
     "portMappings": [
       {
-        {{#networking.service_endpoint_01.load_balance_port}}   
+        {{#networking.service_endpoint_server.load_balance_port}}
         "labels": {
-            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_01.load_balance_port}}"
-        }, 
-        {{/networking.service_endpoint_01.load_balance_port}}
-        "containerPort": {{networking.service_endpoint_01.container_port}},
-        "hostPort": {{networking.service_endpoint_01.host_port}},
-        "protocol": "{{networking.service_endpoint_01.protocol}}"     
-      }, 
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_server.load_balance_port}}"
+        },
+        {{/networking.service_endpoint_server.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_server.container_port}},
+        "hostPort": {{networking.service_endpoint_server.host_port}},
+        "protocol": "{{networking.service_endpoint_server.protocol}}"
+      },
+      {{#networking.service_endpoint_api.load_balance_port}}
+      "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoint_api.load_balance_port}}"
+      },
+      {{/networking.service_endpoint_api.load_balance_port}}
+      "containerPort": {{networking.service_endpoint_api.container_port}},
+      "hostPort": {{networking.service_endpoint_api.host_port}},
+      "protocol": "{{networking.service_endpoint_api.protocol}}"
+      },
       {
-        {{#networking.service_endpoint_02.load_balance_port}}   
+        {{#networking.service_endpoint_grpc.load_balance_port}}
         "labels": {
-            "VIP_1": "/{{service.name}}:{{networking.service_endpoint_02.load_balance_port}}"
-        }, 
-        {{/networking.service_endpoint_02.load_balance_port}}
-        "containerPort": {{networking.service_endpoint_02.container_port}},
-        "hostPort": {{networking.service_endpoint_02.host_port}},
-        "protocol": "{{networking.service_endpoint_02.protocol}}"   
+            "VIP_1": "/{{service.name}}:{{networking.service_endpoint_grpc.load_balance_port}}"
+        },
+        {{/networking.service_endpoint_grpc.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_grpc.container_port}},
+        "hostPort": {{networking.service_endpoint_grpc.host_port}},
+        "protocol": "{{networking.service_endpoint_grpc.protocol}}"
       }
     ]
   },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
+  "env": {
+    "START_LOCAL_STORAGE": "{{environment.START_LOCAL_STORAGE}}",
+    "STORAGE_HOSTNAME": "{{environment.STORAGE_HOSTNAME}}",
+    "START_LOCAL_QUEUE": "{{environment.START_LOCAL_QUEUE}}",
+    "QUEUE_HOST": "{{environment.QUEUE_HOST}}",
+    "INDEX_SEARCH_BACKEND": "{{environment.INDEX_SEARCH_BACKEND}}",
+    "INDEX_SEARCH_HOSTNAME": "{{environment.INDEX_SEARCH_HOSTNAME}}",
+    "SPARK_MASTER": "{{environment.SPARK_MASTER}}",
+    "GREMLIN_GRAPH_READER": "{{environment.GREMLIN_GRAPH_READER}}",
+    "BACKGROUND_TASKS_THREADS": "{{environment.BACKGROUND_TASKS_THREADS}}",
+    "LOG_LEVEL": "{{environment.LOG_LEVEL}}",
+    "KEYSPACE": "{{environment.KEYSPACE}}"
+  },
   "healthChecks":[],
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0",
     "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_PACKAGE_NAME": "{{package.name}}"
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
   },
-  "env": {
-    "START_LOCAL_STORAGE": "{{environment.START_LOCAL_STORAGE}}",
-    "BACKGROUND_TASKS_THREADS": "{{environment.BACKGROUND_TASKS_THREADS}}",
-    "SPARK_MASTER": "{{environment.SPARK_MASTER}}",
-    "LOG_LEVEL": "{{environment.v}}",
-    "STORAGE_HOSTNAME": "{{environment.STORAGE_HOSTNAME}}",
-    "KEYSPACE": "{{environment.KEYSPACE}}"
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
   }
+  {{/fetch.artifact_URI.uri}}
+  ],
+ "upgradeStrategy": {
+   "maximumOverCapacity": 0,
+   "minimumHealthCapacity": 0.5
+ }
 }

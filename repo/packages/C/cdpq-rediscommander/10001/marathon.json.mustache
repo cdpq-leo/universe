@@ -1,18 +1,23 @@
 {
-  "id": "/{{service.name}}",
-  "mem": {{service.mem}},
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
   "disk": {{service.disk}},
-  "fetch": [
-      {{#fetch.artifact_URI.uri}}
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
     {
-      "uri": "{{fetch.artifact_URI.uri}}",
-      "extract": {{fetch.artifact_URI.extract}},
-      "executable": {{fetch.artifact_URI.executable}},
-      "cache": {{fetch.artifact_URI.cache}}
+      "mode": "container/bridge"
     }
-      {{/fetch.artifact_URI.uri}}
-   ],
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
   "container": {
     "type": "DOCKER",
     "volumes": [],
@@ -24,10 +29,10 @@
     },
     "portMappings": [
       {
-        {{#networking.service_endpoints.load_balance_port}}   
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        }, 
+        },
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
@@ -35,11 +40,28 @@
       }
     ]
   },
-  "networks": [
-    {
-      "mode": "container/bridge"
-    }
-  ],
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "REDIS_HOST": "{{environment.REDIS_HOST}}",
+    "REDIS_PORT": "{{environment.REDIS_PORT}}"
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
   "healthChecks": [
     {
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
@@ -56,20 +78,18 @@
       {{/networking.marathon_lb_proxy.enabled}}
     }
   ],
-  "labels": {
-    {{#networking.marathon_lb_proxy.enabled}}
-    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-    {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}"
-  },
-  "env": {
-    {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
-    {{/placement.region}}
-    "REDIS_HOST": "{{environment.redis_host}}",
-    "REDIS_PORT": "{{environment.redis_port}}"
-  }
+  "fetch": [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+   ],
+   "upgradeStrategy": {
+     "maximumOverCapacity": 1,
+     "minimumHealthCapacity": 1
+   }
 }
