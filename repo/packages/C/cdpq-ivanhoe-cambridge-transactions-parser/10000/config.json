@@ -110,7 +110,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 5000
             }
           }
         },

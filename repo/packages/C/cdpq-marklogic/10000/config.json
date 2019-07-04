@@ -110,7 +110,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 7997
             }
           }
         },
@@ -135,7 +136,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 7998
             }
           }
         },
@@ -160,7 +162,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 7999
             }
           }
         },
@@ -185,7 +188,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8000
             }
           }
         },
@@ -210,7 +214,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8001
             }
           }
         },
@@ -235,7 +240,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8002
             }
           }
         },
@@ -260,7 +266,8 @@
             },
             "load_balance_port": {
               "type": "number",
-              "description": "This port will be used to load balance this service address internally"
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8003
             }
           }
         },
@@ -286,6 +293,8 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally"
+              ,
+              "default": 8004
             }
           }
         },

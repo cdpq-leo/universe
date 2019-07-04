@@ -1,7 +1,7 @@
 {
     "packagingVersion": "4.0",
     "name": "cdpq-kb-tableau-export-svc",
-    "version": "1.0.0-1.0.0",
+    "version": "1.0.0-0.2.0",
     "maintainer": "leo@cdpq.com",
     "description": "Article viewer",
     "minDcosReleaseVersion": "1.9.0",
@@ -10,4 +10,3 @@
     "postInstallNotes": "kb-tableau-export-svc installed!",
     "postUninstallNotes": "kb-tableau-export-svc uninstalled!"
   }
-  

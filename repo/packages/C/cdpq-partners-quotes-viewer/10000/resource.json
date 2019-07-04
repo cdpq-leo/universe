@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/quotes_viewer:1.0.2"
+        "image": "cdpqleo/partners-quotes-viewer:1.0.3"
       }
     }
   }

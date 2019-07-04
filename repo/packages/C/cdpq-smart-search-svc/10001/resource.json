@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/smart-search-service:1.0.3"
+        "image": "cdpqleo/smart-search-svc:1.0.4"
       }
     }
   }

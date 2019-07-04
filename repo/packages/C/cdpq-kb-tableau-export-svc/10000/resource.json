@@ -7,7 +7,7 @@
     "assets": {
         "container": {
             "docker": {
-                "image": "cdpqleo/demo-tableau-export"
+                "image": "cdpqleo/kb-tableau-export-svc:0.2.0"
             }
         }
     }
