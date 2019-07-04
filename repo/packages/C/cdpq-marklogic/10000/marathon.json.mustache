@@ -33,6 +33,9 @@
         {{/networking.service_endpoint_01.load_balance_port}}
         "containerPort": {{networking.service_endpoint_01.container_port}},
         "hostPort": {{networking.service_endpoint_01.host_port}},
+        {{#networking.service_endpoint_01.name}}
+        "name": "{{networking.service_endpoint_01.name}}",
+        {{/networking.service_endpoint_01.name}}
         "protocol": "{{networking.service_endpoint_01.protocol}}"
       },
       {
@@ -43,6 +46,9 @@
         {{/networking.service_endpoint_02.load_balance_port}}
         "containerPort": {{networking.service_endpoint_02.container_port}},
         "hostPort": {{networking.service_endpoint_02.host_port}},
+        {{#networking.service_endpoint_02.name}}
+        "name": "{{networking.service_endpoint_02.name}}",
+        {{/networking.service_endpoint_02.name}}
         "protocol": "{{networking.service_endpoint_02.protocol}}"
       },
       {
@@ -53,6 +59,9 @@
         {{/networking.service_endpoint_03.load_balance_port}}
         "containerPort": {{networking.service_endpoint_03.container_port}},
         "hostPort": {{networking.service_endpoint_03.host_port}},
+        {{#networking.service_endpoint_03.name}}
+        "name": "{{networking.service_endpoint_03.name}}",
+        {{/networking.service_endpoint_03.name}}
         "protocol": "{{networking.service_endpoint_03.protocol}}"
       },
       {
@@ -63,6 +72,9 @@
         {{/networking.service_endpoint_04.load_balance_port}}
         "containerPort": {{networking.service_endpoint_04.container_port}},
         "hostPort": {{networking.service_endpoint_04.host_port}},
+        {{#networking.service_endpoint_04.name}}
+        "name": "{{networking.service_endpoint_04.name}}",
+        {{/networking.service_endpoint_04.name}}
         "protocol": "{{networking.service_endpoint_04.protocol}}"
       },
       {
@@ -73,6 +85,9 @@
         {{/networking.service_endpoint_05.load_balance_port}}
         "containerPort": {{networking.service_endpoint_05.container_port}},
         "hostPort": {{networking.service_endpoint_05.host_port}},
+        {{#networking.service_endpoint_05.name}}
+        "name": "{{networking.service_endpoint_05.name}}",
+        {{/networking.service_endpoint_05.name}}
         "protocol": "{{networking.service_endpoint_05.protocol}}"
       },
       {
@@ -83,6 +98,9 @@
         {{/networking.service_endpoint_06.load_balance_port}}
         "containerPort": {{networking.service_endpoint_06.container_port}},
         "hostPort": {{networking.service_endpoint_06.host_port}},
+        {{#networking.service_endpoint_06.name}}
+        "name": "{{networking.service_endpoint_06.name}}",
+        {{/networking.service_endpoint_06.name}}
         "protocol": "{{networking.service_endpoint_06.protocol}}"
       },
       {
@@ -93,6 +111,9 @@
         {{/networking.service_endpoint_07.load_balance_port}}
         "containerPort": {{networking.service_endpoint_07.container_port}},
         "hostPort": {{networking.service_endpoint_07.host_port}},
+        {{#networking.service_endpoint_07.name}}
+        "name": "{{networking.service_endpoint_07.name}}",
+        {{/networking.service_endpoint_07.name}}
         "protocol": "{{networking.service_endpoint_07.protocol}}"
       },
       {

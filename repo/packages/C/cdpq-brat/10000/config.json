@@ -93,10 +93,10 @@
               "type": "number",
               "default": 80
             },
-            "service_endpoint_name": {
+            "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": "brat"
+              "default": ""
             },
             "host_port": {
               "description": "Host port number",

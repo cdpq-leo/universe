@@ -35,8 +35,10 @@
             {{/networking.service_endpoints.load_balance_port}}
             "containerPort": {{networking.service_endpoints.container_port}},
             "hostPort": {{networking.service_endpoints.host_port}},
-            "protocol": "{{networking.service_endpoints.protocol}}",
-            "name": "{{networking.service_endpoints.name}}"
+            {{#networking.service_endpoints.name}}
+            "name": "{{networking.service_endpoints.name}}",
+            {{/networking.service_endpoints.name}}
+            "protocol": "{{networking.service_endpoints.protocol}}"
          }
       ]
    },
