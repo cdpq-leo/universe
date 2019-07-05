@@ -50,7 +50,9 @@
         "persistent": {
           "size": {{volumes.volume_data.size}},
           "type": "{{volumes.volume_data.type}}",
+          {{^volumes.volume_data.profile}}
           "profileName": "{{volumes.volume_data.profile}}",
+          {{/volumes.volume_data.profile}}
           "constraints": []
         }
       },
@@ -83,7 +85,7 @@
     "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}",
-     "MARKLOGIC_USR": {
+    "MARKLOGIC_USR": {
       "secret": "marklogicuser"
     },
     "MARKLOGIC_PWD": {

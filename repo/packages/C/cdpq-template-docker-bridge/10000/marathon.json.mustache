@@ -24,7 +24,7 @@
          "forcePullImage":false,
          "privileged": false
       },
-      "volumes": 
+      "volumes":
       [
          {{^volumes.volume_data.external_volume_name}}
         {
@@ -33,7 +33,9 @@
           "persistent": {
             "size": {{volumes.volume_data.size}},
             "type": "{{volumes.volume_data.type}}",
-            "profileName": "{{volumes.volume_data.profile}}",
+            {{^volumes.volume_data.profile}}
+        		"profileName": "{{volumes.volume_data.profile}}",
+            {{/volumes.volume_data.profile}}
             "constraints": []
           }
         },
@@ -52,7 +54,7 @@
             "options": { "dvdi/driver": "rexray" }
           },
           "mode": "RW"
-        }     
+        }
         {{/volumes.volume_data.external_volume_name}},
         {{^volumes.volume_log.external_volume_name}}
         {
@@ -61,7 +63,9 @@
           "persistent": {
             "size": {{volumes.volume_log.size}},
             "type": "{{volumes.volume_log.type}}",
-            "profileName": "{{volumes.volume_log.profile}}",
+            {{^volumes.volume_data.profile}}
+        		"profileName": "{{volumes.volume_log.profile}}",
+            {{/volumes.volume_data.profile}}
             "constraints": []
           }
         },
@@ -80,10 +84,10 @@
             "options": { "dvdi/driver": "rexray" }
           },
           "mode": "RW"
-        }     
+        }
         {{/volumes.volume_log.external_volume_name}}
       ],
-      "portMappings": 
+      "portMappings":
       [
          {
            {{#networking.service_endpoints.load_balance_port}}
@@ -102,7 +106,7 @@
          "mode":"container/bridge"
       }
    ],
-   "healthChecks": 
+   "healthChecks":
    [
     { {{! command_protocol type}}
       "gracePeriodSeconds": {{health_checks.command_protocol.advanced_health_checking_settings.grace_periods}},

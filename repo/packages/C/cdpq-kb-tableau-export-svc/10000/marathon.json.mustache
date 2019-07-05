@@ -35,7 +35,9 @@
           "persistent": {
             "size": {{volumes.volume_data.size}},
             "type": "{{volumes.volume_data.type}}",
-            "profileName": "{{volumes.volume_data.profile}}",
+            {{^volumes.volume_data.profile}}
+        		"profileName": "{{volumes.volume_data.profile}}",
+            {{/volumes.volume_data.profile}}
             "constraints": []
           }
         },

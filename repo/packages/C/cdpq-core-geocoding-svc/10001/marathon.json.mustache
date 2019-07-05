@@ -19,6 +19,13 @@
     "*"
   ],
   "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    },
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}
@@ -28,20 +35,13 @@
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
-        "protocol": "{{networking.service_endpoints.protocol}}",
         {{#networking.service_endpoints.name}}
         "name": "{{networking.service_endpoints.name}}"
-        {{/networking.service_endpoints.name}}
+        {{/networking.service_endpoints.name}},
+        "protocol": "{{networking.service_endpoints.protocol}}",
       }
     ],
-    "type": "DOCKER",
-    "volumes": [],
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "privileged": false,
-      "parameters": []
-    }
+    "volumes": []
   },
   "env": {
     {{#placement.region}}
@@ -50,7 +50,7 @@
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
     "SERVICE_PREFIX": "/service/{{service.name}}",
-    "GOOGLE_API_KEY": : {"secret": "googleapikey"}
+    "GOOGLE_API_KEY": {"secret": "googleapikey"}
   },
   "secrets": {
     "googleapikey": {

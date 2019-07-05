@@ -21,8 +21,10 @@
  "container": {
    "type": "DOCKER",
    "docker": {
+     "forcePullImage": false,
      "image": "{{resource.assets.container.docker.image}}",
-     "network": "BRIDGE"
+     "parameters": [],
+     "privileged": false
    },
    "portMappings": [
        {
@@ -45,7 +47,7 @@
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
       "REDIS_HOST": "{{environment.REDIS_HOST}}",
-      "REDIS_PORT": "{{environment.REDIS_PORT}}",
+      "REDIS_PORT": {{environment.REDIS_PORT}},
       "URL_PREFIX": "/service/{{service.name}}"
   },
   "labels": {

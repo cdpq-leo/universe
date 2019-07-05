@@ -41,8 +41,7 @@
         "containerPort": {{networking.service_endpoints.container_port}}
       }
     ],
-    "volumes":
-      [
+    "volumes": [
         {{^volumes.volume_config.external_volume_name}}
         {
           "containerPath": {{volumes.volume_config.container_path}},
@@ -50,7 +49,9 @@
           "persistent": {
             "size": {{volumes.volume_config.size}},
             "type": "{{volumes.volume_config.type}}",
-            "profileName": "{{volumes.volume_config.profile}}",
+            {{^volumes.volume_config.profile}}
+        		"profileName": "{{volumes.volume_config.profile}}",
+            {{/volumes.volume_config.profile}}
             "constraints": []
           }
         }
@@ -73,7 +74,9 @@
           "persistent": {
             "size": {{volumes.volume_data.size}},
             "type": "{{volumes.volume_data.type}}",
-            "profileName": "{{volumes.volume_data.profile}}",
+            {{^volumes.volume_data.profile}}
+        		"profileName": "{{volumes.volume_data.profile}}",
+            {{/volumes.volume_data.profile}}
             "constraints": []
           }
         }
@@ -89,7 +92,7 @@
           "mode": "RW"
         }
         {{/volumes.volume_data.external_volume_name}}
-        ]
+      ]
   },
   "env": {
     {{#placement.region}}

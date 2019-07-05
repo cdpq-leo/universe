@@ -76,7 +76,7 @@
     "ACCEPT_EULA": "Y",
     "SA_PASSWORD": {"secret": "sapassword"},
     "MSSQL_PID": "{{environment.MSSQL_PID}}",
-    "MSSQL_TCP_PORT": "{{networking.container_port}}",
+    "MSSQL_TCP_PORT": "{{networking.service_endpoints.container_port}}",
     "MSSQL_LCID": "{{environment.MSSQL_LCID}}",
     "MSSQL_COLLATION": "{{environment.MSSQL_COLLATION}}",
     "MSSQL_AGENT_ENABLED": "{{environment.MSSQL_AGENT_ENABLED}}",

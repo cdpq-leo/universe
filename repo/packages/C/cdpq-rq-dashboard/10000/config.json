@@ -182,8 +182,8 @@
           "default": ""
         },
         "REDIS_PORT": {
-          "type": "string",
-          "default": "6379"
+          "type": "number",
+          "default": 6379
         }
       }
     },

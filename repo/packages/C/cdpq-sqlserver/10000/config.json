@@ -177,7 +177,7 @@
 					"type": "string",
 					"default": "sqlserver-sa-password"
 				},
-				"MSSQL_PID ": {
+				"MSSQL_PID": {
 					"description": "MSSQL_PID is the Product ID (PID) or Edition that the container will run with.",
 					"type": "string",
 					"enum": [

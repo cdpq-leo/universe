@@ -19,6 +19,13 @@
     "*"
   ],
   "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    },
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}
@@ -34,7 +41,6 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "type": "DOCKER",
     "volumes": [
       {
         "containerPath": "/var/opt/data/google",
@@ -42,12 +48,6 @@
         "mode": "RW"
       }
     ]
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "privileged": false,
-      "parameters": []
-    }
   },
   "env": {
     {{#placement.region}}
