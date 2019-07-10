@@ -62,7 +62,7 @@
     "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
     "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
     "SCOPES": "{{environment.SCOPES}}",
-    "GOOGLE_APPLICATION_CREDENTIALS": "/opt/mesosphere/etc/mesos-scheduler-modules/google-credentials.json"
+    "GOOGLE_APPLICATION_CREDENTIALS": "/var/opt/data/google/google-credentials.json"
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
@@ -80,20 +80,16 @@
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
-    {
-      "protocol": "HTTP",
-      "portIndex": {{health_checks.HTTP_protocol.port_index}},
-      {{#networking.marathon_lb_proxy.enabled}}
-      "path": "{{networking.marathon_lb_proxy.path}}",
-      {{/networking.marathon_lb_proxy.enabled}}
-      {{^networking.marathon_lb_proxy.enabled}}
-      "path": "/service/{{service.name}}{{health_checks.HTTP_protocol.path}}",
-      {{/networking.marathon_lb_proxy.enabled}}
-      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
-      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
-      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
-      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
-    }
+  {
+    "protocol": "HTTP",
+    "portIndex": 0,
+    "path": "/service/{{service.name}}/api/health",
+    "gracePeriodSeconds": {{health_checks.advanced_health_checking_settings.grace_periods}},
+    "intervalSeconds": {{health_checks.advanced_health_checking_settings.intervals}},
+    "timeoutSeconds": {{health_checks.advanced_health_checking_settings.timeout}},
+    "maxConsecutiveFailures": {{health_checks.advanced_health_checking_settings.max_failures}},
+    "delaySeconds": {{health_checks.advanced_health_checking_settings.delay_seconds}}
+  }
   ],
   "fetch": [
   {{#fetch.artifact_URI.uri}}

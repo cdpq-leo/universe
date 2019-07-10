@@ -1,0 +1,244 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "Alluxio service configuration properties.",
+      "properties": {
+        "name": {
+          "description": "Name of the service.",
+          "type": "string",
+          "default": "alluxio-master"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 1
+        },
+        "mem": {
+          "description": "Memory to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 4096
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 16384
+        },
+        "instances": {
+          "description": "Number of instances of Alluxio.",
+          "type": "number",
+          "default": 1.0
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": "/entrypoint.sh master"
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "properties": {
+            "service_endpoint_01": {
+              "type": "object",
+              "properties": {
+                "container_port": {
+                  "description": "Container port number",
+                  "type": "number",
+                  "default": 19999
+                },
+                "host_port": {
+                  "description": "Host port number",
+                  "type": "number",
+                  "default": 19999
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "default": "tcp"
+                },
+                "service_port": {
+                  "type": "number",
+                  "default": 10101
+                },
+                "load_balance_port": {
+                  "type": "number",
+                  "description": "This port will be used to load balance this service address internally"
+                }
+              }
+            },
+            "service_endpoint_02": {
+              "type": "object",
+              "properties": {
+                "container_port": {
+                  "description": "Container port number",
+                  "type": "number",
+                  "default": 19998
+                },
+                "host_port": {
+                  "description": "Host port number",
+                  "type": "number",
+                  "default": 19998
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "default": "tcp"
+                },
+                "service_port": {
+                  "type": "number",
+                  "default": 10102
+                },
+                "load_balance_port": {
+                  "type": "number",
+                  "description": "This port will be used to load balance this service address internally"
+                }
+              }
+            },
+            "service_endpoint_03": {
+              "type": "object",
+              "properties": {
+                "container_port": {
+                  "description": "Container port number",
+                  "type": "number",
+                  "default": 39999
+                },
+                "host_port": {
+                  "description": "Host port number",
+                  "type": "number",
+                  "default": 10103
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+                  "default": "tcp"
+                },
+                "service_port": {
+                  "type": "number",
+                  "default": 10103
+                },
+                "load_balance_port": {
+                  "type": "number",
+                  "description": "This port will be used to load balance this service address internally"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "TCP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "description": "Specifies the port index in the ports array that is used for health requests.",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Alluxio parameters",
+      "properties": {
+        "license": {
+          "description": "alluxio license base64 format",
+          "type": "string",
+          "default": "aLicense"
+        },
+        "underfs_address": {
+          "description": "address for understorage filesystem",
+          "type": "string",
+          "default": "hdfs://hdfs/"
+        },
+        "underfs_hdfs_configuration": {
+          "description": "location of hdfs configuration files",
+          "type": "string",
+          "default": "/opt/alluxio/conf/core-site.xml:/opt/alluxio/conf/hdfs-site.xml"
+        },
+        "auth_type": {
+          "description": "authentication protocol (SIMPLE, NOSASL or CUSTOM)",
+          "type": "string",
+          "default": "NOSASL",
+          "enum": [
+            "SIMPLE",
+            "NOSASL"
+          ]
+        }
+      }
+    }
+  }
+}

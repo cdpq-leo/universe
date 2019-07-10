@@ -47,12 +47,8 @@
       "SERVICE_REGION": "{{placement.region}}",
       {{/placement.region}}
       "MYSQL_DATABASE": "{{environment.MYSQL_DATABASE}}",
-      "MYSQL_PASSWORD": {
-         "secret": "mysqlpassword"
-      },
-      "MYSQL_USERNAME":{
-         "secret": "mysqluser"
-      },
+      "MYSQL_PASSWORD": {"secret": "mysqlpassword"},
+      "MYSQL_USERNAME":{"secret": "mysqluser"},
       "MYSQL_HOST": "{{environment.MYSQL_HOST}}",
       "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
       "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
@@ -61,10 +57,10 @@
   },
   "secrets": {
      "mysqluser": {
-      "source": "{{environment.MYSQL_USERNAME}}"
+      "source": "{{environment.MYSQL_USERNAME_SECRET}}"
     },
     "mysqlpassword": {
-      "source": "{{environment.MYSQL_PASSWORD}}"
+      "source": "{{environment.MYSQL_PASSWORD_SECRET}}"
     }
   },
   "labels":{

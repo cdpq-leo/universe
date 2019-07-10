@@ -33,7 +33,7 @@
           "containerPath": "data",
           "mode": "RW",
           "persistent": {
-            "size": {{volumes.volume_data.size}},
+            "size": {{service.disk}},
             "type": "{{volumes.volume_data.type}}",
             {{^volumes.volume_data.profile}}
             "profileName": "{{volumes.volume_data.profile}}",
@@ -73,6 +73,7 @@
         {{/networking.service_endpoint_server.name}}
         "protocol": "{{networking.service_endpoint_server.protocol}}"
       },
+      {
       {{#networking.service_endpoint_api.load_balance_port}}
       "labels": {
           "VIP_0": "/{{service.name}}:{{networking.service_endpoint_api.load_balance_port}}"

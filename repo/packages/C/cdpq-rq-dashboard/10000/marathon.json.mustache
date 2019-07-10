@@ -42,14 +42,6 @@
        }
     ]
   },
-  "env": {
-      {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
-      {{/placement.region}}
-      "REDIS_HOST": "{{environment.REDIS_HOST}}",
-      "REDIS_PORT": {{environment.REDIS_PORT}},
-      "URL_PREFIX": "/service/{{service.name}}"
-  },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",

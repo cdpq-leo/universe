@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/core-rdf-service:1.0.1"
+        "image": "cdpqleo/core-rdf-svc:1.0.2"
       }
     }
   }

@@ -151,11 +151,6 @@
                             "type": "string",
                             "default": "root"
                         },
-                        "size": {
-                            "type": "integer",
-                            "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-                            "default": 0
-                        },
                         "profile": {
                             "type": "string",
                             "description": "Disk profile to be used for volume.",
@@ -221,37 +216,37 @@
         "environment": {
             "type": "object",
             "properties": {
+                "KAFKA_BOOTSTRAP_SERVERS": {
+                    "type": "string",
+                    "default": ""
+                },
                 "KAFKA_PRODUCER_TOPIC_RESET": {
                     "type": "string",
                     "default": "streaming.kb.demo"
-                },
-                "MARKLOGIC_PWD": {
-                    "type": "string",
-                    "default": ""
                 },
                 "KAFKA_PRODUCER_TOPIC_SUBMIT": {
                     "type": "string",
                     "default": "streaming.src.demo"
                 },
-                "MARKLOGIC_COL": {
-                    "type": "string",
-                    "default": ""
-                },
                 "MARKLOGIC_URL": {
-                    "type": "string",
-                    "default": ""
-                },
-                "MARKLOGIC_USR": {
-                    "type": "string",
-                    "default": "admin"
-                },
-                "KAFKA_BOOTSTRAP_SERVERS": {
                     "type": "string",
                     "default": ""
                 },
                 "MARKLOGIC_DB": {
                     "type": "string",
                     "default": ""
+                },
+                "MARKLOGIC_COL": {
+                    "type": "string",
+                    "default": ""
+                },
+                "MARKLOGIC_USER_SECRET": {
+                    "type": "string",
+                    "default": "marklogic-user"
+                },
+                "MARKLOGIC_PASSWORD_SECRET": {
+                    "type": "string",
+                    "default": "marklogic-password"
                 }
             }
         },

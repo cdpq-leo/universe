@@ -19,11 +19,10 @@
     "*"
   ],
   "container": {
-    "type": "DOCKER",
+    "type": "MESOS",
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
-      "privileged": false,
       "parameters": []
     },
     "portMappings": [
@@ -42,37 +41,16 @@
       }
     ],
     "volumes": [
-        {{^volumes.volume_config.external_volume_name}}
         {
-          "containerPath": {{volumes.volume_config.container_path}},
-          "mode": "RW",
-          "persistent": {
-            "size": {{volumes.volume_config.size}},
-            "type": "{{volumes.volume_config.type}}",
-            {{^volumes.volume_config.profile}}
-        		"profileName": "{{volumes.volume_config.profile}}",
-            {{/volumes.volume_config.profile}}
-            "constraints": []
-          }
-        }
-        {{/volumes.volume_config.external_volume_name}}
-        {{#volumes.volume_config.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_config.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_config.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        }
-        {{/volumes.volume_config.external_volume_name}},
+        "containerPath": "/bratcfg/users.json",
+        "secret": "bratconfig"
+        },
         {{^volumes.volume_data.external_volume_name}}
         {
           "containerPath": {{volumes.volume_data.container_path}},
           "mode": "RW",
           "persistent": {
-            "size": {{volumes.volume_data.size}},
+            "size": {{service.disk}},
             "type": "{{volumes.volume_data.type}}",
             {{^volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_data.profile}}",
@@ -103,9 +81,12 @@
     "BRAT_EMAIL": "{{environment.BRAT_EMAIL}}"
   },
    "secrets": {
-     "bratuser": {
-      "source": "{{environment.BRAT_USERNAME_SECRET}}"
-    }
+     "bratconfig": {
+      "source": "{{environment.BRAT_CONFIG_SECRET}}"
+    },
+    "bratuser": {
+     "source": "{{environment.BRAT_USERNAME_SECRET}}"
+    },
     "bratpassword": {
       "source": "{{environment.BRAT_PASSWORD_SECRET}}"
     }

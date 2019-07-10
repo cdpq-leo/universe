@@ -33,7 +33,7 @@
           "containerPath": "data",
           "mode": "RW",
           "persistent": {
-            "size": {{volumes.volume_data.size}},
+            "size": {{service.disk}},
             "type": "{{volumes.volume_data.type}}",
             {{^volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_data.profile}}",
@@ -81,23 +81,19 @@
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "VIEWER_URL": "{{environment.VIEWER_URL}}",
-    "MARKLOGIC_USERNAME": {
-      "secret": "marklogicusername"
-    },
-    "MARKLOGIC_PASSWORD": {
-      "secret": "marklogicpassword"
-    },
-    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "KAFKA_BOOTSTRAP_SERVERS": "{{environment.KAFKA_BOOTSTRAP_SERVERS}}",
+    "KAFKA_CONSUMER_TOPIC": "{{environment.KAFKA_CONSUMER_TOPIC}}",
+    "MARKLOGIC_URL": "{{environment.MARKLOGIC_URL}}",
     "MARKLOGIC_DB": "{{environment.MARKLOGIC_DB}}",
-    "KAFKA_CONSUMER_TOPIC": "{{environment.KAFKA_CONSUMER_TOPIC}}"
+    "MARKLOGIC_USERNAME_SECRET": {"secret": "marklogicusername"},
+    "MARKLOGIC_PASSWORD_SECRET": {"secret": "marklogicpassword"}
   },
   "secrets": {
     "marklogicusername": {
-      "source": "{{environment.MARKLOGIC_USERNAME}}"
+      "source": "{{environment.MARKLOGIC_USERNAME_SECRET}}"
     },
     "marklogicpassword": {
-      "source": "{{environment.MARKLOGIC_PASSWORD}}"
+      "source": "{{environment.MARKLOGIC_PASSWORD_SECRET}}"
     }
   },
   "executor": "",

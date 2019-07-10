@@ -151,11 +151,6 @@
 							"type": "string",
 							"default": "root"
 						},
-						"size": {
-							"type": "integer",
-		          "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-		          "default": 0
-						},
 						"profile": {
 							"type": "string",
 							"description": "Disk profile to be used for volume."

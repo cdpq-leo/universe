@@ -91,7 +91,7 @@
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 8080
+              "default": 0
             },
             "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
@@ -189,8 +189,8 @@
         },
         "REDIS_PORT": {
           "description": "Redis Port",
-          "type": "number",
-          "default": 6379
+          "type": "string",
+          "default": "6379"
         }
       },
       "required": [

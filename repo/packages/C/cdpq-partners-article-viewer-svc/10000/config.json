@@ -201,14 +201,14 @@
           "type": "string",
           "default": "s"
         },
-        "MYSQL_PASSWORD": {
+        "MYSQL_PASSWORD_SECRET": {
           "type": "string",
           "description": "Name of the secret in the secret store containing the password for authentication",
-          "default": ""
+          "default": "mysql-password"
         },
-        "MYSQL_USERNAME": {
+        "MYSQL_USERNAME_SECRET": {
           "type": "string",
-          "default": "appuser"
+          "default": "mysql-user"
         },
         "MYSQL_HOST": {
           "type": "string",

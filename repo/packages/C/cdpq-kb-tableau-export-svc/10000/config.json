@@ -151,11 +151,6 @@
                             "type": "string",
                             "default": "root"
                         },
-                        "size": {
-                            "type": "integer",
-                            "description": "The amount of disk, in MB, allocated to the volume, not applicable for external volume type.",
-                            "default": 0
-                        },
                         "profile": {
                             "type": "string",
                             "description": "Disk profile to be used for volume.",
@@ -177,19 +172,15 @@
                     "type": "string",
                     "default": ""
                 },
-                "MARKLOGIC_USERNAME": {
-                    "type": "string",
-                    "default": "admin"
-                },
-                "MARKLOGIC_PASSWORD": {
-                    "type": "string",
-                    "default": "secret_marklogic_password"
-                },
-                "MARKLOGIC_URL": {
+                "KAFKA_BOOTSTRAP_SERVERS": {
                     "type": "string",
                     "default": ""
                 },
-                "KAFKA_BOOTSTRAP_SERVERS": {
+                "KAFKA_CONSUMER_TOPIC": {
+                    "type": "string",
+                    "default": ""
+                },
+                "MARKLOGIC_URL": {
                     "type": "string",
                     "default": ""
                 },
@@ -197,9 +188,13 @@
                     "type": "string",
                     "default": ""
                 },
-                "KAFKA_CONSUMER_TOPIC": {
+                "MARKLOGIC_USERNAME_SECRET": {
                     "type": "string",
-                    "default": ""
+                    "default": "marklogic-user"
+                },
+                "MARKLOGIC_PASSWORD_SECRET": {
+                    "type": "string",
+                    "default": "marklogic-password"
                 }
             }
         },

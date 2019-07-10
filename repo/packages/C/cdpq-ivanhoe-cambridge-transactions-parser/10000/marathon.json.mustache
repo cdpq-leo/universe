@@ -62,15 +62,15 @@
     "DCOS_SERVICE_PORT_INDEX": "0"
    },
    "fetch": [
-   {{#fetch.artifact_URI.uri}}
-   {
-     "uri": "{{fetch.artifact_URI.uri}}",
-     "extract": {{fetch.artifact_URI.extract}},
-     "executable": {{fetch.artifact_URI.executable}},
-     "cache": {{fetch.artifact_URI.cache}}
-   }
-   {{/fetch.artifact_URI.uri}}
-   ],
+     {{#fetch.artifact_URI.uri}}
+     {
+       "uri": "{{fetch.artifact_URI.uri}}",
+       "extract": {{fetch.artifact_URI.extract}},
+       "executable": {{fetch.artifact_URI.executable}},
+       "cache": {{fetch.artifact_URI.cache}}
+     }
+     {{/fetch.artifact_URI.uri}}
+     ],
    "upgradeStrategy": {
      "maximumOverCapacity": 1,
      "minimumHealthCapacity": 1
