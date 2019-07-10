@@ -55,7 +55,12 @@
     {{/placement.region}}
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
-    "SERVICE_PREFIX": "/service/{{service.name}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "SERVICE_PREFIX": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{^networking.marathon_lb_proxy.path}}
+    "SERVICE_PREFIX": "",
+    {{/networking.marathon_lb_proxy.path}}
     "GOOGLE_APPLICATION_CREDENTIALS": "/var/opt/data/google/google-credentials.json"
   },
   "labels": {
@@ -77,7 +82,12 @@
   {
     "protocol": "HTTP",
     "portIndex": 0,
-    "path": "/service/{{service.name}}/api/health",
+    {{#networking.marathon_lb_proxy.path}}
+    "path": "{{networking.marathon_lb_proxy.path}}/api/health",
+    {{/networking.marathon_lb_proxy.path}}
+    {{^networking.marathon_lb_proxy.path}}
+    "path": "/api/health",
+    {{/networking.marathon_lb_proxy.path}}
     "gracePeriodSeconds": {{health_checks.advanced_health_checking_settings.grace_periods}},
     "intervalSeconds": {{health_checks.advanced_health_checking_settings.intervals}},
     "timeoutSeconds": {{health_checks.advanced_health_checking_settings.timeout}},

@@ -58,7 +58,12 @@
     "CUSTOM_SEARCH_ID": "{{environment.CUSTOM_SEARCH_ID}}",
     "SEARCH_LIMIT": "{{environment.SEARCH_LIMIT}}",
     "SEARCH_LANGUAGE": "{{environment.SEARCH_LANGUAGE}}",
-    "SERVICE_PREFIX": "/service/{{service.name}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "SERVICE_PREFIX": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{^networking.marathon_lb_proxy.path}}
+    "SERVICE_PREFIX": "",
+    {{/networking.marathon_lb_proxy.path}}
     "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
     "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
     "SCOPES": "{{environment.SCOPES}}",
@@ -83,7 +88,12 @@
   {
     "protocol": "HTTP",
     "portIndex": 0,
-    "path": "/service/{{service.name}}/api/health",
+    {{#networking.marathon_lb_proxy.path}}
+    "path": "{{networking.marathon_lb_proxy.path}}/api/health",
+    {{/networking.marathon_lb_proxy.path}}
+    {{^networking.marathon_lb_proxy.path}}
+    "path": "/api/health",
+    {{/networking.marathon_lb_proxy.path}}
     "gracePeriodSeconds": {{health_checks.advanced_health_checking_settings.grace_periods}},
     "intervalSeconds": {{health_checks.advanced_health_checking_settings.intervals}},
     "timeoutSeconds": {{health_checks.advanced_health_checking_settings.timeout}},
