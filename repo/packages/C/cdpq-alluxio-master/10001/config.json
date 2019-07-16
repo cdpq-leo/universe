@@ -33,7 +33,7 @@
         "cmd": {
           "description": "A shell command for your container to execute.",
           "type": "string",
-          "default": "/entrypoint.sh master"
+          "default": ""
         },
         "back_off_seconds": {
           "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
@@ -50,7 +50,14 @@
           "type": "number",
           "default": 3600
         }
-      }
+      },
+      "required": [
+            "name",
+            "cpus",
+            "mem",
+            "disk",
+            "instances"
+      ]
     },
     "placement": {
       "type": "object",
@@ -78,92 +85,129 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "service_endpoints": {
+        "service_endpoint": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 19998
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomaster"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 19998
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 19998
+            }
+          }
+        },
+        "service_endpoint_web": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 19999
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterweb"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 19999
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 19999
+            }
+          }
+        },
+        "marathon_lb_proxy": {
           "type": "object",
           "properties": {
-            "service_endpoint_01": {
-              "type": "object",
-              "properties": {
-                "container_port": {
-                  "description": "Container port number",
-                  "type": "number",
-                  "default": 19999
-                },
-                "host_port": {
-                  "description": "Host port number",
-                  "type": "number",
-                  "default": 19999
-                },
-                "protocol": {
-                  "type": "string",
-                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-                  "default": "tcp"
-                },
-                "service_port": {
-                  "type": "number",
-                  "default": 10101
-                },
-                "load_balance_port": {
-                  "type": "number",
-                  "description": "This port will be used to load balance this service address internally"
-                }
-              }
+            "enabled": {
+              "type": "boolean",
+              "default": false
             },
-            "service_endpoint_02": {
-              "type": "object",
-              "properties": {
-                "container_port": {
-                  "description": "Container port number",
-                  "type": "number",
-                  "default": 19998
-                },
-                "host_port": {
-                  "description": "Host port number",
-                  "type": "number",
-                  "default": 19998
-                },
-                "protocol": {
-                  "type": "string",
-                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-                  "default": "tcp"
-                },
-                "service_port": {
-                  "type": "number",
-                  "default": 10102
-                },
-                "load_balance_port": {
-                  "type": "number",
-                  "description": "This port will be used to load balance this service address internally"
-                }
-              }
+            "vhost": {
+              "type": "string"
             },
-            "service_endpoint_03": {
-              "type": "object",
-              "properties": {
-                "container_port": {
-                  "description": "Container port number",
-                  "type": "number",
-                  "default": 39999
-                },
-                "host_port": {
-                  "description": "Host port number",
-                  "type": "number",
-                  "default": 10103
-                },
-                "protocol": {
-                  "type": "string",
-                  "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-                  "default": "tcp"
-                },
-                "service_port": {
-                  "type": "number",
-                  "default": 10103
-                },
-                "load_balance_port": {
-                  "type": "number",
-                  "description": "This port will be used to load balance this service address internally"
-                }
-              }
+            "path": {
+              "type": "string",
+              "default": "/alluxio"
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Service storage configuration properties",
+      "properties": {
+        "volume_ufs": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "ufs"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": "/mnt/alluxio/underFSStorage"
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": "alluxio"
+            }
+          }
+        },
+        "volume_hdfs": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/mnt/hdfs"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": "/opt/mesosphere/etc/mesos-scheduler-modules"
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
             }
           }
         }
@@ -214,29 +258,37 @@
       "type": "object",
       "description": "Alluxio parameters",
       "properties": {
-        "license": {
-          "description": "alluxio license base64 format",
+        "ALLUXIO_JAVA_OPTS": {
+          "description": "Alluxio properties",
           "type": "string",
-          "default": "aLicense"
-        },
-        "underfs_address": {
-          "description": "address for understorage filesystem",
-          "type": "string",
-          "default": "hdfs://hdfs/"
-        },
-        "underfs_hdfs_configuration": {
-          "description": "location of hdfs configuration files",
-          "type": "string",
-          "default": "/opt/alluxio/conf/core-site.xml:/opt/alluxio/conf/hdfs-site.xml"
-        },
-        "auth_type": {
-          "description": "authentication protocol (SIMPLE, NOSASL or CUSTOM)",
-          "type": "string",
-          "default": "NOSASL",
-          "enum": [
-            "SIMPLE",
-            "NOSASL"
-          ]
+          "default": "-Dalluxio.master.hostname=alluxio-master.alluxio.marathon.mesos -Dalluxio.security.authentication.type=NOSASL -Dalluxio.master.mount.table.root.ufs=<s3a://bucket/> -Dalluxio.master.mount.table.root.option.aws.accessKeyId=<AWS_ACCESS_KEY> -Dalluxio.master.mount.table.root.option.aws.secretKey=<AWS_SECRET_ACCESS_KEY> -Dalluxio.underfs.s3.endpoint=s3.us-east-1.amazonaws.com.cn -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/mnt/hdfs/core-site.xml:/mnt/hdfs/hdfs-site.xml"
+        }
+      }
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
         }
       }
     }

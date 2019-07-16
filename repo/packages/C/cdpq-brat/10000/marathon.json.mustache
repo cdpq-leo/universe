@@ -19,7 +19,7 @@
     "*"
   ],
   "container": {
-    "type": "MESOS",
+    "type": "DOCKER",
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
@@ -41,13 +41,27 @@
       }
     ],
     "volumes": [
+        {{^volumes.volume_config.external_volume_name}}
         {
-        "containerPath": "/bratcfg",
-        "secret": "bratconfig"
+          "containerPath": "{{volumes.volume_config.container_path}}",
+          "mode": "RW",
+          "hostPath": "{{volumes.volume_config.host_path}}"
         },
+        {{/volumes.volume_config.external_volume_name}}
+        {{#volumes.volume_config.external_volume_name}}
+        {
+          "containerPath": "{{volumes.volume_config.container_path}}",
+          "external": {
+            "name": "{{volumes.volume_config.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+        },
+        {{/volumes.volume_config.external_volume_name}}
         {{^volumes.volume_data.external_volume_name}}
         {
-          "containerPath": {{volumes.volume_data.container_path}},
+          "containerPath": "{{volumes.volume_data.container_path}}",
           "mode": "RW",
           "persistent": {
             "size": {{service.disk}},
@@ -81,9 +95,6 @@
     "BRAT_EMAIL": "{{environment.BRAT_EMAIL}}"
   },
    "secrets": {
-     "bratconfig": {
-      "source": "{{environment.BRAT_CONFIG_SECRET}}"
-    },
     "bratuser": {
      "source": "{{environment.BRAT_USERNAME_SECRET}}"
     },

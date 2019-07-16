@@ -137,6 +137,27 @@
       "type": "object",
       "description": "Service storage configuration properties",
       "properties": {
+        "volume_config": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/bratcfg"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": ""
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
+        },
         "volume_data": {
           "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
