@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/ivanhoe-transaction-parser"
+              "default": "/ivanhoe-cambridge-transaction-parser"
             }
           }
         }
