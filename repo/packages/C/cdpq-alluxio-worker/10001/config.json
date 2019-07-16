@@ -2,61 +2,62 @@
   "type": "object",
   "properties": {
     "service": {
-        "type": "object",
-        "description": "DC/OS service specifications",
-        "properties": {
-            "name": {
-                "description": "Name of application instance as seen in DC/OS.",
-                "type": "string",
-                "default": "grakn"
-            },
-            "instances": {
-                "description": "Number of instances of your service.",
-                "type": "number",
-                "default": 1.0
-            },
-            "cpus": {
-                "description": "Number of logical cores to allocate to each service instance.",
-                "type": "number",
-                "default": 0.5
-            },
-            "mem": {
-                "description": "Memory in Mb to allocate to each service instance.",
-                "type": "number",
-                "default": 4096
-            },
-            "disk": {
-                "description": "Number of disks to allocate to each service instance.",
-                "type": "number",
-                "default": 0
-            },
-            "cmd": {
-                "description": "A shell command for your container to execute.",
-                "type": "string",
-                "default": ""
-            },
-            "back_off_seconds": {
-                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
-                "type": "number",
-                "default": 1.0
-            },
-            "back_off_factor": {
-                "description": "The multiplicand to apply to the backoffSeconds value.",
-                "type": "number",
-                "default": 1.15
-            },
-            "max_launch_delay_seconds": {
-                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
-                "type": "number",
-                "default": 3600
-            }
-          },
-          "required": [
-                "name",
-                "cpus",
-                "mem",
-                "instances"
-          ]
+      "type": "object",
+      "description": "Alluxio service configuration properties.",
+      "properties": {
+        "name": {
+          "description": "Name of the service.",
+          "type": "string",
+          "default": "alluxio-worker-1"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 1
+        },
+        "mem": {
+          "description": "Memory to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 4096
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Alluxio instance.",
+          "type": "number",
+          "default": 16384
+        },
+        "instances": {
+          "description": "Number of instances of Alluxio.",
+          "type": "number",
+          "default": 1.0
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": ""
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
+        }
+      },
+      "required": [
+            "name",
+            "cpus",
+            "mem",
+            "disk",
+            "instances"
+      ]
     },
     "placement": {
       "type": "object",
@@ -65,14 +66,14 @@
         "constraints": {
           "type": "string",
           "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-          "default": "[[\"hostname\",\"UNIQUE\"]]",
+          "default": "[]",
           "media": {
             "type": "application/x-zone-constraints+json"
           }
         },
         "region": {
           "type": "string",
-          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
           "default": "",
           "media": {
             "type": "application/x-region+string"
@@ -84,24 +85,24 @@
       "type": "object",
       "description": "Configure the networking for your service.",
       "properties": {
-        "service_endpoint_server": {
+        "service_endpoint": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 4567
+              "default": 29998
             },
             "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": ""
+              "default": "alluxioworker-1"
             },
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 0
+              "default": 29998
             },
             "protocol": {
               "type": "string",
@@ -111,23 +112,28 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 4567
+              "default": 29998
             }
           }
         },
-        "service_endpoint_api": {
+        "service_endpoint_data": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 9160
+              "default": 29999
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxioworkerdata-1"
             },
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 0
+              "default": 29999
             },
             "protocol": {
               "type": "string",
@@ -137,23 +143,28 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 9160
+              "default": 29999
             }
           }
         },
-        "service_endpoint_grpc": {
+        "service_endpoint_web": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 48555
+              "default": 30000
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxioworkerweb-1"
             },
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 0
+              "default": 30000
             },
             "protocol": {
               "type": "string",
@@ -163,7 +174,7 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 48555
+              "default": 30000
             }
           }
         },
@@ -179,7 +190,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/grakn"
+              "default": "/alluxioworker1"
             }
           }
         }
@@ -189,24 +200,82 @@
       "type": "object",
       "description": "Service storage configuration properties",
       "properties": {
-        "volume_data": {
+        "volume_ufs": {
           "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
           "properties": {
             "container_path": {
               "description": "The path of a volume on the container.",
               "type": "string",
-              "default": "/var/opt/grakn"
+              "default": "ufs"
             },
-            "type": {
-              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+            "host_path": {
+              "description": "The host path on the agent node.",
               "type": "string",
-              "default": "root"
+              "default": "/mnt/alluxio/underFSStorage"
             },
-            "profile": {
+            "external_volume_name": {
               "type": "string",
-              "description": "Disk profile to be used for volume.",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
               "default": ""
+            }
+          }
+        },
+        "volume_domainsocket": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/opt/domain"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": "/mnt/alluxio/domainsocket"
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
+        },
+        "volume_ramdisk": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/opt/ramdisk"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": "/mnt/alluxio/ramdisk"
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
+        },
+        "volume_ssd": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/opt/ssd"
+            },
+            "host_path": {
+              "description": "The host path on the agent node.",
+              "type": "string",
+              "default": "/mnt/alluxio/ssd"
             },
             "external_volume_name": {
               "type": "string",
@@ -260,51 +329,12 @@
     },
     "environment": {
       "type": "object",
-      "description": "Grakn instance configuration properties",
+      "description": "Alluxio parameters",
       "properties": {
-        "START_LOCAL_STORAGE": {
-          "type": "boolean",
-          "default": false
-        },
-        "STORAGE_HOSTNAME": {
+        "ALLUXIO_JAVA_OPTS": {
+          "description": "Alluxio properties",
           "type": "string",
-          "default": "node-0-server.cassandra.autoip.dcos.thisdcos.directory,node-1-server.cassandra.autoip.dcos.thisdcos.directory,node-2-server.cassandra.autoip.dcos.thisdcos.directory"
-        },
-        "START_LOCAL_QUEUE": {
-          "type": "boolean",
-          "default": false
-        },
-        "QUEUE_HOST": {
-          "type": "string",
-          "default": "redis.marathon.l4lb.thisdcos.directory:6379"
-        },
-        "INDEX_SEARCH_BACKEND": {
-          "type": "string",
-          "default": "elasticsearch"
-        },
-        "INDEX_SEARCH_HOSTNAME": {
-          "type": "string",
-          "default": "master.elastic.l4lb.thisdcos.directory"
-        },
-        "SPARK_MASTER": {
-          "type": "string",
-          "default": "local[*]"
-        },
-        "GREMLIN_GRAPH_READER": {
-          "type": "string",
-          "default": "org.janusgraph.hadoop.formats.cassandra.Cassandra3InputFormat"
-        },
-        "BACKGROUND_TASKS_THREADS": {
-          "type": "number",
-          "default": 4
-        },
-        "LOG_LEVEL": {
-          "type": "string",
-          "default": "DEBUG"
-        },
-        "KEYSPACE": {
-          "type": "string",
-          "default": "grakn"
+          "default": "-Dalluxio.master.hostname=alluxio-master.alluxio.marathon.mesos -Dalluxio.worker.hostname=<HOSTNAME> -Dalluxio.worker.web.hostname=<HOSTNAME> -Dalluxio.worker.memory.size=16G -Dalluxio.worker.tieredstore.levels=1 -Dalluxio.worker.tieredstore.level0.dirs.path=/opt/ramdisk,/opt/ssd -Dalluxio.worker.tieredstore.level0.dirs.mediumtype=MEM,SSD -Dalluxio.worker.tieredstore.level0.dirs.quota=16GB,128GB -Dalluxio.worker.tieredstore.level0.watermark.high.ratio=0.9 -Dalluxio.worker.tieredstore.level0.watermark.low.ratio=0.7 -Dalluxio.worker.data.server.domain.socket.address=/opt/domain -Dalluxio.worker.data.server.domain.socket.as.uuid=true"
         }
       }
     },

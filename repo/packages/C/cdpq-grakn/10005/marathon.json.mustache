@@ -114,7 +114,16 @@
     "LOG_LEVEL": "{{environment.LOG_LEVEL}}",
     "KEYSPACE": "{{environment.KEYSPACE}}"
   },
-  "healthChecks":[],
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
+    }
+  ],
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
