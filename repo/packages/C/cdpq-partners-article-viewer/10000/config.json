@@ -127,68 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
-            }
-          }
-        }
-      }
-    },
-    "health_checks": {
-      "type": "object",
-      "description": "Health checks may be specified per application to be run against the application's instances.",
-      "properties": {
-        "IP_protocol": {
-          "type": "object",
-          "properties": {
-            "protocol": {
-              "type": "string",
-              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
-              "default": "MESOS_TCP",
-              "enum": [
-                "MESOS_HTTP",
-                "MESOS_HTTPS",
-                "MESOS_TCP",
-                "HTTP",
-                "HTTPS"
-              ]
-            },
-            "IP_version": {
-              "type": "string",
-              "default": "IPv4",
-              "enum": [
-                "IPv4",
-                "IPv6"
-              ]
-            },
-            "advanced_health_checking_settings": {
-              "type": "object",
-              "properties": {
-                "delay_seconds": {
-                  "type": "number",
-                  "description": "Time to wait until starting health check (default: 2).",
-                  "default": 15
-                },
-                "grace_periods": {
-                  "type": "number",
-                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
-                  "default": 300
-                },
-                "intervals": {
-                  "type": "number",
-                  "description": "Number of seconds to wait between health checks.",
-                  "default": 60
-                },
-                "max_failures": {
-                  "type": "number",
-                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
-                  "default": 3
-                },
-                "timeout": {
-                  "type": "number",
-                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
-                  "default": 20
-                }
-              }
+              "default": "/partners-article-viewer"
             }
           }
         }
@@ -200,6 +139,51 @@
         "ENDPOINT": {
           "type": "string",
           "default": ""
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "HTTP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+                "type": "object",
+                "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 3
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 5
+                }
+              }
+            }
+          }
         }
       }
     },
