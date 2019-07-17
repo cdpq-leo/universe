@@ -133,17 +133,6 @@
         }
       }
     },
-    "health_checks": {
-      "type": "object",
-      "description": "Health checks may be specified per application to be run against the application's instances.",
-      "properties": {
-        "health_url": {
-          "description": "Url for health checks",
-          "type": "string",
-          "default": "/service/core-rdf-svc/api/health"
-        }
-      }
-    },
     "environment": {
       "type": "object",
       "description": "environment variables",

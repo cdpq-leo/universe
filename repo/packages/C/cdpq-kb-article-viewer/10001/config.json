@@ -127,7 +127,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "default": "/"
+                      "default": "/kb-article-viewer"
                     }
                   }
                 }
@@ -143,6 +143,51 @@
                 }
             }
         },
+        "health_checks": {
+            "type": "object",
+            "description": "Health checks may be specified per application to be run against the application's instances.",
+            "properties": {
+              "HTTP_protocol": {
+                "type": "object",
+                "properties": {
+                  "port_index": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "advanced_health_checking_settings": {
+                      "type": "object",
+                      "properties": {
+                      "delay_seconds": {
+                        "type": "number",
+                        "description": "Time to wait until starting health check (default: 2).",
+                        "default": 2
+                      },
+                      "grace_periods": {
+                        "type": "number",
+                        "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                        "default": 120
+                      },
+                      "intervals": {
+                        "type": "number",
+                        "description": "Number of seconds to wait between health checks.",
+                        "default": 30
+                      },
+                      "timeout": {
+                        "type": "number",
+                        "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                        "default": 3
+                      },
+                      "max_failures": {
+                        "type": "number",
+                        "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                        "default": 5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
         "fetch": {
             "type": "object",
             "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
