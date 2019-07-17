@@ -147,6 +147,99 @@
             }
           }
         },
+        "service_endpoint_jobrpc": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20001
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobrpc"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 20001
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20001
+            }
+          }
+        },
+        "service_endpoint_jobweb": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20002
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobweb"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 20002
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20002
+            }
+          }
+        },
+        "service_endpoint_jobjournal": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20003
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobjournal"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 20003
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20003
+            }
+          }
+        },
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
@@ -181,12 +274,12 @@
             "host_path": {
               "description": "The host path on the agent node.",
               "type": "string",
-              "default": "/mnt/alluxio/underFSStorage"
+              "default": "/mnt/alluxio/master/underFSStorage"
             },
             "external_volume_name": {
               "type": "string",
               "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": "alluxio"
+              "default": ""
             }
           }
         },
