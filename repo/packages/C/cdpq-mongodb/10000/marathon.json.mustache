@@ -34,7 +34,7 @@
     	  "mode": "RW",
     	  "persistent": {
     		"type": "{{volumes.volume_data.type}}",
-        {{^volumes.volume_data.profile}}
+        {{#volumes.volume_data.profile}}
     		"profileName": "{{volumes.volume_data.profile}}",
         {{/volumes.volume_data.profile}}
     		"size": {{service.disk}},
@@ -45,18 +45,18 @@
         "containerPath": "{{volumes.volume_data.container_path}}",
         "hostPath": "data",
         "mode": "RW"
-      }
+      },
     	{{/volumes.volume_data.external_volume_name}}
     	{{#volumes.volume_data.external_volume_name}}
-        {
-            "containerPath": "{{volumes.volume_data.container_path}}",
-            "external": {
-              "name": "{{volumes.volume_data.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-        }
+      {
+          "containerPath": "{{volumes.volume_data.container_path}}",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+      },
     	{{/volumes.volume_data.external_volume_name}}
       {{^volumes.volume_logs.external_volume_name}}
     	{
@@ -64,7 +64,7 @@
     	  "mode": "RW",
     	  "persistent": {
     		"type": "{{volumes.volume_logs.type}}",
-        {{^volumes.volume_logs.profile}}
+        {{#volumes.volume_logs.profile}}
     		"profileName": "{{volumes.volume_logs.profile}}",
         {{/volumes.volume_logs.profile}}
     		"size": {{service.disk}},
@@ -160,12 +160,8 @@
   ],
   "requirePorts": false,
   "upgradeStrategy": {
-    "maximumOverCapacity": 1 ,
-    "minimumHealthCapacity": 1
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
   },
-  "killSelection": "YOUNGEST_FIRST",
-  "unreachableStrategy": {
-    "inactiveAfterSeconds": 0 ,
-    "expungeAfterSeconds": 0
-  }
+  "killSelection": "YOUNGEST_FIRST"
 }

@@ -49,7 +49,7 @@
           "persistent": {
             "size": {{service.disk}},
             "type": "{{volumes.volume_data.type}}",
-            {{^volumes.volume_data.profile}}
+            {{#volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_data.profile}}",
             {{/volumes.volume_data.profile}}
             "constraints": []
