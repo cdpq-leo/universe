@@ -19,6 +19,13 @@
     "*"
   ],
   "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    },
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}
@@ -34,30 +41,22 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "type": "DOCKER",
-    "volumes": [],
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "privileged": false,
-      "parameters": []
-    }
+    "volumes": []
   },
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "ELASTICSEARCH_HOSTNAME": "{{environment.ELASTICSEARCH_HOST}}",
+    "ELASTICSEARCH_PORT": "{{environment.ELASTICSEARCH_PORT}}",
+    "ELASTICSEARCH_SCHEME": "{{environment.ELASTICSEARCH_SCHEME}}",
     "GRAKN_MAX_RESULTS": "{{environment.GRAKN_MAX_RESULTS}}",
     "GRAKN_KEYSPACE": "{{environment.GRAKN_KEYSPACE}}",
-    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
-    "ELASTICSEARCH_SCHEME": "{{environment.ELASTICSEARCH_SCHEME}}",
+    "GRAKN_HOSTNAME": "{{environment.GRAKN_HOSTNAME}}",
     "GRAKN_PORT": "{{environment.GRAKN_PORT}}",
     "GRAKN_ATTRIBUTE": "{{environment.GRAKN_ATTRIBUTE}}",
-    "ELASTICSEARCH_PORT": "{{environment.ELASTICSEARCH_PORT}}",
-    "GRAKN_HOSTNAME": "{{environment.GRAKN_HOSTNAME}}",
-    "HTTP_PORT": "{{environment.HTTP_PORT}}",
-    "ES_HOST": "{{environment.ELASTICSEARCH_HOST}}"
+    "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
+    "HTTP_PORT": "{{environment.HTTP_PORT}}"
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
@@ -78,16 +77,17 @@
     {
       "protocol": "HTTP",
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
-      {{#networking.marathon_lb_proxy.enabled}}
-      "path": "{{networking.marathon_lb_proxy.path}}",
-      {{/networking.marathon_lb_proxy.enabled}}
-      {{^networking.marathon_lb_proxy.enabled}}
-      "path": "{{health_checks.HTTP_protocol.path}}",
-      {{/networking.marathon_lb_proxy.enabled}}
+      {{#networking.marathon_lb_proxy.path}}
+      "path": "{{networking.marathon_lb_proxy.path}}/",
+      {{/networking.marathon_lb_proxy.path}}
+      {{^networking.marathon_lb_proxy.path}}
+      "path": "/",
+      {{/networking.marathon_lb_proxy.path}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
       "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
-      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}}
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
     }
   ],
   "fetch": [
@@ -99,9 +99,9 @@
       "cache": {{fetch.artifact_URI.cache}}
     }
     {{/fetch.artifact_URI.uri}}
-   ],
-   "upgradeStrategy": {
-     "maximumOverCapacity": 1,
-     "minimumHealthCapacity": 1
-   }
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
 }

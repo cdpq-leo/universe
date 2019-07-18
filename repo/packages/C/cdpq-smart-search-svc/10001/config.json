@@ -152,6 +152,11 @@
             "advanced_health_checking_settings": {
               "type": "object",
               "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
                 "grace_periods": {
                   "type": "number",
                   "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
