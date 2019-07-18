@@ -41,7 +41,13 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "volumes": []
+    "volumes": [
+      {
+         "containerPath": "/usr/src/data",
+         "hostPath": "/mnt/azurefileshare/data/clustering",
+         "mode": "RW"
+      }
+    ]
   },
   "env": {
     {{#placement.region}}
@@ -55,7 +61,7 @@
     {{/networking.marathon_lb_proxy.path}}
     "MONGO_DB": "{{environment.MONGO_DB}}",
     "MONGO_UNIVERSE_COLLECTION": "{{environment.MONGO_UNIVERSE_COLLECTION}}",
-    "MONGO_USERNAME": "{{environment.MONGO_USERNAME}}",
+    "MONGO_USERNAME": {"secret": "mongo_username"},
     "MONGO_PASSWORD": {"secret": "mongo_password"}
     "MONGO_REPLICA_SET": "{{environment.MONGO_REPLICA_SET}}",
     "MONGO_PORT": "{{environment.MONGO_PORT}}",
@@ -63,6 +69,9 @@
     "METRICS_PATH": "{{environment.METRICS_PATH}}"
   },
   "secrets": {
+    "mongo_username": {
+      "source": "{{environment.MONGO_USERNAME}}"
+    },
     "mongo_password": {
       "source": "{{environment.MONGO_PASSWORD}}"
     }

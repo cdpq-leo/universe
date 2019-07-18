@@ -18,12 +18,12 @@
               "cpus": {
                   "description": "Number of logical cores to allocate to each service instance.",
                   "type": "number",
-                  "default": 0.2
+                  "default": 1.0
               },
               "mem": {
                   "description": "Memory in Mb to allocate to each service instance.",
                   "type": "number",
-                  "default": 256
+                  "default": 2048
               },
               "disk": {
                   "description": "Number of disks to allocate to each service instance.",
@@ -145,7 +145,7 @@
             "MONGO_UNIVERSE_COLLECTION": {
                 "description": "Mongo database universe collection",
                 "type": "string",
-                "default": ""
+                "default": "universes"
             },
             "MONGO_USERNAME": {
                 "description": "Mongo database username",
