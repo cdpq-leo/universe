@@ -70,7 +70,7 @@
   "healthChecks": [
     {
       "protocol": "HTTP",
-      "portIndex": 0,
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
       {{#networking.marathon_lb_proxy.path}}
       "path": "{{networking.marathon_lb_proxy.path}}/",
       {{/networking.marathon_lb_proxy.path}}
