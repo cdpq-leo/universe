@@ -43,8 +43,8 @@
     ],
     "volumes": [
       {
-         "containerPath": "/usr/src/data",
-         "hostPath": "/mnt/azurefileshare/data/clustering",
+         "containerPath": {{volumes.volume_data.container_path}},
+         "hostPath": {{volumes.volume_data.hostPath}},
          "mode": "RW"
       }
     ]

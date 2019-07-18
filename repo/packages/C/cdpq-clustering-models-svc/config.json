@@ -6,49 +6,49 @@
           "description": "DC/OS service specifications",
           "properties": {
               "name": {
-                  "description": "Name of application instance as seen in DC/OS.",
-                  "type": "string",
-                  "default": "clustering-models-svc"
+                "description": "Name of application instance as seen in DC/OS.",
+                "type": "string",
+                "default": "clustering-models-svc"
               },
               "instances": {
-                  "description": "Number of instances of your service.",
-                  "type": "number",
-                  "default": 1.0
+                "description": "Number of instances of your service.",
+                "type": "number",
+                "default": 1.0
               },
               "cpus": {
-                  "description": "Number of logical cores to allocate to each service instance.",
-                  "type": "number",
-                  "default": 1.0
+                "description": "Number of logical cores to allocate to each service instance.",
+                "type": "number",
+                "default": 1.0
               },
               "mem": {
-                  "description": "Memory in Mb to allocate to each service instance.",
-                  "type": "number",
-                  "default": 2048
+                "description": "Memory in Mb to allocate to each service instance.",
+                "type": "number",
+                "default": 2048
               },
               "disk": {
-                  "description": "Number of disks to allocate to each service instance.",
-                  "type": "number",
-                  "default": 0
+                "description": "Number of disks to allocate to each service instance.",
+                "type": "number",
+                "default": 0
               },
               "cmd": {
-                  "description": "A shell command for your container to execute.",
-                  "type": "string",
-                  "default": ""
+                "description": "A shell command for your container to execute.",
+                "type": "string",
+                "default": ""
               },
               "back_off_seconds": {
-                  "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
-                  "type": "number",
-                  "default": 1.0
+                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                "type": "number",
+                "default": 1.0
               },
               "back_off_factor": {
-                  "description": "The multiplicand to apply to the backoffSeconds value.",
-                  "type": "number",
-                  "default": 1.15
+                "description": "The multiplicand to apply to the backoffSeconds value.",
+                "type": "number",
+                "default": 1.15
               },
               "max_launch_delay_seconds": {
-                  "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
-                  "type": "number",
-                  "default": 3600
+                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                "type": "number",
+                "default": 3600
               }
             },
             "required": [
@@ -128,6 +128,38 @@
               "path": {
                 "type": "string",
                 "default": "/clustering-models-svc"
+              }
+            }
+          }
+        }
+      },
+      "volumes": {
+        "description": "Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+        "type": "object",
+        "properties": {
+          "volume_data": {
+            "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+            "type": "object",
+            "properties": {
+              "container_path": {
+                "description": "The path of a volume on the container.",
+                "type": "string",
+                "default": "/usr/src/data"
+              },
+              "type": {
+                "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+                "type": "string",
+                "default": "root"
+              },
+              "profile": {
+                "type": "string",
+                "description": "Disk profile to be used for volume.",
+                "default": ""
+              },
+              "external_volume_name": {
+                "type": "string",
+                "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+                "default": ""
               }
             }
           }
