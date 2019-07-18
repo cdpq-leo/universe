@@ -140,6 +140,45 @@
         "name": "{{networking.service_endpoint_web.name}}",
         {{/networking.service_endpoint_web.name}}
         "protocol": "{{networking.service_endpoint_web.protocol}}"
+      },
+      {
+        {{#networking.service_endpoint_jobrpc.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_jobrpc.load_balance_port}}"
+        },
+        {{/networking.service_endpoint_jobrpc.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_jobrpc.container_port}},
+        "hostPort": {{networking.service_endpoint_jobrpc.host_port}},
+        {{#networking.service_endpoint_jobrpc.name}}
+        "name": "{{networking.service_endpoint_jobrpc.name}}",
+        {{/networking.service_endpoint_jobrpc.name}}
+        "protocol": "{{networking.service_endpoint_jobrpc.protocol}}"
+      },
+      {
+        {{#networking.service_endpoint_jobdata.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_jobdata.load_balance_port}}"
+        },
+        {{/networking.service_endpoint_jobdata.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_jobdata.container_port}},
+        "hostPort": {{networking.service_endpoint_jobdata.host_port}},
+        {{#networking.service_endpoint_jobdata.name}}
+        "name": "{{networking.service_endpoint_jobdata.name}}",
+        {{/networking.service_endpoint_jobdata.name}}
+        "protocol": "{{networking.service_endpoint_jobdata.protocol}}"
+      },
+      {
+        {{#networking.service_endpoint_jobweb.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint_jobweb.load_balance_port}}"
+        },
+        {{/networking.service_endpoint_jobweb.load_balance_port}}
+        "containerPort": {{networking.service_endpoint_jobweb.container_port}},
+        "hostPort": {{networking.service_endpoint_jobweb.host_port}},
+        {{#networking.service_endpoint_jobweb.name}}
+        "name": "{{networking.service_endpoint_jobweb.name}}",
+        {{/networking.service_endpoint_jobweb.name}}
+        "protocol": "{{networking.service_endpoint_jobweb.protocol}}"
       }
     ]
   },
