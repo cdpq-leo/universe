@@ -1,0 +1,166 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service configuration properties",
+      "properties": {
+        "name": {
+          "description": "The name of the kafka-manager service instance.",
+          "type": "string",
+          "default": "kafka-manager"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate",
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1
+        },
+        "mem": {
+          "description": "Memory to allocate",
+          "type": "number",
+          "default": 1024.0,
+          "minimum": 1024.0
+        },
+        "instances": {
+          "description": "Number of desired instances",
+          "type": "integer",
+          "default": 1
+        }
+      },
+      "required": [
+        "cpus",
+        "mem",
+        "instances"
+      ]
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 9000
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/kafka-manager"
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "IP_protocol": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "type": "string",
+              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
+              "default": "HTTP",
+              "enum": [
+                "MESOS_HTTP",
+                "MESOS_HTTPS",
+                "MESOS_TCP",
+                "HTTP",
+                "HTTPS"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, \"/path/to/health\".",
+              "default": "/"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Additional configuration options for environment variables.",
+      "properties": {
+        "zk_hosts": {
+          "type": "string",
+          "description": "Zookeeper URL for Kafka-manager",
+          "default": "zk-1.zk:2181,zk-2.zk:2181,zk-3.zk:2181,zk-4.zk:2181,zk-5.zk:2181"
+        },
+        "base_zk_path": {
+          "description": "Base path for storing configuration in ZooKeeper",
+          "type": "string",
+          "default": "/kafka-manager"
+        },
+        "config": {
+          "description": "Path to kafka-manager config",
+          "type": "string",
+          "default": "./conf/application.conf"
+        },
+        "http_context": {
+          "description": "Play http context",
+          "type": "string",
+          "default": ""
+        },
+        "log_level": {
+          "description": "Java log level",
+          "type": "string",
+          "default": "INFO"
+        },
+        "application_secret": {
+          "description": "Word used to as key to compute hash",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "zk_hosts"
+      ]
+    }
+  }
+}
