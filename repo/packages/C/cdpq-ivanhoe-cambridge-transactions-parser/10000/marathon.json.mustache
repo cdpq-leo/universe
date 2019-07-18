@@ -18,19 +18,19 @@
   "acceptedResourceRoles": [
     "*"
   ],
-  "container":{
+  "container": {
     "type": "DOCKER",
-    "docker":{
-        "image":"{{resource.assets.container.docker.image}}",
-        "forcePullImage":false,
-        "privileged": false,
-        "parameters": []
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
     },
-    "portMappings":[
+    "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}
         "labels": {
-            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
         },
         {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
@@ -57,7 +57,7 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
