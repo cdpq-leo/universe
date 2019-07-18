@@ -3,30 +3,30 @@
   "properties": {
     "service": {
       "type": "object",
-      "description": "Alluxio service configuration properties.",
+      "description": "MongoDB ReplicaSet service configuration properties.",
       "properties": {
         "name": {
           "description": "Name of the service.",
           "type": "string",
-          "default": "alluxio-master"
+          "default": "/mongodb/node1"
         },
         "cpus": {
-          "description": "CPU shares to allocate to the Alluxio instance.",
+          "description": "CPU shares to allocate to the MongoDB ReplicaSet instance.",
           "type": "number",
           "default": 1
         },
         "mem": {
-          "description": "Memory to allocate to the Alluxio instance.",
+          "description": "Memory to allocate to the MongoDB ReplicaSet instance.",
           "type": "number",
-          "default": 4096
+          "default": 1024
         },
         "disk": {
-          "description": "Disk (MB) to allocate to the Alluxio instance.",
+          "description": "Disk (MB) to allocate to the MongoDB ReplicaSet instance.",
           "type": "number",
-          "default": 16384
+          "default": 0
         },
         "instances": {
-          "description": "Number of instances of Alluxio.",
+          "description": "Number of instances of MongoDB ReplicaSet.",
           "type": "number",
           "default": 1.0
         },
@@ -92,136 +92,12 @@
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 19998
+              "default": 27017
             },
             "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": "alluxiomaster"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
-            },
-            "protocol": {
-              "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-              "default": "tcp"
-            },
-            "load_balance_port": {
-              "type": "number",
-              "description": "This port will be used to load balance this service address internally",
-              "default": 0
-            }
-          }
-        },
-        "service_endpoint_web": {
-          "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
-          "properties": {
-            "container_port": {
-              "description": "Container port number",
-              "type": "number",
-              "default": 19999
-            },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": "alluxiomasterweb"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
-            },
-            "protocol": {
-              "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-              "default": "tcp"
-            },
-            "load_balance_port": {
-              "type": "number",
-              "description": "This port will be used to load balance this service address internally",
-              "default": 0
-            }
-          }
-        },
-        "service_endpoint_jobrpc": {
-          "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
-          "properties": {
-            "container_port": {
-              "description": "Container port number",
-              "type": "number",
-              "default": 20001
-            },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": "alluxiomasterjobrpc"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
-            },
-            "protocol": {
-              "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-              "default": "tcp"
-            },
-            "load_balance_port": {
-              "type": "number",
-              "description": "This port will be used to load balance this service address internally",
-              "default": 0
-            }
-          }
-        },
-        "service_endpoint_jobweb": {
-          "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
-          "properties": {
-            "container_port": {
-              "description": "Container port number",
-              "type": "number",
-              "default": 20002
-            },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": "alluxiomasterjobweb"
-            },
-            "host_port": {
-              "description": "Host port number",
-              "type": "number",
-              "default": 0
-            },
-            "protocol": {
-              "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
-              "default": "tcp"
-            },
-            "load_balance_port": {
-              "type": "number",
-              "description": "This port will be used to load balance this service address internally",
-              "default": 0
-            }
-          }
-        },
-        "service_endpoint_jobjournal": {
-          "type": "object",
-          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
-          "properties": {
-            "container_port": {
-              "description": "Container port number",
-              "type": "number",
-              "default": 20003
-            },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": "alluxiomasterjobjournal"
+              "default": "mongo"
             },
             "host_port": {
               "description": "Host port number",
@@ -252,7 +128,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/alluxio"
+              "default": "/mongodb"
             }
           }
         }
@@ -262,40 +138,48 @@
       "type": "object",
       "description": "Service storage configuration properties",
       "properties": {
-        "volume_ufs": {
+        "volume_data": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/opt/mongodb/data"
+						},
+						"type": {
+							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "root"
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+							"default": ""
+						}
+					}
+				},
+        "volume_logs": {
           "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
           "properties": {
             "container_path": {
               "description": "The path of a volume on the container.",
               "type": "string",
-              "default": "ufs"
+              "default": "/opt/mongodb/logs"
             },
-            "host_path": {
-              "description": "The host path on the agent node.",
+            "type": {
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
               "type": "string",
-              "default": "/mnt/alluxio/master/underFSStorage"
+              "default": "root"
             },
-            "external_volume_name": {
+            "profile": {
               "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
-            }
-          }
-        },
-        "volume_hdfs": {
-          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-          "type": "object",
-          "properties": {
-            "container_path": {
-              "description": "The path of a volume on the container.",
-              "type": "string",
-              "default": "/mnt/hdfs"
-            },
-            "host_path": {
-              "description": "The host path on the agent node.",
-              "type": "string",
-              "default": "/opt/mesosphere/etc/mesos-scheduler-modules"
+              "description": "Disk profile to be used for volume."
             },
             "external_volume_name": {
               "type": "string",
@@ -349,14 +233,41 @@
     },
     "environment": {
       "type": "object",
-      "description": "Alluxio parameters",
+      "description": "MongoDB ReplicaSet Parameters",
       "properties": {
-        "ALLUXIO_JAVA_OPTS": {
-          "description": "Alluxio properties",
+        "MONGO_REPLSET": {
+          "description": "MongoDB ReplicaSet Name",
           "type": "string",
-          "default": "-Dalluxio.master.hostname=0.0.0.0 -Dalluxio.security.authentication.type=NOSASL -Dalluxio.master.mount.table.root.ufs=<s3a://bucket/> -Dalluxio.master.mount.table.root.option.aws.accessKeyId=<AWS_ACCESS_KEY> -Dalluxio.master.mount.table.root.option.aws.secretKey=<AWS_SECRET_ACCESS_KEY> -Dalluxio.underfs.s3.endpoint=s3.us-east-1.amazonaws.com.cn -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/mnt/hdfs/core-site.xml:/mnt/hdfs/hdfs-site.xml"
+          "default": "rs"
+        },
+        "MONGO_INITDB_ROOT_USERNAME_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Root UserName Secret",
+          "type": "string",
+          "default": "mongodb/mongodb-user"
+        },
+        "MONGO_INITDB_ROOT_PASSWORD_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Root Password Secret",
+          "type": "string",
+          "default": "mongodb/mongodb-password"
+        },
+        "MONGO_STORAGE_PATH": {
+          "description": "MongoDB ReplicaSet Storage Path",
+          "type": "string",
+          "default": "/opt/mongodb/data"
+        },
+        "MONGO_LOG_PATH": {
+          "description": "MongoDB ReplicaSet Log Path",
+          "type": "string",
+          "default": "/opt/mongodb/logs"
         }
-      }
+      },
+      "required": [
+        "MONGO_REPLSET",
+        "MONGO_INITDB_ROOT_USERNAME_SECRET",
+        "MONGO_INITDB_ROOT_PASSWORD_SECRET",
+        "MONGO_STORAGE_PATH",
+        "MONGO_LOG_PATH"
+      ]
     },
     "fetch": {
       "type": "object",

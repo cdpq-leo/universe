@@ -1,0 +1,16 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [],
+  "downgradesTo": [],
+  "name": "cdpq-mongodb",
+  "version": "1.0.0-4.1.13",
+  "maintainer": "leo@cdpq.com",
+  "description": "A MongoDB ReplicaSet service for DC/OS.",
+  "selected": true,
+  "framework": false,
+  "tags": ["MongoDB", "ReplicaSet", "database", "nosql", "db", "json", "stateful"],
+  "minDcosReleaseVersion": "1.12",
+  "preInstallNotes": "MongoDB ReplicaSet",
+  "postInstallNotes": "MongoDB ReplicaSet is being installed!",
+  "postUninstallNotes": "MongoDB ReplicaSet has been uninstalled."
+}

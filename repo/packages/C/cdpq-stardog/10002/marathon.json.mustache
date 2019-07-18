@@ -104,6 +104,16 @@
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP"
+    }
+  ],
   "fetch": [
     {{#fetch.artifact_URI.uri}}
     {
@@ -114,8 +124,14 @@
     }
     {{/fetch.artifact_URI.uri}}
    ],
-  "upgradeStrategy": {
-    "maximumOverCapacity": 0,
-    "minimumHealthCapacity": 0.5
-  }
+   "requirePorts": false,
+   "upgradeStrategy": {
+     "maximumOverCapacity": 1 ,
+     "minimumHealthCapacity": 1
+   },
+   "killSelection": "YOUNGEST_FIRST",
+   "unreachableStrategy": {
+     "inactiveAfterSeconds": 0 ,
+     "expungeAfterSeconds": 0
+   }
 }

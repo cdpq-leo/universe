@@ -226,8 +226,14 @@
   }
   {{/fetch.artifact_URI.uri}}
   ],
- "upgradeStrategy": {
-   "maximumOverCapacity": 0,
-   "minimumHealthCapacity": 0.5
- }
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0 ,
+    "expungeAfterSeconds": 0
+  }
 }
