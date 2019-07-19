@@ -64,9 +64,7 @@
     {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     {{^networking.marathon_lb_proxy.enabled}}
-    {{^networking.marathon_lb_proxy.path}}
     "SERVICE_PREFIX": "",
-    {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
     "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
@@ -98,9 +96,7 @@
     {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     {{^networking.marathon_lb_proxy.enabled}}
-    {{^networking.marathon_lb_proxy.path}}
     "path": "/api/health",
-    {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
     "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},

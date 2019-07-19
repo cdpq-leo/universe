@@ -61,9 +61,7 @@
     {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     {{^networking.marathon_lb_proxy.enabled}}
-    {{^networking.marathon_lb_proxy.path}}
     "SERVICE_PREFIX": "",
-    {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     "GOOGLE_APPLICATION_CREDENTIALS": "/var/opt/data/google/google-credentials.json"
   },
