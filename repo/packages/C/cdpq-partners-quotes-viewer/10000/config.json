@@ -147,8 +147,8 @@
           "type": "string",
           "default": "80"
         },
-        "ENDPOINT": {
-          "description": "API endpoint",
+        "RDF_SERVICE_ENDPOINT": {
+          "description": "RDF Service API endpoint",
           "type": "string",
           "default": ""
         },

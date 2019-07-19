@@ -130,68 +130,66 @@
       }
     ],
     "volumes": [
-      {{! backup_volume}}
-      {{#volumes.backup_volume.local_persistant_volume.container_path}}
+      {{^volumes.volume_data.external_volume_name}}
+    	{
+    	  "containerPath": "marklogic",
+    	  "mode": "RW",
+    	  "persistent": {
+          "type": "{{volumes.volume_data.type}}",
+          {{#volumes.volume_data.profile}}
+          "profileName": "{{volumes.volume_data.profile}}",
+          {{/volumes.volume_data.profile}}
+          "size": {{service.disk}},
+          "constraints": []
+    	  }
+    	},
       {
-         "persistent": {
-            "type": {{volumes.backup_volume.local_persistant_volume.type}},
-            "size": {{volumes.backup_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.backup_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.backup_volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.backup_volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.backup_volume.local_persistant_volume.container_path}}
-      {{^volumes.backup_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.backup_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.backup_volume.host_volume.host_path}}",
+        "containerPath": "{{volumes.volume_data.container_path}}",
+        "hostPath": "marklogic",
         "mode": "RW"
       }
-      {{/volumes.backup_volume.local_persistant_volume.container_path}}
-      ,
-      {{! data_volume}}
-      {{#volumes.data_volume.local_persistant_volume.container_path}}
+    	{{/volumes.volume_data.external_volume_name}}
+    	{{#volumes.volume_data.external_volume_name}}
       {
-         "persistent": {
-            "type": {{volumes.data_volume.local_persistant_volume.type}},
-            "size": {{volumes.data_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.data_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.data_volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.data_volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
-      {{^volumes.data_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.data_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.data_volume.host_volume.host_path}}",
+        "containerPath": "{{volumes.volume_data.container_path}}",
+        "external": {
+          "name": "{{volumes.volume_data.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
         "mode": "RW"
       }
-      {{/volumes.data_volume.local_persistant_volume.container_path}}
-      ,
-      {{! external_volume}}
-      {{#volumes.external_volume.local_persistant_volume.container_path}}
+    	{{/volumes.volume_data.external_volume_name}},
+      {{^volumes.volume_backup.external_volume_name}}
+    	{
+    	  "containerPath": "marklogic",
+    	  "mode": "RW",
+    	  "persistent": {
+          "type": "{{volumes.volume_backup.type}}",
+          {{#volumes.volume_backup.profile}}
+          "profileName": "{{volumes.volume_backup.profile}}",
+          {{/volumes.volume_backup.profile}}
+          "size": {{service.disk}},
+          "constraints": []
+    	  }
+    	},
       {
-         "persistent": {
-            "type": {{volumes.external_volume.local_persistant_volume.type}},
-            "size": {{volumes.external_volume.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.external_volume.local_persistant_volume.constraints}},
-            "profileName": {{volumes.external_volume.local_persistant_volume.profileName}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.external_volume.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.external_volume.local_persistant_volume.container_path}}
-      {{^volumes.external_volume.local_persistant_volume.container_path}}
-      {
-        "containerPath": "{{volumes.external_volume.host_volume.container_path}}",
-        "hostPath": "{{volumes.external_volume.host_volume.host_path}}",
+        "containerPath": "{{volumes.volume_backup.container_path}}",
+        "hostPath": "marklogic",
         "mode": "RW"
       }
-      {{/volumes.external_volume.local_persistant_volume.container_path}}
+    	{{/volumes.volume_backup.external_volume_name}}
+    	{{#volumes.volume_backup.external_volume_name}}
+      {
+        "containerPath": "{{volumes.volume_backup.container_path}}",
+        "external": {
+          "name": "{{volumes.volume_backup.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }
+    	{{/volumes.volume_backup.external_volume_name}}
     ]
   },
   "env": {

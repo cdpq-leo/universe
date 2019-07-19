@@ -316,161 +316,57 @@
     "volumes": {
       "type": "object",
       "properties": {
-        "backup_volume": {
-          "type": "object",
-          "description": "A volume for bakcup. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
-          "properties": {
-            "local_persistant_volume": {
-              "type": "object",
-              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-              "properties": {
+        "volume_data": {
+            "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+            "type": "object",
+            "properties": {
                 "container_path": {
-                  "type": "string",
-                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
-                },
-                "size_MiB": {
-                  "type": "number",
-                  "description": "The size of the persistent volume in MiBs."
+                    "description": "The path of a volume on the container.",
+                    "type": "string",
+                    "default": "/var/opt/marklogic/data"
                 },
                 "type": {
-                  "type": "string",
-                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                    "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+                    "type": "string",
+                    "default": "root"
                 },
-                "constraints": {
-                  "type": "array",
-                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-                  "items": {
-                    "type": "string"
-                  },
-                  "default": []
+                "profile": {
+                    "type": "string",
+                    "description": "Disk profile to be used for volume.",
+                    "default": ""
                 },
-                "profileName": {
-                  "type": "string",
-                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                "external_volume_name": {
+                    "type": "string",
+                    "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+                    "default": ""
                 }
-              }
-            },
-            "host_volume": {
-              "type": "object",
-              "description": "A host volume is a directory on the local agent mapped to one in a container.",
-              "properties": {
-                "host_path": {
-                  "type": "string",
-                  "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": "/var/lib/backup"
-                },
-                "container_path": {
-                  "type": "string",
-                  "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/backup"
-                }
-              }
             }
-          }
         },
-        "data_volume": {
-          "type": "object",
-          "description": "A volume for your data. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
-          "properties": {
-            "local_persistant_volume": {
-              "type": "object",
-              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-              "properties": {
+        "volume_backup": {
+            "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+            "type": "object",
+            "properties": {
                 "container_path": {
-                  "type": "string",
-                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
-                },
-                "size_MiB": {
-                  "type": "number",
-                  "description": "The size of the persistent volume in MiBs."
+                    "description": "The path of a volume on the container.",
+                    "type": "string",
+                    "default": "/var/opt/marklogic/backup"
                 },
                 "type": {
-                  "type": "string",
-                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
+                    "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+                    "type": "string",
+                    "default": "root"
                 },
-                "constraints": {
-                  "type": "array",
-                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-                  "items": {
-                    "type": "string"
-                  },
-                  "default": []
+                "profile": {
+                    "type": "string",
+                    "description": "Disk profile to be used for volume.",
+                    "default": ""
                 },
-                "profileName": {
-                  "type": "string",
-                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
+                "external_volume_name": {
+                    "type": "string",
+                    "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+                    "default": ""
                 }
-              }
-            },
-            "host_volume": {
-              "type": "object",
-              "description": "A host volume is a directory on the local agent mapped to one in a container.",
-              "properties": {
-                "host_path": {
-                  "type": "string",
-                  "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": "/var/lib/data"
-                },
-                "container_path": {
-                  "type": "string",
-                  "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/data"
-                }
-              }
             }
-          }
-        },
-        "external_volume": {
-          "type": "object",
-          "description": "An external volume. By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant",
-          "properties": {
-            "local_persistant_volume": {
-              "type": "object",
-              "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
-              "properties": {
-                "container_path": {
-                  "type": "string",
-                  "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash."
-                },
-                "size_MiB": {
-                  "type": "number",
-                  "description": "The size of the persistent volume in MiBs."
-                },
-                "type": {
-                  "type": "string",
-                  "description": "The type of mesos disk resource to use; the valid options are root, path, and mount, corresponding to the valid mesos multi-disk resource types."
-                },
-                "constraints": {
-                  "type": "array",
-                  "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-                  "items": {
-                    "type": "string"
-                  },
-                  "default": []
-                },
-                "profileName": {
-                  "type": "string",
-                  "description": "The storage volume profile. Only volumes with the specified profile are used to launch an application. It this option is not given, any volume (with or without a profile) will be used for launching."
-                }
-              }
-            },
-            "host_volume": {
-              "type": "object",
-              "description": "A host volume is a directory on the local agent mapped to one in a container.",
-              "properties": {
-                "host_path": {
-                  "type": "string",
-                  "description": "Path on the host filesystem to the location of the data you mounted",
-                  "default": "/var/lib/external"
-                },
-                "container_path": {
-                  "type": "string",
-                  "description": "Path, in the container, where you wish to have the data mounted",
-                  "default": "/external"
-                }
-              }
-            }
-          }
         }
       }
     },

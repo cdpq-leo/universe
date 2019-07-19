@@ -45,11 +45,11 @@
   },
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
-    "ENDPOINT": "{{environment.ENDPOINT}}",
+    "RDF_SERVICE_ENDPOINT": "{{environment.ENDPOINT}}",
     "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}"
   },
   "labels": {
