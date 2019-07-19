@@ -21,25 +21,25 @@
   "container": {
     "type":"DOCKER",
     "docker": {
-        "image":"{{resource.assets.container.docker.image}}",
-        "forcePullImage": true,
-        "privileged": false,
-        "parameters": []
+      "image":"{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
     },
     "portMappings": [
-        {
-          {{#networking.service_endpoints.load_balance_port}}
-          "labels": {
-              "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-          },
-          {{/networking.service_endpoints.load_balance_port}}
-          "containerPort": {{networking.service_endpoints.container_port}},
-          "hostPort": {{networking.service_endpoints.host_port}},
-          {{#networking.service_endpoints.name}}
-          "name": "{{networking.service_endpoints.name}}",
-          {{/networking.service_endpoints.name}}
-          "protocol": "{{networking.service_endpoints.protocol}}"
-        }
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
     ],
     "volumes": []
   },
@@ -65,12 +65,14 @@
     {
       "protocol": "HTTP",
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      {{#networking.marathon_lb_proxy.enabled}}
       {{#networking.marathon_lb_proxy.path}}
       "path": "{{networking.marathon_lb_proxy.path}}/",
       {{/networking.marathon_lb_proxy.path}}
-      {{^networking.marathon_lb_proxy.path}}
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
       "path": "/",
-      {{/networking.marathon_lb_proxy.path}}
+      {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
       "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
