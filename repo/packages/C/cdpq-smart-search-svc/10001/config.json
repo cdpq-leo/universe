@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/smart-search-svc"
             }
           }
         }
@@ -143,11 +143,6 @@
             "port_index": {
               "type": "number",
               "default": 0
-            },
-            "path": {
-              "type": "string",
-              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
-              "default": "/smart-search-search-svc/api/health/"
             },
             "advanced_health_checking_settings": {
               "type": "object",
