@@ -156,6 +156,16 @@
           "description": "Word used to as key to compute hash",
           "type": "string",
           "default": ""
+        },
+        "kafka_manager_username": {
+          "description": "Name of the secret in the secret store containing the kafka-manager username",
+          "type": "string",
+          "default": ""
+        },
+        "kafka_manager_password": {
+          "description": "Name of the secret in the secret store containing the kafka-manager password",
+          "type": "string",
+          "default": ""
         }
       },
       "required": [

@@ -47,6 +47,11 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
+    {{#environment.kafka_manager_username}}
+    "KAFKA_MANAGER_USERNAME": {"secret": "kafkamanagerusername"},
+    "KAFKA_MANAGER_PASSWORD": {"secret": "kafkamanagerpassword"},
+    "KAFKA_MANAGER_AUTH_ENABLED": "true",
+    {{/environment.kafka_manager_username}}
     "ZK_HOSTS": "{{environment.zk_hosts}}",
     "HTTP_CONTEXT": "{{environment.http_context}}",
     "BASE_ZK_PATH": "{{environment.base_zk_path}}",
@@ -54,6 +59,14 @@
     "PROXY_ADDRESS_FORWARDING": "true",
     "KAFKA_MANAGER_LOGLEVEL": "{{environment.log_level}}",
     "APPLICATION_SECRET": "{{environment.application_secret}}"
+  },
+  "secrets": {
+    "kafkamanagerusername": {
+      "source": "{{environment.kafka_manager_username}}"
+    },
+    "kafkamanagerpassword": {
+      "source": "{{environment.kafka_manager_password}}"
+    }
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 1,
