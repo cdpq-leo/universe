@@ -21,8 +21,10 @@
   "container": {
     "type": "DOCKER",
     "docker": {
+      "forcePullImage": true,
       "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true
+      "privileged": false,
+      "parameters": []
     },
     "portMappings": [
       {
@@ -192,26 +194,15 @@
       {{/volumes.external_volume.local_persistant_volume.container_path}}
     ]
   },
-  "healthChecks": [
-    {
-      "portIndex": 0,
-      "protocol": "MESOS_HTTP",
-      "path": "{{networking.marathon_lb.vhost}}"
-    }
-  ],
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "MARKLOGIC_USR": {
-      "secret": "marklogicuser"
-    },
-    "MARKLOGIC_PWD": {
-      "secret": "marklogicpassword"
-    },
-    "MARKLOGIC_AUTH_MODE": "{{environment.marklogic.auth_mode}}",
-    "MARKLOGIC_SEC_REALM": "{{environment.marklogic.realm}}",
-    "HDFS_CONFIG_URL": "{{environment.hdfs.config_url}}"
+    "MARKLOGIC_USR": {"secret": "marklogicuser"},
+    "MARKLOGIC_PWD": {"secret": "marklogicpassword"},
+    "MARKLOGIC_AUTH_MODE": "{{environment.marklogic.MARKLOGIC_AUTH_MODE}}",
+    "MARKLOGIC_SEC_REALM": "{{environment.marklogic.MARKLOGIC_SEC_REALM}}",
+    "HDFS_CONFIG_URL": "{{environment.hdfs.HDFS_CONFIG_URL}}"
   },
   "secrets": {
     "marklogicuser": {
@@ -231,7 +222,21 @@
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
     "HAPROXY_0_STICKY": "true"
-    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout clien
+    "volumes": [
+      {
+         "containerPath": {{volumes.volume_data.container_path}},
+         "hostPath": {{volumes.volume_data.hostPath}},
+         "mode": "RW"
+      }
+    ]
+    "volumes": [
+      {
+         "containerPath": {{volumes.volume_data.container_path}},
+         "hostPath": {{volumes.volume_data.hostPath}},
+         "mode": "RW"
+      }
+    ]t 30m\n",
     "HAPROXY_3_GROUP": "external",
     "HAPROXY_3_ENABLED": "true",
     "HAPROXY_3_REDIRECT_TO_HTTPS": "true",
@@ -253,18 +258,35 @@
     "DCOS_SERVICE_NAME": "{{service.name}}",
     "DCOS_SERVICE_PORT_INDEX": "0"
   },
-  "fetch": [
-  {{#fetch.artifact_URI.uri}}
-  {
-    "uri": "{{fetch.artifact_URI.uri}}",
-    "extract": {{fetch.artifact_URI.extract}},
-    "executable": {{fetch.artifact_URI.executable}},
-    "cache": {{fetch.artifact_URI.cache}}
-  }
-  {{/fetch.artifact_URI.uri}}
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      {{#networking.marathon_lb_proxy.path}}
+      "path": "{{networking.marathon_lb_proxy.path}}/",
+      {{/networking.marathon_lb_proxy.path}}
+      {{^networking.marathon_lb_proxy.path}}
+      "path": "/",
+      {{/networking.marathon_lb_proxy.path}}
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
+    }
   ],
- "upgradeStrategy": {
-   "maximumOverCapacity": 0,
-   "minimumHealthCapacity": 0.5
- }
+  "fetch": [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 0,
+    "minimumHealthCapacity": 0.5
+  }
 }

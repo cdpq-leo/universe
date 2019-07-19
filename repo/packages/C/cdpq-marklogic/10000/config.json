@@ -302,11 +302,12 @@
           "type": "object",
           "properties": {
             "vhost": {
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/marklogic"
             }
           }
         }
@@ -481,22 +482,22 @@
           "type": "object",
           "description": "Marklogic configuration",
           "properties": {
-            "username": {
+            "MARKLOGIC_USR": {
               "description": "Admin username",
               "type": "string",
               "default": "admin"
             },
-            "password": {
+            "MARKLOGIC_PWD": {
               "description": "Name of the secret in the secret store containing the marklogic password",
               "type": "string",
               "default": "secret_marklogic_password"
             },
-            "auth_mode": {
+            "MARKLOGIC_AUTH_MODE": {
               "description": "Auth mode",
               "type": "string",
               "default": "digest"
             },
-            "realm": {
+            "MARKLOGIC_SEC_REALM": {
               "description": "Realm",
               "type": "string",
               "default": "public"
@@ -511,7 +512,7 @@
           "type": "object",
           "description": "HDFS config",
           "properties": {
-            "config_url": {
+            "HDFS_CONFIG_URL": {
               "description": "Base URL that serves HDFS config files (core-site.xml and hdfs-site.xml)",
               "type": "string",
               "default": ""
