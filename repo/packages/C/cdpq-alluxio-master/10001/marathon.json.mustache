@@ -30,9 +30,21 @@
       [
         {{^volumes.volume_ufs.external_volume_name}}
         {
-           "containerPath": "{{volumes.volume_ufs.container_path}}",
-           "hostPath": "{{volumes.volume_ufs.host_path}}",
-           "mode": "RW"
+      	  "containerPath": "ufs",
+      	  "mode": "RW",
+      	  "persistent": {
+      		"type": "{{volumes.volume_ufs.type}}",
+          {{#volumes.volume_ufs.profile}}
+      		"profileName": "{{volumes.volume_ufs.profile}}",
+          {{/volumes.volume_ufs.profile}}
+      		"size": {{service.disk}},
+      		"constraints": []
+      	  }
+      	},
+        {
+          "containerPath": "{{volumes.volume_ufs.container_path}}",
+          "hostPath": "ufs",
+          "mode": "RW"
         },
         {{/volumes.volume_ufs.external_volume_name}}
         {{#volumes.volume_ufs.external_volume_name}}
@@ -46,24 +58,11 @@
           "mode": "RW"
         },
         {{/volumes.volume_ufs.external_volume_name}}
-        {{^volumes.volume_hdfs.external_volume_name}}
         {
            "containerPath": "{{volumes.volume_hdfs.container_path}}",
            "hostPath": "{{volumes.volume_hdfs.host_path}}",
            "mode": "RW"
         }
-        {{/volumes.volume_hdfs.external_volume_name}}
-        {{#volumes.volume_hdfs.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_hdfs.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_hdfs.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        }
-        {{/volumes.volume_hdfs.external_volume_name}}
       ],
     "portMappings": [
       {
@@ -140,7 +139,22 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
+    "ALLUXIO_MASTER_HOSTNAME":  "{{environment.ALLUXIO_MASTER_HOSTNAME}}",
+    "ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS":  "{{environment.ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS}}",
+    "ALLUXIO_RAM_FOLDER":  "{{environment.ALLUXIO_RAM_FOLDER}}",
+    "AWS_ACCESS_KEY": {"secret": "awsaccesskey"},
+    "AWS_SECRET_ACCESS_KEY": {"secret": "awssecretaccesskey"},
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": "{{environment.ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS}}",
+    "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS": "{{environment.ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS}}",
     "ALLUXIO_JAVA_OPTS": "{{environment.ALLUXIO_JAVA_OPTS}}"
+  },
+  "secrets": {
+    "awsaccesskey": {
+      "source": "{{environment.AWS_ACCESS_KEY_SECRET}}"
+    },
+    "awssecretaccesskey": {
+      "source": "{{environment.AWS_SECRET_ACCESS_KEY_SECRET}}"
+    }
   },
   "healthChecks": [
     {
@@ -164,7 +178,7 @@
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0"
+    "DCOS_SERVICE_PORT_INDEX": "1"
   },
   "fetch": [
   {{#fetch.artifact_URI.uri}}
