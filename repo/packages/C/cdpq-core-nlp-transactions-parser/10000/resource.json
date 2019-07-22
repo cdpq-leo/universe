@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/nlp_transactions_parser"
+        "image": "cdpqleo/nlp_transactions_parser:1.0.0"
       }
     }
   }
