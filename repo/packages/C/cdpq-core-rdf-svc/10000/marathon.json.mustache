@@ -57,16 +57,16 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "SERVICE_PREFIX": "",
     {{/networking.marathon_lb_proxy.enabled}}
-    "USERNAME": {"secret": "marklogicusername"},
-    "PASSWORD": {"secret": "marklogicpassword"},
-    "ENDPOINT": "{{environment.MARKLOGIC_ENDPOINT}}"
+    "USERNAME": {"secret": "rdfusername"},
+    "PASSWORD": {"secret": "rdfpassword"},
+    "ENDPOINT": "{{environment.RDF_ENDPOINT}}"
   },
   "secrets": {
-    "marklogicusername": {
-      "source": "{{environment.MARKLOGIC_USERNAME_SECRET}}"
+    "rdfusername": {
+      "source": "{{environment.RDF_USERNAME_SECRET}}"
     },
-    "marklogicpassword": {
-      "source": "{{environment.MARKLOGIC_PASSWORD_SECRET}}"
+    "rdfpassword": {
+      "source": "{{environment.RDF_PASSWORD_SECRET}}"
     }
   },
   "labels": {
