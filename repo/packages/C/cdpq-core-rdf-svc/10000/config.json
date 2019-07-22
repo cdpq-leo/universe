@@ -150,12 +150,12 @@
         "RDF_USERNAME_SECRET": {
           "description": "Name of the secret in the secret store containing the user for the RDF database authentication",
           "type": "string",
-          "default": "rdf-username"
+          "default": "svc/core-rdf-svc/core-rdf-svc-username"
         },
         "RDF_PASSWORD_SECRET": {
           "description": "Name of the secret in the secret store containing the password for the RDF database authentication",
           "type": "string",
-          "default": "rdf-password"
+          "default": "svc/core-rdf-svc/core-rdf-svc-password"
         },
         "RDF_ENDPOINT": {
           "description": "RDF database endpoint",
