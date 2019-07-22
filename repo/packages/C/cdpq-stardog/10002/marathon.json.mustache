@@ -41,14 +41,14 @@
   	  }
   	},
   	{
-  	  "containerPath": "{{volumes.volume_data.container_path}}/data",
+  	  "containerPath": "{{volumes.volume_data.container_path}}",
   	  "hostPath": "data",
   	  "mode": "RW"
   	}
   	{{/volumes.volume_data.external_volume_name}}
   	{{#volumes.volume_data.external_volume_name}}
       {
-          "containerPath": "{{volumes.volume_data.container_path}}/data",
+          "containerPath": "{{volumes.volume_data.container_path}}",
           "external": {
             "name": "{{volumes.volume_data.external_volume_name}}",
             "provider": "dvdi",

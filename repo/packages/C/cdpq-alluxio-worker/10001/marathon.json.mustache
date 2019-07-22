@@ -28,78 +28,76 @@
     },
     "volumes":
       [
-        {{^volumes.volume_ufs.external_volume_name}}
-        {
-           "containerPath": "{{volumes.volume_ufs.container_path}}",
-           "hostPath": "{{volumes.volume_ufs.host_path}}",
-           "mode": "RW"
-        },
-        {{/volumes.volume_ufs.external_volume_name}}
-        {{#volumes.volume_ufs.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_ufs.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_ufs.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        },
-        {{/volumes.volume_ufs.external_volume_name}}
-        {{^volumes.volume_domainsocket.external_volume_name}}
-        {
-           "containerPath": "{{volumes.volume_domainsocket.container_path}}",
-           "hostPath": "{{volumes.volume_domainsocket.host_path}}",
-           "mode": "RW"
-        },
-        {{/volumes.volume_domainsocket.external_volume_name}}
-        {{#volumes.volume_domainsocket.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_domainsocket.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_domainsocket.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        },
-        {{/volumes.volume_domainsocket.external_volume_name}}
-        {{^volumes.volume_ramdisk.external_volume_name}}
-        {
-           "containerPath": "{{volumes.volume_ramdisk.container_path}}",
-           "hostPath": "{{volumes.volume_ramdisk.host_path}}",
-           "mode": "RW"
-        },
-        {{/volumes.volume_ramdisk.external_volume_name}}
-        {{#volumes.volume_ramdisk.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_ramdisk.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_ramdisk.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-        },
-        {{/volumes.volume_ramdisk.external_volume_name}}
-        {{^volumes.volume_ssd.external_volume_name}}
-        {
-           "containerPath": "{{volumes.volume_ssd.container_path}}",
-           "hostPath": "{{volumes.volume_ssd.host_path}}",
-           "mode": "RW"
+      {{^volumes.volume_ufs.external_volume_name}}
+      {
+        "containerPath": "ufs",
+        "mode": "RW",
+        "persistent": {
+        "type": "{{volumes.volume_ufs.type}}",
+        {{#volumes.volume_ufs.profile}}
+        "profileName": "{{volumes.volume_ufs.profile}}",
+        {{/volumes.volume_ufs.profile}}
+        "size": {{service.disk}},
+        "constraints": []
         }
-        {{/volumes.volume_ssd.external_volume_name}}
-        {{#volumes.volume_ssd.external_volume_name}}
-        {
-          "containerPath": "{{volumes.volume_ssd.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_ssd.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
+      },
+      {
+        "containerPath": "{{volumes.volume_ufs.container_path}}",
+        "hostPath": "ufs",
+        "mode": "RW"
+      },
+      {{/volumes.volume_ufs.external_volume_name}}
+      {{#volumes.volume_ufs.external_volume_name}}
+      {
+        "containerPath": "{{volumes.volume_ufs.container_path}}",
+        "external": {
+          "name": "{{volumes.volume_ufs.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      },
+      {{/volumes.volume_ufs.external_volume_name}}
+      {
+         "containerPath": "{{volumes.volume_domainsocket.container_path}}",
+         "hostPath": "{{volumes.volume_domainsocket.host_path}}",
+         "mode": "RW"
+      },
+      {
+         "containerPath": "{{volumes.volume_ramdisk.container_path}}",
+         "hostPath": "{{volumes.volume_ramdisk.host_path}}",
+         "mode": "RW"
+      },
+      {{^volumes.volume_ssd.external_volume_name}}
+      {
+        "containerPath": "ssd",
+        "mode": "RW",
+        "persistent": {
+        "type": "{{volumes.volume_ssd.type}}",
+        {{#volumes.volume_ssd.profile}}
+        "profileName": "{{volumes.volume_ssd.profile}}",
+        {{/volumes.volume_ssd.profile}}
+        "size": {{service.disk}},
+        "constraints": []
         }
-        {{/volumes.volume_ssd.external_volume_name}}
+      },
+      {
+        "containerPath": "{{volumes.volume_ssd.container_path}}",
+        "hostPath": "ssd",
+        "mode": "RW"
+      }
+      {{/volumes.volume_ssd.external_volume_name}}
+      {{#volumes.volume_ssd.external_volume_name}}
+      {
+        "containerPath": "{{volumes.volume_ssd.container_path}}",
+        "external": {
+          "name": "{{volumes.volume_ssd.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }
+      {{/volumes.volume_ssd.external_volume_name}}
       ],
     "portMappings": [
       {
@@ -189,7 +187,20 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
+    "ALLUXIO_MASTER_HOSTNAME":  "{{environment.ALLUXIO_MASTER_HOSTNAME}}",
+    "ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS":  "{{environment.ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS}}",
+    "ALLUXIO_RAM_FOLDER":  "{{environment.ALLUXIO_RAM_FOLDER}}",
+    "AWS_ACCESS_KEY": {"secret": "awsaccesskey"},
+    "AWS_SECRET_ACCESS_KEY": {"secret": "awssecretaccesskey"},
     "ALLUXIO_JAVA_OPTS": "{{environment.ALLUXIO_JAVA_OPTS}}"
+  },
+  "secrets": {
+    "awsaccesskey": {
+      "source": "{{environment.AWS_ACCESS_KEY_SECRET}}"
+    },
+    "awssecretaccesskey": {
+      "source": "{{environment.AWS_SECRET_ACCESS_KEY_SECRET}}"
+    }
   },
   "healthChecks": [
     {
