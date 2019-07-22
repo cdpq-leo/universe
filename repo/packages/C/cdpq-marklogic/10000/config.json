@@ -378,15 +378,15 @@
           "type": "object",
           "description": "Marklogic configuration",
           "properties": {
-            "MARKLOGIC_USR": {
+            "MARKLOGIC_USER_SECRET": {
               "description": "Admin username",
               "type": "string",
-              "default": "admin"
+              "default": "marklogic-user"
             },
-            "MARKLOGIC_PWD": {
+            "MARKLOGIC_PASSWORD_SECRET": {
               "description": "Name of the secret in the secret store containing the marklogic password",
               "type": "string",
-              "default": "secret_marklogic_password"
+              "default": "marklogic-password"
             },
             "MARKLOGIC_AUTH_MODE": {
               "description": "Auth mode",
@@ -400,8 +400,8 @@
             }
           },
           "required": [
-            "username",
-            "password"
+            "MARKLOGIC_USER_SECRET",
+            "MARKLOGIC_PASSWORD_SECRET"
           ]
         },
         "hdfs": {

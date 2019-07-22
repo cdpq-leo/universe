@@ -204,10 +204,10 @@
   },
   "secrets": {
     "marklogicuser": {
-      "source": "{{environment.marklogic.username}}"
+      "source": "{{environment.marklogic.MARKLOGIC_USER_SECRET}}"
     },
     "marklogicpassword": {
-      "source": "{{environment.marklogic.password}}"
+      "source": "{{environment.marklogic.MARKLOGIC_PASSWORD_SECRET}}"
     }
   },
   "labels": {
@@ -219,22 +219,8 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-    "HAPROXY_0_STICKY": "true"
-    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout clien
-    "volumes": [
-      {
-         "containerPath": {{volumes.volume_data.container_path}},
-         "hostPath": {{volumes.volume_data.hostPath}},
-         "mode": "RW"
-      }
-    ]
-    "volumes": [
-      {
-         "containerPath": {{volumes.volume_data.container_path}},
-         "hostPath": {{volumes.volume_data.hostPath}},
-         "mode": "RW"
-      }
-    ]t 30m\n",
+    "HAPROXY_0_STICKY": "true",
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     "HAPROXY_3_GROUP": "external",
     "HAPROXY_3_ENABLED": "true",
     "HAPROXY_3_REDIRECT_TO_HTTPS": "true",
