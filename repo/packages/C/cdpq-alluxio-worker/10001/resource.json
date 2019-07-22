@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "alluxio/alluxio:2.0.0"
+        "image": "alluxio/alluxio:2.1.0-SNAPSHOT"
       }
     }
   }

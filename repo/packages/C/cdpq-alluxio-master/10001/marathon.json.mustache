@@ -30,7 +30,7 @@
       [
         {{^volumes.volume_ufs.external_volume_name}}
         {
-      	  "containerPath": "ufs",
+      	  "containerPath": "{{volumes.volume_ufs.container_path}}",
       	  "mode": "RW",
       	  "persistent": {
       		"type": "{{volumes.volume_ufs.type}}",
@@ -41,11 +41,6 @@
       		"constraints": []
       	  }
       	},
-        {
-          "containerPath": "{{volumes.volume_ufs.container_path}}",
-          "hostPath": "ufs",
-          "mode": "RW"
-        },
         {{/volumes.volume_ufs.external_volume_name}}
         {{#volumes.volume_ufs.external_volume_name}}
         {
