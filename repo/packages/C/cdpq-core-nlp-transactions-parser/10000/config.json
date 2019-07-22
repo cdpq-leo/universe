@@ -8,7 +8,7 @@
             "name": {
                 "description": "Name of application instance as seen in DC/OS.",
                 "type": "string",
-                "default": "ivanhoe-cambridge-transactions-parser"
+                "default": "core-nlp-transactions-parser"
             },
             "instances": {
                 "description": "Number of instances of your service.",
@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/ivanhoe-cambridge-transaction-parser"
+              "default": "/core-nlp-transaction-parser"
             }
           }
         }
