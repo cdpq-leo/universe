@@ -69,6 +69,14 @@
           "media": {
             "type": "application/x-zone-constraints+json"
           }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
         }
       }
     },
@@ -84,6 +92,11 @@
               "description": "Container port number",
               "type": "number",
               "default": 0
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
             },
             "host_port": {
               "description": "Host port number",
@@ -105,6 +118,10 @@
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
             "vhost": {
               "type": "string"
             },

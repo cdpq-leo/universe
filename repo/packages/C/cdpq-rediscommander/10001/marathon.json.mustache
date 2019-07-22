@@ -15,29 +15,46 @@
       "mode": "container/bridge"
     }
   ],
-  "container": 
-  {
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
     "type": "DOCKER",
+    "volumes": [],
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
       "parameters": []
     },
-    "portMappings": 
-    [
+    "portMappings": [
       {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
         "containerPort": {{networking.service_endpoints.container_port}},
         "hostPort": {{networking.service_endpoints.host_port}},
-        "labels": {
-          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-        },
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ]
   },
+  "env": {
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "REDIS_HOST": "{{environment.REDIS_HOST}}",
+    "REDIS_PORT": "{{environment.REDIS_PORT}}"
+  },
   "labels": {
-    {{#networking.marathon_lb_proxy.vhost}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
@@ -45,15 +62,8 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
-    {{/networking.marathon_lb_proxy.vhost}}
-    "DCOS_SERVICE_PORT_INDEX": "0",
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}"
-  },
-  "env": {
-    "REDIS_HOST": "{{environment.REDIS_HOST}}",
-    "REDIS_PORT": "{{environment.REDIS_PORT}}"
+	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n"
+    {{/networking.marathon_lb_proxy.enabled}}
   },
   "healthChecks": [
     {
@@ -71,7 +81,16 @@
       {{/networking.marathon_lb_proxy.enabled}}
     }
   ],
-  "fetch": [],
+  "fetch": [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+   ],
    "upgradeStrategy": {
      "maximumOverCapacity": 1,
      "minimumHealthCapacity": 1
