@@ -2,7 +2,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/redis-commander:0.4.5"
+        "image": "rediscommander/redis-commander:latest"
       }
     }
   },
