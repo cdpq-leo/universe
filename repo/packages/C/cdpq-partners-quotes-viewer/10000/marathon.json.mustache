@@ -72,11 +72,11 @@
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
       {{#networking.marathon_lb_proxy.enabled}}
       {{#networking.marathon_lb_proxy.path}}
-      "path": "{{networking.marathon_lb_proxy.path}}/en",
+      "path": "{{networking.marathon_lb_proxy.path}}/",
       {{/networking.marathon_lb_proxy.path}}
       {{/networking.marathon_lb_proxy.enabled}}
       {{^networking.marathon_lb_proxy.enabled}}
-      "path": "/en",
+      "path": "/",
       {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
