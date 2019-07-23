@@ -163,37 +163,6 @@
         "mode": "RW"
       }
     	{{/volumes.volume_data.external_volume_name}}
-      ,
-      {{^volumes.volume_backup.external_volume_name}}
-    	{
-    	  "containerPath": "marklogic",
-    	  "mode": "RW",
-    	  "persistent": {
-          "type": "{{volumes.volume_backup.type}}",
-          {{#volumes.volume_backup.profile}}
-          "profileName": "{{volumes.volume_backup.profile}}",
-          {{/volumes.volume_backup.profile}}
-          "size": {{service.disk}},
-          "constraints": []
-    	  }
-    	},
-      {
-        "containerPath": "{{volumes.volume_backup.container_path}}",
-        "hostPath": "marklogic",
-        "mode": "RW"
-      }
-    	{{/volumes.volume_backup.external_volume_name}}
-    	{{#volumes.volume_backup.external_volume_name}}
-      {
-        "containerPath": "{{volumes.volume_backup.container_path}}",
-        "external": {
-          "name": "{{volumes.volume_backup.external_volume_name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
-      }
-    	{{/volumes.volume_backup.external_volume_name}}
     ]
   },
   "env": {
