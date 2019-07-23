@@ -1,5 +1,4 @@
 {
-  "type": "object",
   "properties": {
     "service": {
         "type": "object",
@@ -306,8 +305,7 @@
               "default": false
             },
             "vhost": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             },
             "path": {
               "type": "string",
@@ -319,6 +317,7 @@
     },
     "volumes": {
       "type": "object",
+      "description": "Marklogic volumes configuration properties.",
       "properties": {
         "volume_data": {
             "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
