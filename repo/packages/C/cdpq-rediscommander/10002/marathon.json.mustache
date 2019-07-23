@@ -42,10 +42,6 @@
     "HAPROXY_0_ENABLED": "true",
     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-    {{#networking.marathon_lb_proxy.path}}
-    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-    {{/networking.marathon_lb_proxy.path}}
-	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.vhost}}
     "DCOS_SERVICE_PORT_INDEX": "0",
     "DCOS_SERVICE_SCHEME": "http",
@@ -53,6 +49,12 @@
   },
   "env": {
     "REDIS_HOST": "{{environment.REDIS_HOST}}",
+    {{#networking.marathon_lb_proxy.vhost}}
+    "TRUST_PROXY": "true",
+    {{/networking.marathon_lb_proxy.vhost}}
+    {{#networking.marathon_lb_proxy.path}}
+    "URL_PREFIX": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
     "REDIS_PORT": "{{environment.REDIS_PORT}}"
   },
   "healthChecks": [
@@ -62,13 +64,13 @@
       "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
       "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
-      "protocol": "HTTP",
-      {{#networking.marathon_lb_proxy.enabled}}
+      {{#networking.marathon_lb_proxy.path}}
       "path": "{{networking.marathon_lb_proxy.path}}",
-      {{/networking.marathon_lb_proxy.enabled}}
-      {{^networking.marathon_lb_proxy.enabled}}
-      "path": "{{health_checks.HTTP_protocol.path}}"
-      {{/networking.marathon_lb_proxy.enabled}}
+      {{/networking.marathon_lb_proxy.path}}
+      {{^networking.marathon_lb_proxy.path}}
+      "path": "{{health_checks.HTTP_protocol.path}}",
+      {{/networking.marathon_lb_proxy.path}}
+      "protocol": "HTTP"
     }
   ],
   "fetch": [],
