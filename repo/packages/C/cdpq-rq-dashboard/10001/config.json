@@ -182,10 +182,12 @@
           "default": "6379"
         },
         "USERNAME": {
+          "description": "Secret in secret store for the rq-dashboard username",
           "type": "string",
           "default": ""
         },
         "PASSWORD": {
+          "description": "Secret in secret store for the rq-dashboard password",
           "type": "string",
           "default": ""
         }
