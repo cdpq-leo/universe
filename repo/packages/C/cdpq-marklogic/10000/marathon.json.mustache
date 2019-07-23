@@ -126,6 +126,9 @@
         {{/networking.service_endpoint_08.load_balance_port}}
         "containerPort": {{networking.service_endpoint_08.container_port}},
         "hostPort": {{networking.service_endpoint_08.host_port}},
+        {{#networking.service_endpoint_08.name}}
+        "name": "{{networking.service_endpoint_08.name}}",
+        {{/networking.service_endpoint_08.name}}
         "protocol": "{{networking.service_endpoint_08.protocol}}"
       }
     ],

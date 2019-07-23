@@ -123,6 +123,11 @@
               "type": "number",
               "default": 7998
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -149,6 +154,11 @@
               "type": "number",
               "default": 7999
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -166,7 +176,7 @@
             }
           }
         },
-        "service_endpoints_04": {
+        "service_endpoint_04": {
           "type": "object",
           "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
@@ -174,6 +184,11 @@
               "description": "Container port number",
               "type": "number",
               "default": 8000
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
             },
             "host_port": {
               "description": "Host port number",
@@ -201,6 +216,11 @@
               "type": "number",
               "default": 8001
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -226,6 +246,11 @@
               "description": "Container port number",
               "type": "number",
               "default": 8002
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
             },
             "host_port": {
               "description": "Host port number",
@@ -253,6 +278,11 @@
               "type": "number",
               "default": 8003
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -278,6 +308,11 @@
               "description": "Container port number",
               "type": "number",
               "default": 8004
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
             },
             "host_port": {
               "description": "Host port number",
