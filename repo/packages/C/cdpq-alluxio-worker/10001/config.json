@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of the service.",
           "type": "string",
-          "default": "alluxio-worker-1"
+          "default": "/alluxio/alluxio-worker-1"
         },
         "cpus": {
           "description": "CPU shares to allocate to the Alluxio instance.",
@@ -102,7 +102,7 @@
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 29998
+              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -112,7 +112,7 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 29998
+              "default": 0
             }
           }
         },
@@ -133,7 +133,7 @@
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 29999
+              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -164,7 +164,7 @@
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 30000
+              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -175,6 +175,99 @@
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
               "default": 30000
+            }
+          }
+        },
+        "service_endpoint_jobrpc": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 30001
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxioworkerjobrpc"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 30001
+            }
+          }
+        },
+        "service_endpoint_jobdata": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 30002
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxioworkerjobdata"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 30002
+            }
+          }
+        },
+        "service_endpoint_jobweb": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 30003
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxioworkerjobweb"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 30003
             }
           }
         },
@@ -201,26 +294,30 @@
       "description": "Service storage configuration properties",
       "properties": {
         "volume_ufs": {
-          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-          "type": "object",
-          "properties": {
-            "container_path": {
-              "description": "The path of a volume on the container.",
-              "type": "string",
-              "default": "ufs"
-            },
-            "host_path": {
-              "description": "The host path on the agent node.",
-              "type": "string",
-              "default": "/mnt/alluxio/underFSStorage"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
-            }
-          }
-        },
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/opt/alluxio/underFSStorage"
+						},
+						"type": {
+							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "root"
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+							"default": ""
+						}
+					}
+				},
         "volume_domainsocket": {
           "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
@@ -234,11 +331,6 @@
               "description": "The host path on the agent node.",
               "type": "string",
               "default": "/mnt/alluxio/domainsocket"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
             }
           }
         },
@@ -254,36 +346,35 @@
             "host_path": {
               "description": "The host path on the agent node.",
               "type": "string",
-              "default": "/mnt/alluxio/ramdisk"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
+              "default": "/mnt/ramdisk"
             }
           }
         },
         "volume_ssd": {
-          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-          "type": "object",
-          "properties": {
-            "container_path": {
-              "description": "The path of a volume on the container.",
-              "type": "string",
-              "default": "/opt/ssd"
-            },
-            "host_path": {
-              "description": "The host path on the agent node.",
-              "type": "string",
-              "default": "/mnt/alluxio/ssd"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
-            }
-          }
-        }
+  				"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+  				"type": "object",
+  				"properties": {
+  					"container_path": {
+  						"description": "The path of a volume on the container.",
+  						"type": "string",
+  						"default": "/opt/ssd"
+  					},
+  					"type": {
+  						"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+  						"type": "string",
+  						"default": "root"
+  					},
+  					"profile": {
+  						"type": "string",
+  						"description": "Disk profile to be used for volume."
+  					},
+  					"external_volume_name": {
+  						"type": "string",
+  						"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+  						"default": ""
+  					}
+  				}
+  			}
       }
     },
     "health_checks": {
@@ -331,10 +422,35 @@
       "type": "object",
       "description": "Alluxio parameters",
       "properties": {
+        "ALLUXIO_MASTER_HOSTNAME": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "alluxioalluxio-master.marathon.l4lb.thisdcos.directory:19998"
+        },
+        "ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "/opt/alluxio/underFSStorage"
+        },
+        "ALLUXIO_RAM_FOLDER": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "/opt/ramdisk"
+        },
+        "AWS_ACCESS_KEY_SECRET": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "aws-access-key"
+        },
+        "AWS_SECRET_ACCESS_KEY_SECRET": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "aws-secret-access-key"
+        },
         "ALLUXIO_JAVA_OPTS": {
           "description": "Alluxio properties",
           "type": "string",
-          "default": "-Dalluxio.master.hostname=alluxio-master.alluxio.marathon.mesos -Dalluxio.worker.hostname=<HOSTNAME> -Dalluxio.worker.web.hostname=<HOSTNAME> -Dalluxio.worker.memory.size=16G -Dalluxio.worker.tieredstore.levels=1 -Dalluxio.worker.tieredstore.level0.dirs.path=/opt/ramdisk,/opt/ssd -Dalluxio.worker.tieredstore.level0.dirs.mediumtype=MEM,SSD -Dalluxio.worker.tieredstore.level0.dirs.quota=16GB,128GB -Dalluxio.worker.tieredstore.level0.watermark.high.ratio=0.9 -Dalluxio.worker.tieredstore.level0.watermark.low.ratio=0.7 -Dalluxio.worker.data.server.domain.socket.address=/opt/domain -Dalluxio.worker.data.server.domain.socket.as.uuid=true"
+          "default": "-Dalluxio.worker.hostname=0.0.0.0 -Dalluxio.worker.web.hostname=0.0.0.0 -Dalluxio.worker.memory.size=16G -Dalluxio.worker.tieredstore.levels=1 -Dalluxio.worker.tieredstore.level0.dirs.path=/opt/ramdisk,/opt/ssd -Dalluxio.worker.tieredstore.level0.dirs.mediumtype=MEM,SSD -Dalluxio.worker.tieredstore.level0.dirs.quota=16GB,128GB -Dalluxio.worker.tieredstore.level0.watermark.high.ratio=0.9 -Dalluxio.worker.tieredstore.level0.watermark.low.ratio=0.7 -Dalluxio.worker.data.server.domain.socket.address=/opt/domain -Dalluxio.worker.data.server.domain.socket.as.uuid=true"
         }
       }
     },

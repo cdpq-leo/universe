@@ -1,0 +1,14 @@
+{
+  "images": {
+    "icon-small": "https://downloads.mesosphere.com/assets/universe/000/mongodb-replicaset-icon-small.png",
+    "icon-medium": "https://downloads.mesosphere.com/assets/universe/000/mongodb-replicaset-icon-medium.png",
+    "icon-large": "https://downloads.mesosphere.com/assets/universe/000/mongodb-replicaset-icon-large.png"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "mongo:4.1.13-bionic"
+      }
+    }
+  }
+}

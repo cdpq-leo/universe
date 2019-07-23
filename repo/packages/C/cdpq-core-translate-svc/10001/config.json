@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/core-translate-svc"
             }
           }
         }
@@ -146,6 +146,11 @@
           "description": "HTTP_PORT",
           "type": "string",
           "default": "8080"
+        },
+        "GOOGLE_API_KEY_SECRET": {
+          "description": "Google API key",
+          "type": "string",
+          "default": "google-api-key"
         }
       }
     },

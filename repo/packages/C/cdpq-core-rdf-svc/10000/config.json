@@ -133,17 +133,6 @@
         }
       }
     },
-    "health_checks": {
-      "type": "object",
-      "description": "Health checks may be specified per application to be run against the application's instances.",
-      "properties": {
-        "health_url": {
-          "description": "Url for health checks",
-          "type": "string",
-          "default": "/service/core-rdf-svc/api/health"
-        }
-      }
-    },
     "environment": {
       "type": "object",
       "description": "environment variables",
@@ -158,20 +147,20 @@
           "type": "string",
           "default": "80"
         },
-        "MARKLOGIC_USERNAME_SECRET": {
-          "description": "Name of the secret in the secret store containing the user for MarkLogic authentication",
+        "RDF_USERNAME_SECRET": {
+          "description": "Name of the secret in the secret store containing the user for the RDF database authentication",
           "type": "string",
-          "default": "marklogic-user"
+          "default": "svc/core-rdf-svc/core-rdf-svc-username"
         },
-        "MARKLOGIC_PASSWORD_SECRET": {
-          "description": "Name of the secret in the secret store containing the password for MarkLogic authentication",
+        "RDF_PASSWORD_SECRET": {
+          "description": "Name of the secret in the secret store containing the password for the RDF database authentication",
           "type": "string",
-          "default": "marklogic-password"
+          "default": "svc/core-rdf-svc/core-rdf-svc-password"
         },
-        "MARKLOGIC_ENDPOINT": {
-          "description": "Database endpoint",
+        "RDF_ENDPOINT": {
+          "description": "RDF database endpoint",
           "type": "string",
-          "default": "http://<cluster public url>:<marklogic api port>/<database>/query"
+          "default": "http://<cluster public url>:<port>/<database>/query"
         }
       }
     },

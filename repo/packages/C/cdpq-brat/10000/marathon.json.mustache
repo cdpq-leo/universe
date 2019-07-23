@@ -66,7 +66,7 @@
           "persistent": {
             "size": {{service.disk}},
             "type": "{{volumes.volume_data.type}}",
-            {{^volumes.volume_data.profile}}
+            {{#volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_data.profile}}",
             {{/volumes.volume_data.profile}}
             "constraints": []
@@ -111,7 +111,6 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -137,8 +136,10 @@
   }
   {{/fetch.artifact_URI.uri}}
   ],
- "upgradeStrategy": {
-   "maximumOverCapacity": 0,
-   "minimumHealthCapacity": 0.5
- }
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  },
+  "killSelection": "YOUNGEST_FIRST"
 }

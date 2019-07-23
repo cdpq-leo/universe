@@ -33,7 +33,7 @@
           "persistent": {
             "size": {{volumes.volume_data.size}},
             "type": "{{volumes.volume_data.type}}",
-            {{^volumes.volume_data.profile}}
+            {{#volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_data.profile}}",
             {{/volumes.volume_data.profile}}
             "constraints": []
@@ -63,7 +63,7 @@
           "persistent": {
             "size": {{volumes.volume_log.size}},
             "type": "{{volumes.volume_log.type}}",
-            {{^volumes.volume_data.profile}}
+            {{#volumes.volume_data.profile}}
         		"profileName": "{{volumes.volume_log.profile}}",
             {{/volumes.volume_data.profile}}
             "constraints": []

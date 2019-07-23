@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/core-search-svc:1.0.4"
+        "image": "cdpqleo/core-search-svc:1.0.5"
       }
     }
   }

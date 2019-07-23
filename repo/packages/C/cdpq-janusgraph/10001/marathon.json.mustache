@@ -62,7 +62,6 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -78,8 +77,10 @@
   }
   {{/fetch.artifact_URI.uri}}
   ],
+  "requirePorts": false,
   "upgradeStrategy": {
-    "maximumOverCapacity": 1,
-    "minimumHealthCapacity": 1
-  }
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  },
+  "killSelection": "YOUNGEST_FIRST"
 }

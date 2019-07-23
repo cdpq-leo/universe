@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/smart-search-svc"
             }
           }
         }
@@ -144,14 +144,14 @@
               "type": "number",
               "default": 0
             },
-            "path": {
-              "type": "string",
-              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
-              "default": "/smart-search-search-svc/api/health/"
-            },
             "advanced_health_checking_settings": {
               "type": "object",
               "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
                 "grace_periods": {
                   "type": "number",
                   "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",

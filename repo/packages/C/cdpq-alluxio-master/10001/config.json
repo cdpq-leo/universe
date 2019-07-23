@@ -8,7 +8,7 @@
         "name": {
           "description": "Name of the service.",
           "type": "string",
-          "default": "alluxio-master"
+          "default": "/alluxio/alluxio-master"
         },
         "cpus": {
           "description": "CPU shares to allocate to the Alluxio instance.",
@@ -102,7 +102,7 @@
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 19998
+              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -133,7 +133,7 @@
             "host_port": {
               "description": "Host port number",
               "type": "number",
-              "default": 19999
+              "default": 0
             },
             "protocol": {
               "type": "string",
@@ -144,6 +144,99 @@
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
               "default": 19999
+            }
+          }
+        },
+        "service_endpoint_jobrpc": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20001
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobrpc"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20001
+            }
+          }
+        },
+        "service_endpoint_jobweb": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20002
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobweb"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20002
+            }
+          }
+        },
+        "service_endpoint_jobjournal": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 20003
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "alluxiomasterjobjournal"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 20003
             }
           }
         },
@@ -170,26 +263,30 @@
       "description": "Service storage configuration properties",
       "properties": {
         "volume_ufs": {
-          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-          "type": "object",
-          "properties": {
-            "container_path": {
-              "description": "The path of a volume on the container.",
-              "type": "string",
-              "default": "ufs"
-            },
-            "host_path": {
-              "description": "The host path on the agent node.",
-              "type": "string",
-              "default": "/mnt/alluxio/underFSStorage"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": "alluxio"
-            }
-          }
-        },
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/opt/alluxio/underFSStorage"
+						},
+						"type": {
+							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "root"
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+							"default": ""
+						}
+					}
+				},
         "volume_hdfs": {
           "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
           "type": "object",
@@ -203,11 +300,6 @@
               "description": "The host path on the agent node.",
               "type": "string",
               "default": "/opt/mesosphere/etc/mesos-scheduler-modules"
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
             }
           }
         }
@@ -258,10 +350,45 @@
       "type": "object",
       "description": "Alluxio parameters",
       "properties": {
+        "ALLUXIO_MASTER_HOSTNAME": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "0.0.0.0"
+        },
+        "ALLUXIO_MASTER_MOUNT_TABLE_ROOT_UFS": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "/opt/alluxio/underFSStorage"
+        },
+        "ALLUXIO_RAM_FOLDER": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "/opt/ramdisk"
+        },
+        "AWS_ACCESS_KEY_SECRET": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "aws-access-key"
+        },
+        "AWS_SECRET_ACCESS_KEY_SECRET": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "aws-secret-access-key"
+        },
+        "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_GROUPS": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "*"
+        },
+        "ALLUXIO_MASTER_SECURITY_IMPERSONATION_NOBODY_USERS": {
+          "description": "Alluxio properties",
+          "type": "string",
+          "default": "*"
+        },
         "ALLUXIO_JAVA_OPTS": {
           "description": "Alluxio properties",
           "type": "string",
-          "default": "-Dalluxio.master.hostname=alluxio-master.alluxio.marathon.mesos -Dalluxio.security.authentication.type=NOSASL -Dalluxio.master.mount.table.root.ufs=<s3a://bucket/> -Dalluxio.master.mount.table.root.option.aws.accessKeyId=<AWS_ACCESS_KEY> -Dalluxio.master.mount.table.root.option.aws.secretKey=<AWS_SECRET_ACCESS_KEY> -Dalluxio.underfs.s3.endpoint=s3.us-east-1.amazonaws.com.cn -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/mnt/hdfs/core-site.xml:/mnt/hdfs/hdfs-site.xml"
+          "default": "-Dalluxio.security.authentication.type=NOSASL -Dalluxio.underfs.s3.endpoint=s3.us-east-1.amazonaws.com.cn -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/opt/hdfs/core-site.xml:/opt/hdfs/hdfs-site.xml"
         }
       }
     },

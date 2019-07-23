@@ -18,82 +18,81 @@
   "acceptedResourceRoles": [
     "*"
   ],
-   "container":{
-      "type": "DOCKER",
-      "docker":{
-         "image":"{{resource.assets.container.docker.image}}",
-         "forcePullImage":false,
-         "privileged": false
-      },
-      "volumes": [],
-      "portMappings":[
-         {
-            {{#networking.service_endpoints.load_balance_port}}
-            "labels": {
-               "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
-            },
-            {{/networking.service_endpoints.load_balance_port}}
-            "containerPort": {{networking.service_endpoints.container_port}},
-            "hostPort": {{networking.service_endpoints.host_port}},
-            {{#networking.service_endpoints.name}}
-            "name": "{{networking.service_endpoints.name}}",
-            {{/networking.service_endpoints.name}}
-            "protocol": "{{networking.service_endpoints.protocol}}"
-         }
-      ]
-   },
-   "env": {
-      {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}"
-      {{/placement.region}}
-   },
-   "labels":
-   {
-     {{#networking.marathon_lb_proxy.enabled}}
-     "HAPROXY_GROUP": "external",
-     "HAPROXY_0_ENABLED": "true",
-     "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
-     "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
-     {{#networking.marathon_lb_proxy.path}}
-     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
-     {{/networking.marathon_lb_proxy.path}}
- 	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
-     {{/networking.marathon_lb_proxy.enabled}}
-     "DCOS_SERVICE_SCHEME": "http",
-     "DCOS_SERVICE_NAME": "{{service.name}}",
-     "DCOS_SERVICE_PORT_INDEX": "0"
-   },
-   "healthChecks":
-   [
+  "container":{
+    "type": "DOCKER",
+    "docker":{
+      "image":"{{resource.assets.container.docker.image}}",
+      "forcePullImage":false,
+      "privileged": false,
+      "parameters": []
+    },
+    "portMappings":[
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ],
+    "volumes": []
+  },
+  "env": {
+    {{#placement.region}}
+    "SERVICE_REGION": "{{placement.region}}"
+    {{/placement.region}}
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "healthChecks": [
     {
-      "gracePeriodSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.grace_periods}},
-      "intervalSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.intervals}},
-      "timeoutSeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.timeout}},
-      "maxConsecutiveFailures": {{health_checks.IP_protocol.advanced_health_checking_settings.max_failures}},
-      "delaySeconds": {{health_checks.IP_protocol.advanced_health_checking_settings.delay_seconds}},
+      "protocol": "HTTP",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
       {{#networking.marathon_lb_proxy.enabled}}
-      "path": "{{networking.marathon_lb_proxy.path}}",
+      {{#networking.marathon_lb_proxy.path}}
+      "path": "{{networking.marathon_lb_proxy.path}}/api/health",
+      {{/networking.marathon_lb_proxy.path}}
       {{/networking.marathon_lb_proxy.enabled}}
       {{^networking.marathon_lb_proxy.enabled}}
-      "path": "{{health_checks.IP_protocol.path}}",
+      "path": "/api/health",
       {{/networking.marathon_lb_proxy.enabled}}
-      "portIndex": 0,
-      "protocol": "{{health_checks.IP_protocol.protocol}}",
-      "ipProtocol": "{{health_checks.IP_protocol.IP_version}}"
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
     }
-   ],
-   "fetch": [
-   {{#fetch.artifact_URI.uri}}
-   {
-     "uri": "{{fetch.artifact_URI.uri}}",
-     "extract": {{fetch.artifact_URI.extract}},
-     "executable": {{fetch.artifact_URI.executable}},
-     "cache": {{fetch.artifact_URI.cache}}
-   }
-   {{/fetch.artifact_URI.uri}}
-   ],
-   "upgradeStrategy": {
-     "maximumOverCapacity": 1,
-     "minimumHealthCapacity": 1
-   }
+  ],
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
+  }
+  {{/fetch.artifact_URI.uri}}
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
 }
