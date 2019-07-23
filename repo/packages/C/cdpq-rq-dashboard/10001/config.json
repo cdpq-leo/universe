@@ -33,7 +33,7 @@
             "cmd": {
                 "description": "A shell command for your container to execute.",
                 "type": "string",
-                "default": "rq-dashboard -P 6379"
+                "default": ""
             },
             "back_off_seconds": {
                 "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
@@ -168,17 +168,24 @@
       "description": "Rediscommander instance configuration properties",
       "properties": {
         "URL_PREFIX": {
-          "description": "Redis Hostname",
           "type": "string",
           "default": "/service/rq-dashboard"
         },
-        "USERNAME": {
+        "REDIS_HOST": {
           "description": "Redis Hostname",
+          "type": "string",
+          "default": "redis.marathon.l4lb.thisdcos.directory"
+        },
+        "REDIS_PORT": {
+          "description": "Redis Port",
+          "type": "string",
+          "default": "6379"
+        },
+        "USERNAME": {
           "type": "string",
           "default": ""
         },
         "PASSWORD": {
-          "description": "Redis Hostname",
           "type": "string",
           "default": ""
         }
