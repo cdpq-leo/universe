@@ -56,17 +56,20 @@
     "HTTP_CONTEXT": "{{environment.http_context}}",
     "BASE_ZK_PATH": "{{environment.base_zk_path}}",
     "KAFKA_MANAGER_CONFIG": "{{environment.config}}",
-    "PROXY_ADDRESS_FORWARDING": "true",
     "KAFKA_MANAGER_LOGLEVEL": "{{environment.log_level}}",
     "APPLICATION_SECRET": "{{environment.application_secret}}"
   },
   "secrets": {
+    {{#environment.kafka_manager_username}}
     "kafkamanagerusername": {
       "source": "{{environment.kafka_manager_username}}"
     },
+    {{/environment.kafka_manager_username}}
+    {{#environment.kafka_manager_password}}
     "kafkamanagerpassword": {
       "source": "{{environment.kafka_manager_password}}"
     }
+    {{/environment.kafka_manager_password}}
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 1,
