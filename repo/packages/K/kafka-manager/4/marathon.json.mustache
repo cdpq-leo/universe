@@ -28,7 +28,12 @@
     {
       "portIndex": 0,
       "protocol": "{{health_checks.IP_protocol.protocol}}",
+      {{^networking.marathon_lb_proxy.vhost}}
       "path": "{{health_checks.IP_protocol.path}}"
+      {{/networking.marathon_lb_proxy.vhost}}
+      {{#networking.marathon_lb_proxy.vhost}}
+      "path": "{{networking.marathon_lb_proxy.path}}"
+      {{/networking.marathon_lb_proxy.vhost}}
     }
   ],
   "labels": {
@@ -48,15 +53,21 @@
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     {{#environment.kafka_manager_username}}
-    "KAFKA_MANAGER_USERNAME": {"secret": "kafkamanagerusername"},
-    "KAFKA_MANAGER_PASSWORD": {"secret": "kafkamanagerpassword"},
-    "KAFKA_MANAGER_AUTH_ENABLED": "true",
+    "KM_USERNAME": {"secret": "kafkamanagerusername"},
+    "KM_PASSWORD ": {"secret": "kafkamanagerpassword"},
     {{/environment.kafka_manager_username}}
     "ZK_HOSTS": "{{environment.zk_hosts}}",
-    "HTTP_CONTEXT": "{{environment.http_context}}",
+    {{^networking.marathon_lb_proxy.vhost}}
+    {{^networking.marathon_lb_proxy.path}}
+    "PLAY_HTTP_CONTEXT": "{{environment.play_http_context}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.vhost}}
+    {{#networking.marathon_lb_proxy.vhost}}
+    {{#networking.marathon_lb_proxy.path}}
+    "PLAY_HTTP_CONTEXT": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.vhost}}
     "BASE_ZK_PATH": "{{environment.base_zk_path}}",
-    "KAFKA_MANAGER_CONFIG": "{{environment.config}}",
-    "KAFKA_MANAGER_LOGLEVEL": "{{environment.log_level}}",
     "APPLICATION_SECRET": "{{environment.application_secret}}"
   },
   "secrets": {

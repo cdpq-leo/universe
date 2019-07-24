@@ -89,7 +89,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/kafka-manager"
+              "default": ""
             }
           }
         }
@@ -137,25 +137,15 @@
           "type": "string",
           "default": "/kafka-manager"
         },
-        "config": {
-          "description": "Path to kafka-manager config",
-          "type": "string",
-          "default": "./conf/application.conf"
-        },
-        "http_context": {
+        "play_http_context": {
           "description": "Play http context",
           "type": "string",
           "default": ""
         },
-        "log_level": {
-          "description": "Java log level",
-          "type": "string",
-          "default": "INFO"
-        },
         "application_secret": {
           "description": "Word used to as key to compute hash",
           "type": "string",
-          "default": ""
+          "default": "A_SECRET"
         },
         "kafka_manager_username": {
           "description": "Name of the secret in the secret store containing the kafka-manager username",
