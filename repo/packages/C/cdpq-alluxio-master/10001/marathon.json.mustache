@@ -30,7 +30,7 @@
       [
         {{^volumes.volume_ufs.external_volume_name}}
         {
-      	  "containerPath": "ufs",
+      	  "containerPath": "{{volumes.volume_ufs.container_path}}",
       	  "mode": "RW",
       	  "persistent": {
       		"type": "{{volumes.volume_ufs.type}}",
@@ -41,11 +41,6 @@
       		"constraints": []
       	  }
       	},
-        {
-          "containerPath": "{{volumes.volume_ufs.container_path}}",
-          "hostPath": "ufs",
-          "mode": "RW"
-        },
         {{/volumes.volume_ufs.external_volume_name}}
         {{#volumes.volume_ufs.external_volume_name}}
         {
@@ -175,6 +170,7 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
+   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
