@@ -165,14 +165,13 @@
         },
         "application_secret": {
           "description": "Word used to as key to compute hash",
-          "type": "string",
-          "default": "A_SECRET"
+          "type": "string"
         },
-        "kafka_manager_username": {
+        "username": {
           "description": "Name of the secret in the secret store containing the kafka-manager username",
           "type": "string"
         },
-        "kafka_manager_password": {
+        "password": {
           "description": "Name of the secret in the secret store containing the kafka-manager password",
           "type": "string"
         }

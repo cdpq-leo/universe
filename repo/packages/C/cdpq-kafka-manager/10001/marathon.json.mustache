@@ -63,27 +63,26 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "KM_USERNAME": {"secret": "kafkamanagerusername"},
-    "KM_PASSWORD ": {"secret": "kafkamanagerpassword"},
+    "KM_USERNAME": {"secret": "kmusername"},
+    "KM_PASSWORD ": {"secret": "kmpassword"},
     "ZK_HOSTS": "{{environment.zk_hosts}}",
     {{^networking.marathon_lb_proxy.enabled}}
     "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
+    {{/networking.marathon_lb_proxy.enabled}}
     {{#networking.marathon_lb_proxy.enabled}}
     {{#networking.marathon_lb_proxy.path}}
     "PLAY_HTTP_CONTEXT": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
     {{/networking.marathon_lb_proxy.enabled}}
     "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
-    "APPLICATION_SECRET": {
-      "secret": "applicationkey"
-    }
+    "APPLICATION_SECRET": {"secret": "applicationkey"}
   },
   "secrets": {
-    "kafkamanagerusername": {
-      "source": "{{environment.kafka_manager_username}}"
+    "kmusername": {
+      "source": "{{environment.username}}"
     },
-    "kafkamanagerpassword": {
-      "source": "{{environment.kafka_manager_password}}"
+    "kmpassword": {
+      "source": "{{environment.password}}"
     },
     "applicationkey": {
       "source": "{{environment.application_secret}}"
