@@ -126,6 +126,9 @@
         {{/networking.service_endpoint_08.load_balance_port}}
         "containerPort": {{networking.service_endpoint_08.container_port}},
         "hostPort": {{networking.service_endpoint_08.host_port}},
+        {{#networking.service_endpoint_08.name}}
+        "name": "{{networking.service_endpoint_08.name}}",
+        {{/networking.service_endpoint_08.name}}
         "protocol": "{{networking.service_endpoint_08.protocol}}"
       }
     ],
@@ -159,37 +162,7 @@
         },
         "mode": "RW"
       }
-    	{{/volumes.volume_data.external_volume_name}},
-      {{^volumes.volume_backup.external_volume_name}}
-    	{
-    	  "containerPath": "marklogic",
-    	  "mode": "RW",
-    	  "persistent": {
-          "type": "{{volumes.volume_backup.type}}",
-          {{#volumes.volume_backup.profile}}
-          "profileName": "{{volumes.volume_backup.profile}}",
-          {{/volumes.volume_backup.profile}}
-          "size": {{service.disk}},
-          "constraints": []
-    	  }
-    	},
-      {
-        "containerPath": "{{volumes.volume_backup.container_path}}",
-        "hostPath": "marklogic",
-        "mode": "RW"
-      }
-    	{{/volumes.volume_backup.external_volume_name}}
-    	{{#volumes.volume_backup.external_volume_name}}
-      {
-        "containerPath": "{{volumes.volume_backup.container_path}}",
-        "external": {
-          "name": "{{volumes.volume_backup.external_volume_name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
-      }
-    	{{/volumes.volume_backup.external_volume_name}}
+    	{{/volumes.volume_data.external_volume_name}}
     ]
   },
   "env": {
@@ -204,10 +177,10 @@
   },
   "secrets": {
     "marklogicuser": {
-      "source": "{{environment.marklogic.username}}"
+      "source": "{{environment.marklogic.MARKLOGIC_USER_SECRET}}"
     },
     "marklogicpassword": {
-      "source": "{{environment.marklogic.password}}"
+      "source": "{{environment.marklogic.MARKLOGIC_PASSWORD_SECRET}}"
     }
   },
   "labels": {
@@ -219,22 +192,8 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-    "HAPROXY_0_STICKY": "true"
-    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout clien
-    "volumes": [
-      {
-         "containerPath": {{volumes.volume_data.container_path}},
-         "hostPath": {{volumes.volume_data.hostPath}},
-         "mode": "RW"
-      }
-    ]
-    "volumes": [
-      {
-         "containerPath": {{volumes.volume_data.container_path}},
-         "hostPath": {{volumes.volume_data.hostPath}},
-         "mode": "RW"
-      }
-    ]t 30m\n",
+    "HAPROXY_0_STICKY": "true",
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     "HAPROXY_3_GROUP": "external",
     "HAPROXY_3_ENABLED": "true",
     "HAPROXY_3_REDIRECT_TO_HTTPS": "true",
@@ -250,7 +209,7 @@
     "HAPROXY_5_REDIRECT_TO_HTTPS": "true",
     "HAPROXY_5_GROUP": "external",
     "HAPROXY_5_VHOST": "{{networking.marathon_lb.vhost}}",
-    "HAPROXY_5_STICKY": "true"
+    "HAPROXY_5_STICKY": "true",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -260,12 +219,14 @@
     {
       "protocol": "HTTP",
       "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      {{#networking.marathon_lb_proxy.enabled}}
       {{#networking.marathon_lb_proxy.path}}
       "path": "{{networking.marathon_lb_proxy.path}}/",
       {{/networking.marathon_lb_proxy.path}}
-      {{^networking.marathon_lb_proxy.path}}
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
       "path": "/",
-      {{/networking.marathon_lb_proxy.path}}
+      {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
       "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},

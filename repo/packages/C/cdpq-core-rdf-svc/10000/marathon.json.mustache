@@ -57,16 +57,16 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "SERVICE_PREFIX": "",
     {{/networking.marathon_lb_proxy.enabled}}
-    "USERNAME": {"secret": "marklogicusername"},
-    "PASSWORD": {"secret": "marklogicpassword"},
-    "ENDPOINT": "{{environment.MARKLOGIC_ENDPOINT}}"
+    "USERNAME": {"secret": "rdfusername"},
+    "PASSWORD": {"secret": "rdfpassword"},
+    "ENDPOINT": "{{environment.RDF_ENDPOINT}}"
   },
   "secrets": {
-    "marklogicusername": {
-      "source": "{{environment.MARKLOGIC_USERNAME_SECRET}}"
+    "rdfusername": {
+      "source": "{{environment.RDF_USERNAME_SECRET}}"
     },
-    "marklogicpassword": {
-      "source": "{{environment.MARKLOGIC_PASSWORD_SECRET}}"
+    "rdfpassword": {
+      "source": "{{environment.RDF_PASSWORD_SECRET}}"
     }
   },
   "labels": {
@@ -78,7 +78,6 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",

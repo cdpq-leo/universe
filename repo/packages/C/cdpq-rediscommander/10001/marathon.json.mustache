@@ -51,6 +51,9 @@
     "REDIS_PORT": "{{environment.REDIS_PORT}}"
   },
   "labels": {
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
     {{#networking.marathon_lb_proxy.enabled}}
     "HAPROXY_GROUP": "external",
     "HAPROXY_0_ENABLED": "true",
@@ -59,11 +62,7 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-	  "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
-    "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "DCOS_SERVICE_PORT_INDEX": "0"
   },
   "healthChecks": [
     {

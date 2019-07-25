@@ -176,6 +176,11 @@
           "description": "Google auth scopes",
           "type": "string",
           "default": ""
+        },
+        "GOOGLE_API_KEY_SECRET": {
+          "description": "Google API key",
+          "type": "string",
+          "default": "google-api-key"
         }
       }
     },

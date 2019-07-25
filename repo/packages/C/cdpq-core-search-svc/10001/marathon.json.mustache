@@ -41,17 +41,11 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "volumes": [
-    {
-      "containerPath": "/var/opt/data/google",
-      "hostPath": "/opt/mesosphere/etc/mesos-scheduler-modules",
-      "mode": "RW"
-    }
-    ]
+    "volumes": []
   },
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "HTTP_HOSTNAME": "{{environment.HTTP_HOSTNAME}}",
     "HTTP_PORT": "{{environment.HTTP_PORT}}",
@@ -69,7 +63,12 @@
     "SEARCH_QUERY_KEYWORDS": "{{environment.SEARCH_QUERY_KEYWORDS}}",
     "USE_SEARCH_DATE_PARAM": "{{environment.USE_SEARCH_DATE_PARAM}}",
     "SCOPES": "{{environment.SCOPES}}",
-    "GOOGLE_APPLICATION_CREDENTIALS": "/var/opt/data/google/google-credentials.json"
+    "GOOGLE_API_KEY": {"secret": "googleapikey"}
+  },
+  "secrets": {
+    "googleapikey": {
+      "source": "{{environment.GOOGLE_API_KEY_SECRET}}"
+    }
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
@@ -80,7 +79,6 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",

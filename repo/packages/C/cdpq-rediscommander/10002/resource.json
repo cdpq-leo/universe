@@ -1,0 +1,14 @@
+{
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "rediscommander/redis-commander:latest"
+      }
+    }
+  },
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Rediscommander/Images/icon-service-rediscommander-small.png",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Rediscommander/Images/icon-service-rediscommander-medium.png",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Rediscommander/Images/icon-service-rediscommander-large.png"
+  }
+}

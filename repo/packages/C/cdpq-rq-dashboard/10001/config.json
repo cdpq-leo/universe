@@ -8,7 +8,7 @@
             "name": {
                 "description": "Name of application instance as seen in DC/OS.",
                 "type": "string",
-                "default": "ivanhoe-cambridge-transactions-parser"
+                "default": "rq-dashboard"
             },
             "instances": {
                 "description": "Number of instances of your service.",
@@ -65,7 +65,7 @@
         "constraints": {
           "type": "string",
           "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-          "default": "[]",
+          "default": "[[\"hostname\",\"UNIQUE\"]]",
           "media": {
             "type": "application/x-zone-constraints+json"
           }
@@ -91,12 +91,7 @@
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 5000
-            },
-            "name": {
-              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
-              "type": "string",
-              "default": ""
+              "default": 9181
             },
             "host_port": {
               "description": "Host port number",
@@ -105,29 +100,24 @@
             },
             "protocol": {
               "type": "string",
-              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Mostr services will use TCP",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
             },
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 5000
+              "default": 9181
             }
           }
         },
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
-            "enabled": {
-              "type": "boolean",
-              "default": false
-            },
             "vhost": {
               "type": "string"
             },
             "path": {
-              "type": "string",
-              "default": "/ivanhoe-cambridge-transaction-parser"
+              "type": "string"
             }
           }
         }
@@ -137,7 +127,7 @@
       "type": "object",
       "description": "Health checks may be specified per application to be run against the application's instances.",
       "properties": {
-        "HTTP_protocol": {
+        "TCP_protocol": {
           "type": "object",
           "properties": {
             "port_index": {
@@ -145,36 +135,61 @@
               "default": 0
             },
             "advanced_health_checking_settings": {
-                "type": "object",
-                "properties": {
-                "delay_seconds": {
-                  "type": "number",
-                  "description": "Time to wait until starting health check (default: 2).",
-                  "default": 2
-                },
+              "type": "object",
+              "properties": {
                 "grace_periods": {
                   "type": "number",
                   "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
-                  "default": 120
+                  "default": 60
                 },
                 "intervals": {
                   "type": "number",
                   "description": "Number of seconds to wait between health checks.",
-                  "default": 30
+                  "default": 5
                 },
                 "timeout": {
                   "type": "number",
                   "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
-                  "default": 3
+                  "default": 5
                 },
                 "max_failures": {
                   "type": "number",
                   "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
-                  "default": 5
+                  "default": 3
                 }
               }
             }
           }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Rediscommander instance configuration properties",
+      "properties": {
+        "URL_PREFIX": {
+          "type": "string",
+          "default": "/service/rq-dashboard"
+        },
+        "REDIS_HOST": {
+          "description": "Redis Hostname",
+          "type": "string",
+          "default": "redis.marathon.l4lb.thisdcos.directory"
+        },
+        "REDIS_PORT": {
+          "description": "Redis Port",
+          "type": "string",
+          "default": "6379"
+        },
+        "USERNAME": {
+          "description": "Secret in secret store for the rq-dashboard username",
+          "type": "string",
+          "default": ""
+        },
+        "PASSWORD": {
+          "description": "Secret in secret store for the rq-dashboard password",
+          "type": "string",
+          "default": ""
         }
       }
     },

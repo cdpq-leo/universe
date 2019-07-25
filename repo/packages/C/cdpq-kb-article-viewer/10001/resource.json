@@ -7,7 +7,7 @@
     "assets": {
         "container": {
             "docker": {
-                "image": "cdpqleo/kb-article-viewer:1.0.3"
+                "image": "cdpqleo/kb-article-viewer:1.0.4"
             }
         }
     }
