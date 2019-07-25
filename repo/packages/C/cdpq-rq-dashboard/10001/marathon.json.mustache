@@ -15,18 +15,20 @@
       "mode": "container/bridge"
     }
   ],
- "container": 
-  {
-    "type": "DOCKER",
-    "docker": {
-      "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "privileged": false,
-      "parameters": []
-    },
-    "portMappings": [
-       {
-       {{#networking.service_endpoints.load_balance_port}}
+  "acceptedResourceRoles": [		
+    "*"		
+  ],
+ "container": {
+   "type": "DOCKER",
+   "docker": {
+     "forcePullImage": true,
+     "image": "{{resource.assets.container.docker.image}}",
+     "parameters": [],
+     "privileged": false
+   },
+   "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
         "labels": {
             "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
         },
@@ -37,20 +39,15 @@
         "name": "{{networking.service_endpoints.name}}",
         {{/networking.service_endpoints.name}}
         "protocol": "{{networking.service_endpoints.protocol}}"
-       }
-    ]
+      }
+    ],
+    "volumes": []
   },
   "env": {
-    {{#networking.marathon_lb_proxy.enabled}}
-    "RQ_DASHBOARD_URL-PREFIX": "{{networking.marathon_lb_proxy.path}}",
-    {{/networking.marathon_lb_proxy.enabled}}
-    {{^networking.marathon_lb_proxy.enabled}}
-    "RQ_DASHBOARD_URL-PREFIX": "/service/{{service.name}}",
-    {{/networking.marathon_lb_proxy.enabled}}
     "RQ_DASHBOARD_REDIS_HOST": "{{environment.REDIS_HOST}}",
     "RQ_DASHBOARD_REDIS_PORT": "{{environment.REDIS_PORT}}",
-    "RQ_DASHBOARD_USERNAME": {"secret": "rqdashboardusername"},
-    "RQ_DASHBOARD_PASSWORD": {"secret": "rqdashboardpassword"}, 
+    "USERNAME": {"secret": "rqdashboardusername"},
+    "PASSWORD": {"secret": "rqdashboardpassword"}
   },
   "secrets": {
     "rqdashboardusername": {
