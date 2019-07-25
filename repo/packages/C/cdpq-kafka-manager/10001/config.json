@@ -69,6 +69,11 @@
               "type": "number",
               "default": 9000
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -78,18 +83,27 @@
               "type": "string",
               "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
               "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 9000
             }
           }
         },
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
             "vhost": {
               "type": "string"
             },
             "path": {
               "type": "string",
-              "default": ""
+              "default": "/kafka-manager"
             }
           }
         }
@@ -99,25 +113,42 @@
       "type": "object",
       "description": "Health checks may be specified per application to be run against the application's instances.",
       "properties": {
-        "IP_protocol": {
+        "HTTP_protocol": {
           "type": "object",
           "properties": {
-            "protocol": {
-              "type": "string",
-              "description": "Specifies the protocol of the requests: HTTP, HTTPS, TCP.",
-              "default": "HTTP",
-              "enum": [
-                "MESOS_HTTP",
-                "MESOS_HTTPS",
-                "MESOS_TCP",
-                "HTTP",
-                "HTTPS"
-              ]
+            "port_index": {
+              "type": "number",
+              "default": 0
             },
-            "path": {
-              "type": "string",
-              "description": "If \"protocol\": \"HTTP\" or its derivatives, this option specifies the path to the task health status endpoint. For example, \"/path/to/health\".",
-              "default": "/api/health"
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 3
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 5
+                }
+              }
             }
           }
         }
@@ -131,16 +162,6 @@
           "type": "string",
           "description": "Zookeeper URL for Kafka-manager",
           "default": "zk-1.zk:2181,zk-2.zk:2181,zk-3.zk:2181,zk-4.zk:2181,zk-5.zk:2181"
-        },
-        "base_zk_path": {
-          "description": "Base path for storing configuration in ZooKeeper",
-          "type": "string",
-          "default": "/kafka-manager"
-        },
-        "play_http_context": {
-          "description": "Play http context",
-          "type": "string",
-          "default": ""
         },
         "application_secret": {
           "description": "Word used to as key to compute hash",
@@ -159,6 +180,33 @@
       "required": [
         "zk_hosts"
       ]
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
     }
   }
 }

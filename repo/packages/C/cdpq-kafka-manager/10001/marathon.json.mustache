@@ -1,0 +1,107 @@
+{
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}",
+      "network": "BRIDGE",
+      "parameters": [],
+      "privileged": false
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ]
+  },
+  "healthChecks": [
+  {
+    "protocol": "HTTP",
+    "portIndex": {{health_checks.HTTP_protocol.port_index}},
+    {{#networking.marathon_lb_proxy.enabled}}
+    {{#networking.marathon_lb_proxy.path}}
+    "path": "{{networking.marathon_lb_proxy.path}}/api/health",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.enabled}}
+    {{^networking.marathon_lb_proxy.enabled}}
+    "path": "/service/{{service.name}}/api/health",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+    "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+    "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+    "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+    "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
+  }
+  ],
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "env": {
+    {{#placement.region}}
+    "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "KM_USERNAME": {"secret": "kafkamanagerusername"},
+    "KM_PASSWORD ": {"secret": "kafkamanagerpassword"},
+    "ZK_HOSTS": "{{environment.zk_hosts}}",
+    {{^networking.marathon_lb_proxy.enabled}}
+    "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
+    {{#networking.marathon_lb_proxy.enabled}}
+    {{#networking.marathon_lb_proxy.path}}
+    "PLAY_HTTP_CONTEXT": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.enabled}}
+    "KM_ARGS": "-Dkafka-manager.base-zk-path=/{{service.name}}",
+    "APPLICATION_SECRET": {
+      "secret": "applicationkey"
+    }
+  },
+  "secrets": {
+    "kafkamanagerusername": {
+      "source": "{{environment.kafka_manager_username}}"
+    },
+    "kafkamanagerpassword": {
+      "source": "{{environment.kafka_manager_password}}"
+    },
+    "applicationkey": {
+      "source": "{{environment.application_secret}}"
+    }
+  },
+  "fetch": 
+  [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}
