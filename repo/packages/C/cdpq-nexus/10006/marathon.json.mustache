@@ -1,9 +1,114 @@
 {
   "id": "{{service.name}}",
+  "instances": {{service.instances}},
   "cpus": {{service.cpus}},
   "mem": {{service.mem}},
-  "acceptedResourceRoles": [ "{{service.resource-role}}" ],
-  "instances": 1,
+  "disk": {{service.disk}},
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image":"{{resource.assets.container.docker.image}}",
+      "privileged": false,
+      "parameters": []
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}",
+        "servicePort": {{networking.service_endpoints.service_port}}
+      }
+    ],
+    "volumes": [
+    	{{^volumes.volume_data.external_volume_name}}
+    	{
+    	  "containerPath": "nexus",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_data.type}}",
+        {{#volumes.volume_data.profile}}
+    		"profileName": "{{volumes.volume_data.profile}}",
+        {{/volumes.volume_data.profile}}
+    		"size": {{service.disk}},
+    		"constraints": []
+    	  }
+    	},
+      {
+        "containerPath": "{{volumes.volume_data.container_path}}",
+        "hostPath": "nexus",
+        "mode": "RW"
+      }
+    	{{/volumes.volume_data.external_volume_name}}
+    	{{#volumes.volume_data.external_volume_name}}
+      {
+        "containerPath": "{{volumes.volume_data.container_path}}",
+        "external": {
+          "name": "{{volumes.volume_data.external_volume_name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }
+    	{{/volumes.volume_data.external_volume_name}}
+    ]
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "MARATHON_SINGLE_INSTANCE_APP": "true"
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      {{#networking.marathon_lb_proxy.enabled}}
+      {{#networking.marathon_lb_proxy.path}}
+      "path": "{{networking.marathon_lb_proxy.path}}/",
+      {{/networking.marathon_lb_proxy.path}}
+      {{/networking.marathon_lb_proxy.enabled}}
+      {{^networking.marathon_lb_proxy.enabled}}
+      "path": "/",
+      {{/networking.marathon_lb_proxy.enabled}}
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
+    }
+  ],
   "fetch": [
     {{#fetch.artifact_URI.uri}}
     {
@@ -13,67 +118,9 @@
       "cache": {{fetch.artifact_URI.cache}}
     }
     {{/fetch.artifact_URI.uri}}
-   ],
-  "container": {
-    "type": "DOCKER",
-    "docker": {
-      "image":"{{resource.assets.container.docker.image}}",
-      "network": "BRIDGE",
-      "portMappings": [
-        {
-          "containerPort": 8081,
-          "hostPort": {{networking.host-port}}
-        }
-      ]
-    },
-    "volumes": [
-      {{#storage.persist}}
-      {{^storage.external-volume.enable}}
-      {
-        "containerPath": "/nexus-data",
-        "hostPath": "{{storage.local-volume.host-volume}}",
-        "mode": "RW"
-      }
-      {{/storage.external-volume.enable}}
-      {{#storage.external-volume.enable}}
-      {
-        "containerPath": "/nexus-data",
-        "external": {
-          "name": "{{storage.external-volume.volume-name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
-      }
-      {{/storage.external-volume.enable}}
-      {{/storage.persist}}
-    ]
-  },
-  "healthChecks": [
-    {
-      "protocol": "COMMAND",
-      "command": {
-        "value": "curl --user admin:admin123 --fail --request GET ${HOST}:${PORT0}/service/metrics/ping"
-      },
-      "gracePeriodSeconds": 300,
-      "intervalSeconds": 60,
-      "timeoutSeconds": 20,
-      "maxConsecutiveFailures": 5
-    }
   ],
   "upgradeStrategy": {
     "minimumHealthCapacity": 0,
     "maximumOverCapacity": 0
-  },
-  {{#networking.pinned-hostname}},
-  "constraints": [
-    [
-      "hostname", "CLUSTER", "{{networking.pinned-hostname}}"
-    ]
-  ],
-  {{/networking.pinned-hostname}}
-  "labels": {
-    "DCOS_SERVICE_NAME": "{{service.name}}",
-    "MARATHON_SINGLE_INSTANCE_APP": "true"
   }
 }
