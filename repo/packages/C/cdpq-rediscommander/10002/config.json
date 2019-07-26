@@ -110,7 +110,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/redis-commander"
             }
           }
         }
@@ -168,7 +168,7 @@
         "REDIS_HOST": {
           "description": "Redis Hostname",
           "type": "string",
-          "default": ""
+          "default": "redis.marathon.l4lb.thisdcos.directory"
         },
         "REDIS_PORT": {
           "description": "Redis Port",
