@@ -33,7 +33,7 @@
             "cmd": {
                 "description": "A shell command for your container to execute.",
                 "type": "string",
-                "default": ""
+                "default": "rq-dashboard --url-prefix /service/applications/rq-dashboard"
             },
             "back_off_seconds": {
                 "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/"
+              "default": "/rq-dashboard"
             }
           }
         }
