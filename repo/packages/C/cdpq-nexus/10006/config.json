@@ -2,89 +2,194 @@
   "type": "object",
   "properties": {
     "service": {
-      "description": "Service properties for the Nexus service on DC/OS.",
       "type": "object",
+      "description": "Service properties for the Nexus service on DC/OS.",
       "properties": {
         "name": {
           "description": "The name of this DC/OS service.",
           "type": "string",
           "default": "nexus"
         },
+        "instances": {
+          "description": "Number of instances of your service.",
+          "type": "number",
+          "default": 1.0
+        },
         "cpus": {
           "description": "CPU shares to allocate to Nexus.",
           "type": "number",
-          "default": 2.0,
-          "minimum": 1.0
+          "default": 2,
+          "minimum": 1
         },
         "mem": {
           "description": "Memory (in MB) to allocate to Nexus.",
           "type": "number",
-          "default": 2048.0,
-          "minimum": 2048.0
+          "default": 2048,
+          "minimum": 2048
         },
-        "resource-role": {
-          "default": "*",
-          "description": "The accepted resource role. Change to \"slave_public\" role if it should run on an public agent.",
-          "type": "string"
+        "disk": {
+          "description": "Number of disks to allocate to each service instance.",
+          "type": "number",
+          "default": 0
+        },
+        "cmd": {
+            "description": "A shell command for your container to execute.",
+            "type": "string",
+            "default": ""
+        },
+        "back_off_seconds": {
+            "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+            "type": "number",
+            "default": 1.0
+        },
+        "back_off_factor": {
+            "description": "The multiplicand to apply to the backoffSeconds value.",
+            "type": "number",
+            "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+            "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+            "type": "number",
+            "default": 3600
         }
       },
       "required": [
         "name",
         "cpus",
-        "mem"
+        "mem",
+        "instances"
       ]
     },
     "networking": {
       "description": "Networking properties for the Nexus service on DC/OS.",
       "type": "object",
       "properties": {
-        "host-port": {
-          "description": "The host port to map the Nexus service. A value of 0 will randomly assign a value for host port.",
-          "type": "number",
-          "default": 0
-        },
-        "pinned-hostname": {
-          "description": "An optional DC/OS agent hostname to run this Nexus instance on (e.g. 10.0.0.1). If this is not specified then the task may relaunch on another node than the one it originally ran on.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "host-port"
-      ]
-    },
-    "storage": {
-      "description": "Storage properties for the Nexus service on DC/OS.",
-      "type": "object",
-      "properties": {
-        "persist": {
-          "description": "Whether to use DC/OS persist Nexus data. If false, all Nexus data and state is ephemeral and will not be shared between Nexus instances. By default, this is false.",
-          "type": "boolean",
-          "default": false
-        },
-        "local-volume": {
-          "description": "Local volumes configuration (only used if external persistent volumes are disabled). Please read Pre-Install Notes for setup for local volumes.",
+        "service_endpoints": {
           "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
           "properties": {
-            "host-volume": {
-              "description": "The location of a volume on the host to be used for persisting Nexus configuration and data.",
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 8081
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": "/opt/sonatype/nexus-data"
+              "default": ""
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 8080
+            },
+            "service_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address externally.",
+              "default": 0
             }
           }
         },
-        "external-volume": {
-          "description": "External volumes configuration. Uses the REX-Ray volume driver.",
+        "marathon_lb_proxy": {
           "type": "object",
           "properties": {
-            "enable": {
-              "description": "Whether to use DC/OS external volumes to persist Nexus data. By default, this is false.",
+            "enabled": {
               "type": "boolean",
               "default": false
             },
-            "volume-name": {
-              "description": "The name of the volume (this will be created if it doesn't already exist).",
+            "vhost": {
               "type": "string",
-              "default": "nexus-data"
+              "default": ""
+            },
+            "path": {
+              "type": "string",
+              "default": "/nexus"
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Storage properties for the Nexus service on DC/OS.",
+      "properties": {
+				"volume_data": {
+					"description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/nexus-data"
+						},
+						"type": {
+							"description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+							"type": "string",
+							"default": "root"
+						},
+						"profile": {
+							"type": "string",
+							"description": "Disk profile to be used for volume."
+						},
+						"external_volume_name": {
+							"type": "string",
+							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+							"default": ""
+						}
+					}
+				}
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "HTTP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+                "type": "object",
+                "properties": {
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Time to wait until starting health check (default: 2).",
+                  "default": 2
+                },
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 120
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 30
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 3
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 5
+                }
+              }
             }
           }
         }
@@ -117,10 +222,5 @@
         }
       }
     }
-  },
-  "required": [
-    "service",
-    "networking",
-    "storage"
-  ]
+  }
 }
