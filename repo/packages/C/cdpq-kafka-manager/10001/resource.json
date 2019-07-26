@@ -10,7 +10,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "deric/kafka-manager:1.3.3.22"
+        "image": "cdpqleo/kafka-manager:1.3.3.22"
       }
     }
   }
