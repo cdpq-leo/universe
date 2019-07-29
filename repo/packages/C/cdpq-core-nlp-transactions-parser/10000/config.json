@@ -18,12 +18,12 @@
             "cpus": {
                 "description": "Number of logical cores to allocate to each service instance.",
                 "type": "number",
-                "default": 0.2
+                "default": 1
             },
             "mem": {
                 "description": "Memory in Mb to allocate to each service instance.",
                 "type": "number",
-                "default": 256
+                "default": 8192
             },
             "disk": {
                 "description": "Number of disks to allocate to each service instance.",
