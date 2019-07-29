@@ -14,6 +14,6 @@
    }
  ],
  "postInstallNotes": "Grakn installed!",
- "preInstallNotes": "This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies.",
- "postUninstallNotes": "Thank you for using Grakn"
+ "preInstallNotes": "For this service to work, you must have Janusgraph and Cassadra running. Cassandra settings \"Start Rpc\" must be set to True. This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies.",
+ "postUninstallNotes": "Thank you for using Grakn, Make sure you have Janusgraph and Cassadra running. Cassandra settings \"Start Rpc\" must be set to True. If these specifications are not followed, this service will not run properly."
 }
