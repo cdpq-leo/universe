@@ -147,10 +147,15 @@
           "type": "string",
           "default": "8080"
         },
-        "GOOGLE_API_KEY_SECRET": {
-          "description": "Google API key",
+        "GOOGLE_APPLICATION_CREDENTIALS": {
+          "description": "Google application credentials",
           "type": "string",
-          "default": "google-api-key"
+          "default": "/google-credentials.json"
+        },
+        "GOOGLE_CREDENTIALS_SECRET": {
+          "description": "Google application credentials",
+          "type": "string",
+          "default": "google-credentials"
         }
       }
     },
