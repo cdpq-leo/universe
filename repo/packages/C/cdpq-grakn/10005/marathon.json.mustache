@@ -74,19 +74,6 @@
         "protocol": "{{networking.service_endpoint_server.protocol}}"
       },
       {
-      {{#networking.service_endpoint_api.load_balance_port}}
-      "labels": {
-          "VIP_0": "/{{service.name}}:{{networking.service_endpoint_api.load_balance_port}}"
-      },
-      {{/networking.service_endpoint_api.load_balance_port}}
-      "containerPort": {{networking.service_endpoint_api.container_port}},
-      "hostPort": {{networking.service_endpoint_api.host_port}},
-      {{#networking.service_endpoint_api.name}}
-      "name": "{{networking.service_endpoint_api.name}}",
-      {{/networking.service_endpoint_api.name}}
-      "protocol": "{{networking.service_endpoint_api.protocol}}"
-      },
-      {
         {{#networking.service_endpoint_grpc.load_balance_port}}
         "labels": {
             "VIP_1": "/{{service.name}}:{{networking.service_endpoint_grpc.load_balance_port}}"
@@ -104,15 +91,11 @@
   "env": {
     "START_LOCAL_STORAGE": "{{environment.START_LOCAL_STORAGE}}",
     "STORAGE_HOSTNAME": "{{environment.STORAGE_HOSTNAME}}",
-    "START_LOCAL_QUEUE": "{{environment.START_LOCAL_QUEUE}}",
-    "QUEUE_HOST": "{{environment.QUEUE_HOST}}",
-    "INDEX_SEARCH_BACKEND": "{{environment.INDEX_SEARCH_BACKEND}}",
-    "INDEX_SEARCH_HOSTNAME": "{{environment.INDEX_SEARCH_HOSTNAME}}",
     "SPARK_MASTER": "{{environment.SPARK_MASTER}}",
-    "GREMLIN_GRAPH_READER": "{{environment.GREMLIN_GRAPH_READER}}",
     "BACKGROUND_TASKS_THREADS": "{{environment.BACKGROUND_TASKS_THREADS}}",
     "LOG_LEVEL": "{{environment.LOG_LEVEL}}",
-    "KEYSPACE": "{{environment.KEYSPACE}}"
+    "KEYSPACE": "{{environment.KEYSPACE}}",
+    "GREMLIN_GRAPH_READER": "{{environment.GREMLIN_GRAPH_READER}}"
   },
   "healthChecks": [
     {
@@ -133,7 +116,6 @@
     {{#networking.marathon_lb_proxy.path}}
     "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
     {{/networking.marathon_lb_proxy.path}}
-   "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
     {{/networking.marathon_lb_proxy.enabled}}
     "DCOS_SERVICE_SCHEME": "http",
     "DCOS_SERVICE_NAME": "{{service.name}}",
@@ -148,15 +130,5 @@
     "cache": {{fetch.artifact_URI.cache}}
   }
   {{/fetch.artifact_URI.uri}}
-  ],
-  "requirePorts": false,
-  "upgradeStrategy": {
-    "maximumOverCapacity": 1 ,
-    "minimumHealthCapacity": 1
-  },
-  "killSelection": "YOUNGEST_FIRST",
-  "unreachableStrategy": {
-    "inactiveAfterSeconds": 0 ,
-    "expungeAfterSeconds": 0
-  }
+  ]
 }
