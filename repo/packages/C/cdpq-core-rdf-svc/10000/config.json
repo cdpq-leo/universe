@@ -150,7 +150,7 @@
         "RDF_USERNAME_SECRET": {
           "description": "Name of the secret in the secret store containing the user for the RDF database authentication",
           "type": "string",
-          "default": "svc/core-rdf-svc/core-rdf-svc-username"
+          "default": "svc/core-rdf-svc/core-rdf-svc-user"
         },
         "RDF_PASSWORD_SECRET": {
           "description": "Name of the secret in the secret store containing the password for the RDF database authentication",

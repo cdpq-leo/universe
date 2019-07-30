@@ -57,12 +57,12 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "SERVICE_PREFIX": "",
     {{/networking.marathon_lb_proxy.enabled}}
-    "USERNAME": {"secret": "rdfusername"},
+    "USERNAME": {"secret": "rdfuser"},
     "PASSWORD": {"secret": "rdfpassword"},
     "ENDPOINT": "{{environment.RDF_ENDPOINT}}"
   },
   "secrets": {
-    "rdfusername": {
+    "rdfuser": {
       "source": "{{environment.RDF_USERNAME_SECRET}}"
     },
     "rdfpassword": {
