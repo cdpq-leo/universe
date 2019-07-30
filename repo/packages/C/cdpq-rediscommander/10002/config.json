@@ -105,6 +105,10 @@
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
             "vhost": {
               "type": "string"
             },
@@ -126,11 +130,6 @@
             "port_index": {
               "type": "number",
               "default": 0
-            },
-            "path": {
-              "type": "string",
-              "description": "Enter a path that is reachable in your service and where you expect a response code between 200 and 399.",
-              "default": "/"
             },
             "advanced_health_checking_settings": {
               "type": "object",
