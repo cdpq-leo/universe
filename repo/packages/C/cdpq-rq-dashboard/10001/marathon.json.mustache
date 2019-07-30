@@ -7,6 +7,14 @@
   {{#service.cmd}}
   "cmd": "{{service.cmd}}",
   {{/service.cmd}}
+  {{^service.cmd}}
+  {{^networking.marathon_lb_proxy.enabled}}
+  "cmd": "rq-dashboard --url-prefix /service/{{service.name}}",
+  {{/networking.marathon_lb_proxy.enabled}}
+  {{#networking.marathon_lb_proxy.enabled}}
+  "cmd": "rq-dashboard --url-prefix {{networking.marathon_lb_proxy.path}} ",
+  {{/networking.marathon_lb_proxy.enabled}}
+  {{/service.cmd}}
   "backoffSeconds": {{service.back_off_seconds}},
   "backoffFactor": {{service.back_off_factor}},
   "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
@@ -49,11 +57,8 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "URL_PREFIX": "/service/{{service.name}}",
     {{/networking.marathon_lb_proxy.enabled}}
-    {{^networking.marathon_lb_proxy.enabled}}
-    "URL_PREFIX": "{{networking.marathon_lb_proxy.path}}",
-    {{/networking.marathon_lb_proxy.enabled}}
-    "USERNAME": {"secret": "rqdashboardusername"},
-    "PASSWORD": {"secret": "rqdashboardpassword"}
+    "RQ_DASHBOARD_USERNAME": {"secret": "rqdashboardusername"},
+    "RQ_DASHBOARD_PASSWORD": {"secret": "rqdashboardpassword"}
   },
   "secrets": {
     "rqdashboardusername": {
