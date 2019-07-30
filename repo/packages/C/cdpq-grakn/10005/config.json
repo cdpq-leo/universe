@@ -247,7 +247,7 @@
         },
         "STORAGE_HOSTNAME": {
           "type": "string",
-          "default": "node-0-server.cassandra.autoip.dcos.thisdcos.directory,node-1-server.cassandra.autoip.dcos.thisdcos.directory,node-2-server.cassandra.autoip.dcos.thisdcos.directory"
+          "default": "node-0-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-1-server.data-servicescassandra.autoip.dcos.thisdcos.directory,node-2-server.data-servicescassandra.autoip.dcos.thisdcos.directory"
         },
         "GREMLIN_GRAPH_READER": {
           "type": "string",
