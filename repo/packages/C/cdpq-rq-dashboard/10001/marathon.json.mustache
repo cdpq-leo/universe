@@ -54,9 +54,6 @@
   "env": {
     "RQ_DASHBOARD_REDIS_HOST": "{{environment.REDIS_HOST}}",
     "RQ_DASHBOARD_REDIS_PORT": "{{environment.REDIS_PORT}}",
-    {{^networking.marathon_lb_proxy.enabled}}
-    "URL_PREFIX": "/service/{{service.name}}",
-    {{/networking.marathon_lb_proxy.enabled}}
     "RQ_DASHBOARD_USERNAME": {"secret": "rqdashboardusername"},
     "RQ_DASHBOARD_PASSWORD": {"secret": "rqdashboardpassword"}
   },
