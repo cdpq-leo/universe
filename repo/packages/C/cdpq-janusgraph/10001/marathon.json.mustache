@@ -31,7 +31,7 @@
     {
       {{#networking.service_endpoints.load_balance_port}}
       "labels": {
-          "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
       },
       {{/networking.service_endpoints.load_balance_port}}
       "containerPort": {{networking.service_endpoints.container_port}},
@@ -45,7 +45,7 @@
   },
   "env": {
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "CASSANDRA_HOSTNAMES": "{{environment.CASSANDRA_HOSTNAMES}}",
     "ELASTIC_HOSTNAME": "{{environment.ELASTIC_HOSTNAME}}",
