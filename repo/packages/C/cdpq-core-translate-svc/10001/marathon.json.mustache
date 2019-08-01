@@ -19,7 +19,7 @@
     "*"
   ],
   "container": {
-    "type": "DOCKER",
+    "type": "MESOS",
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
@@ -41,7 +41,13 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "volumes": []
+    "volumes": [
+      {
+        "mode": "RW",
+        "containerPath": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}",
+        "secret": "googlecredentials"
+      }
+    ]
   },
   "env": {
     {{#placement.region}}
@@ -57,11 +63,11 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "SERVICE_PREFIX": "",
     {{/networking.marathon_lb_proxy.enabled}}
-    "GOOGLE_API_KEY": {"secret": "googleapikey"}
+    "GOOGLE_APPLICATION_CREDENTIALS": "{{environment.GOOGLE_APPLICATION_CREDENTIALS}}"
   },
   "secrets": {
-    "googleapikey": {
-      "source": "{{environment.GOOGLE_API_KEY_SECRET}}"
+    "googlecredentials": {
+      "source": "{{environment.GOOGLE_CREDENTIALS_SECRET}}"
     }
   },
   "labels": {

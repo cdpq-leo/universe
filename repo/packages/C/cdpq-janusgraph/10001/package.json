@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-janusgraph",
-  "version": "1.1.1-0.2.3",
+  "version": "1.1.1-0.4.0",
   "maintainer": "leo@cdpq.com",
   "description": "Gremlin server backed by janusgraph",
   "minDcosReleaseVersion": "1.9.0",

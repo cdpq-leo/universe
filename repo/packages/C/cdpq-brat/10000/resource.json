@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cassj/brat"
+        "image": "cdpqleo/brat:1.0.0"
       }
     }
   }

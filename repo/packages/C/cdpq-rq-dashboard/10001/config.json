@@ -93,6 +93,11 @@
               "type": "number",
               "default": 9181
             },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
             "host_port": {
               "description": "Host port number",
               "type": "number",
@@ -113,11 +118,16 @@
         "marathon_lb_proxy": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
             "vhost": {
               "type": "string"
             },
             "path": {
-              "type": "string"
+              "type": "string",
+              "default": "/rq-dashboard"
             }
           }
         }
@@ -167,10 +177,6 @@
       "type": "object",
       "description": "Rediscommander instance configuration properties",
       "properties": {
-        "URL_PREFIX": {
-          "type": "string",
-          "default": "/service/rq-dashboard"
-        },
         "REDIS_HOST": {
           "description": "Redis Hostname",
           "type": "string",
