@@ -173,11 +173,23 @@
           "description": "Redis Port",
           "type": "string",
           "default": "6379"
+        },
+        "REDISCOMMANDER_USERNAME": {
+          "description": "Secret in secret store for the rq-dashboard username",
+          "type": "string",
+          "default": ""
+        },
+        "REDISCOMMANDER_PASSWORD": {
+          "description": "Secret in secret store for the rq-dashboard password",
+          "type": "string",
+          "default": ""
         }
       },
       "required": [
         "REDIS_HOST",
-        "REDIS_PORT"
+        "REDIS_PORT",
+        "REDISCOMMANDER_USERNAME",
+        "REDISCOMMANDER_PASSWORD"
       ]
     },
     "fetch": {
