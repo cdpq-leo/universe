@@ -56,7 +56,17 @@
     {{^networking.marathon_lb_proxy.enabled}}
     "URL_PREFIX": "/service/{{service.name}}",
     {{/networking.marathon_lb_proxy.enabled}}
+    "HTTP_USER": {"secret": "rediscommanderusername"},
+    "HTTP_PASSWORD": {"secret": "rediscommanderpassword"},
     "REDIS_PORT": "{{environment.REDIS_PORT}}"
+  },
+  "secrets": {
+    "rediscommanderusername": {
+      "source": "{{environment.REDISCOMMANDER_USERNAME}}"
+    },
+    "rediscommanderpassword": {
+      "source": "{{environment.REDISCOMMANDER_PASSWORD}}"
+    }
   },
   "healthChecks": [
     {
