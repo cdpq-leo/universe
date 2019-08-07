@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "mongo:4.1.13-bionic"
+        "image": "cdpqleo/mongodb:4.0.10"
       }
     }
   }

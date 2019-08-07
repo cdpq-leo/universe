@@ -8,7 +8,23 @@
         "name": {
           "description": "Name of the service.",
           "type": "string",
-          "default": "/mongodb/node1"
+          "default": "/mongodb"
+        },
+        "service_account": {
+          "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+          "type": "string",
+          "default": "mongo-principal",
+          "media": {
+            "type": "application/x-service-account+string"
+          }
+        },
+        "service_account_secret": {
+          "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+          "type": "string",
+          "default": "mongodbo/service-account-secret",
+          "media": {
+            "type": "application/x-secret+string"
+          }
         },
         "cpus": {
           "description": "CPU shares to allocate to the MongoDB ReplicaSet instance.",
@@ -66,7 +82,7 @@
         "constraints": {
           "type": "string",
           "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
-          "default": "[]",
+          "default": "[[\"hostname\", \"UNIQUE\"]]",
           "media": {
             "type": "application/x-zone-constraints+json"
           }
@@ -97,7 +113,7 @@
             "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
               "type": "string",
-              "default": "mongo"
+              "default": "mongodb"
             },
             "host_port": {
               "description": "Host port number",
@@ -112,7 +128,7 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 0
+              "default": 27017
             }
           }
         },
@@ -156,6 +172,11 @@
 							"type": "string",
 							"description": "Disk profile to be used for volume."
 						},
+            "size": {
+              "type": "number",
+              "description": "Disk size for the volume (Only applicable for ROOT and MOUNT).",
+              "default": 0
+            },
 						"external_volume_name": {
 							"type": "string",
 							"description": "External volume name, not applicable for ROOT and MOUNT volume types.",
@@ -181,6 +202,11 @@
               "type": "string",
               "description": "Disk profile to be used for volume."
             },
+            "size": {
+              "type": "number",
+              "description": "Disk size for the volume (Only applicable for ROOT and MOUNT).",
+              "default": 0
+            },
             "external_volume_name": {
               "type": "string",
               "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
@@ -194,7 +220,7 @@
       "type": "object",
       "description": "Health checks may be specified per application to be run against the application's instances.",
       "properties": {
-        "TCP_protocol": {
+        "MESOS_HTTP_protocol": {
           "type": "object",
           "properties": {
             "port_index": {
@@ -224,6 +250,11 @@
                   "type": "number",
                   "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
                   "default": 3
+                },
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 15
                 }
               }
             }
@@ -235,37 +266,74 @@
       "type": "object",
       "description": "MongoDB ReplicaSet Parameters",
       "properties": {
-        "MONGO_REPLSET": {
+        "MONGO_REPLICA_SET": {
           "description": "MongoDB ReplicaSet Name",
           "type": "string",
           "default": "rs"
         },
-        "MONGO_INITDB_ROOT_USERNAME_SECRET": {
-          "description": "Name of MongoDB ReplicaSet Root UserName Secret",
+        "MONGO_SSL_KEY_SECRET": {
+          "description": "MongoDB SSL Key Secret",
           "type": "string",
-          "default": "mongodb/mongodb-user"
+          "default": "mongodb-key"
         },
-        "MONGO_INITDB_ROOT_PASSWORD_SECRET": {
-          "description": "Name of MongoDB ReplicaSet Root Password Secret",
+        "MONGO_USER_ADMIN_USERNAME_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Admin User UserName Secret",
           "type": "string",
-          "default": "mongodb/mongodb-password"
+          "default": "mongodb-user-admin-user"
         },
-        "MONGO_STORAGE_PATH": {
-          "description": "MongoDB ReplicaSet Storage Path",
+        "MONGO_USER_ADMIN_PASSWORD_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Admin User Password Secret",
           "type": "string",
-          "default": "/opt/mongodb/data"
+          "default": "mongodb-user-admin-password"
+        },
+        "MONGO_CLUSTER_ADMIN_USERNAME_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Cluster Admin UserName Secret",
+          "type": "string",
+          "default": "mongodb-cluster-admin-user"
+        },
+        "MONGO_CLUSTER_ADMIN_PASSWORD_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Cluster Admin Password Secret",
+          "type": "string",
+          "default": "mongodb-cluster-admin-password"
+        },
+        "MONGO_CLUSTER_MONITOR_USERNAME_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Cluster Monitor UserName Secret",
+          "type": "string",
+          "default": "mongodb-cluster-monitor-user"
+        },
+        "MONGO_CLUSTER_MONITOR_PASSWORD_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Cluster Monitor Password Secret",
+          "type": "string",
+          "default": "mongodb-cluster-monitor-password"
+        },
+        "MONGO_BACKUP_USERNAME_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Backup UserName Secret",
+          "type": "string",
+          "default": "mongodb-backup-user"
+        },
+        "MONGO_BACKUP_PASSWORD_SECRET": {
+          "description": "Name of MongoDB ReplicaSet Backup Password Secret",
+          "type": "string",
+          "default": "mongodb-backup-password"
         },
         "MONGO_LOG_PATH": {
-          "description": "MongoDB ReplicaSet Log Path",
+          "description": "FileName of MongoDB Logs",
           "type": "string",
-          "default": "/opt/mongodb/logs"
+          "default": "/opt/mongodb/logs/mongod.log"
+        },
+        "MARATHON_API_URL": {
+          "description": "Marathon API URL",
+          "type": "string",
+          "default": "https://leo.cdpq.ai/service/marathon"
         }
       },
       "required": [
-        "MONGO_REPLSET",
-        "MONGO_INITDB_ROOT_USERNAME_SECRET",
-        "MONGO_INITDB_ROOT_PASSWORD_SECRET",
-        "MONGO_STORAGE_PATH",
+        "MONGO_REPLICA_SET",
+        "MONGO_SSL_KEY_SECRET",
+        "MONGO_USER_ADMIN_USERNAME_SECRET",
+        "MONGO_USER_ADMIN_PASSWORD_SECRET",
+        "MONGO_CLUSTER_ADMIN_USERNAME_SECRET",
+        "MONGO_CLUSTER_ADMIN_PASSWORD_SECRET",
         "MONGO_LOG_PATH"
       ]
     },

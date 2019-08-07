@@ -50,6 +50,7 @@
       "KEYCLOAK_HOSTNAME": "{{environment.KEYCLOAK_HOSTNAME}}",
       "KEYCLOAK_USER": {"secret": "keycloakuser"},
       "KEYCLOAK_PASSWORD": {"secret": "keycloakpassword"},
+      "KEYCLOAK_EDGELB_PATH": "{{environment.KEYCLOAK_EDGELB_PATH}}",
       "DB_VENDOR": "{{environment.DB_VENDOR}}",
       "DB_ADDR": "{{environment.DB_ADDR}}",
       "DB_PORT": "{{environment.DB_PORT}}",
@@ -98,7 +99,13 @@
       {{/networking.marathon_lb_proxy.path}}
       {{/networking.marathon_lb_proxy.enabled}}
       {{^networking.marathon_lb_proxy.enabled}}
-      "path": "/{{service.name}}",
+
+      {{#environment.KEYCLOAK_EDGELB_PATH}}
+      "path": "{{environment.KEYCLOAK_EDGELB_PATH}}",
+      {{/environment.KEYCLOAK_EDGELB_PATH}}
+      {{^environment.KEYCLOAK_EDGELB_PATH}}
+      "path": "{{service.name}}",
+      {{/environment.KEYCLOAK_EDGELB_PATH}}      
       {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},

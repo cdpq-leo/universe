@@ -191,12 +191,17 @@
                 "KEYCLOAK_USER_SECRET": {
                     "description": "Name of the DC/OS Secret storing the username of the repository",
                     "type": "string",
-                    "default": "keycload-user"
+                    "default": "keycloak-user"
                 },
                 "KEYCLOAK_PASSWORD_SECRET": {
                     "description": "Name of the DC/OS Secret storing the password (or API token) of the repository",
                     "type": "string",
-                    "default": "keycload-password"
+                    "default": "keycloak-password"
+                },
+                "KEYCLOAK_EDGELB_PATH": {
+                    "description": "Path of Keycloak to expose into EdgeLB",
+                    "type": "string",
+                    "default": ""
                 },
                 "DB_VENDOR": {
                     "description": "Database Vendor",

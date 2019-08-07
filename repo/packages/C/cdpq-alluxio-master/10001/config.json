@@ -388,7 +388,7 @@
         "ALLUXIO_JAVA_OPTS": {
           "description": "Alluxio properties",
           "type": "string",
-          "default": "-Dalluxio.security.authentication.type=NOSASL -Dalluxio.underfs.s3.endpoint=s3.us-east-1.amazonaws.com.cn -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/opt/hdfs/core-site.xml:/opt/hdfs/hdfs-site.xml"
+          "default": "-Dalluxio.debug=true -Dalluxio.security.authentication.type=SIMPLE -Dalluxio.underfs.s3.list.objects.v1=true -Dalluxio_underfs_hdfs_configuration=/opt/hdfs/core-site.xml:/opt/hdfs/hdfs-site.xml -Dalluxio.job.master.rpc.addresses=0.0.0.0:20001"
         }
       }
     },

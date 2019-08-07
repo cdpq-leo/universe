@@ -3,7 +3,7 @@
   "upgradesFrom": [],
   "downgradesTo": [],
   "name": "cdpq-mongodb",
-  "version": "1.0.0-4.1.13",
+  "version": "1.0.0-4.0.10",
   "maintainer": "leo@cdpq.com",
   "description": "A MongoDB ReplicaSet service for DC/OS.",
   "selected": true,
