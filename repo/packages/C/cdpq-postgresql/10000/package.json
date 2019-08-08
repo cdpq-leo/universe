@@ -9,6 +9,7 @@
   "selected": true,
   "framework": false,
   "tags": ["PostgreSQL", "database", "sql", "db"],
+  "minDcosReleaseVersion": "1.12",
   "preInstallNotes": "PostgreSQL",
   "postInstallNotes": "PostgreSQL is being installed!",
   "postUninstallNotes": "PostgreSQL has been uninstalled."
