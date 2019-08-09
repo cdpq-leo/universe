@@ -1,0 +1,324 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "PostgreSQL service configuration properties.",
+      "properties": {
+        "name": {
+          "description": "Name of the service.",
+          "type": "string",
+          "default": "/postgresql"
+        },
+        "service_account": {
+          "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+          "type": "string",
+          "default": "postegresql-principal",
+          "media": {
+            "type": "application/x-service-account+string"
+          }
+        },
+        "service_account_secret": {
+          "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+          "type": "string",
+          "default": "postgresql/service-account-secret",
+          "media": {
+            "type": "application/x-secret+string"
+          }
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the PostgreSQL instance.",
+          "type": "number",
+          "default": 0.3,
+          "minimum": 0.3
+        },
+        "mem": {
+          "description": "Memory to allocate to the PostgreSQL instance.",
+          "type": "number",
+          "default": 512,
+          "minimum": 512
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the PostgreSQL instance.",
+          "type": "number",
+          "default": 0
+        },
+        "instances": {
+          "description": "Number of instances of PostgreSQL.",
+          "type": "number",
+          "default": 1.0
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": ""
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 3600
+        }
+      },
+      "required": [
+        "name",
+        "cpus",
+        "mem",
+        "disk",
+        "instances"
+      ]
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\", \"UNIQUE\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoint": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 5432
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "postgresql"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 15432
+            }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/postgresql"
+            }
+          }
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Service storage configuration properties",
+      "properties": {
+        "volume_data": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/opt/postgresql/data"
+            },
+            "type": {
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "root"
+            },
+            "profile": {
+              "type": "string",
+              "description": "Disk profile to be used for volume."
+            },
+            "size": {
+              "type": "number",
+              "description": "Disk size for the volume (Only applicable for ROOT and MOUNT).",
+              "default": 0
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
+        },
+        "volume_logs": {
+          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
+          "type": "object",
+          "properties": {
+            "container_path": {
+              "description": "The path of a volume on the container.",
+              "type": "string",
+              "default": "/opt/postgresql/logs"
+            },
+            "type": {
+              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
+              "type": "string",
+              "default": "root"
+            },
+            "profile": {
+              "type": "string",
+              "description": "Disk profile to be used for volume."
+            },
+            "size": {
+              "type": "number",
+              "description": "Disk size for the volume (Only applicable for ROOT and MOUNT).",
+              "default": 0
+            },
+            "external_volume_name": {
+              "type": "string",
+              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
+              "default": ""
+            }
+          }
+        }
+      }
+    },
+    "health_checks": {
+      "type": "object",
+      "description": "Health checks may be specified per application to be run against the application's instances.",
+      "properties": {
+        "MESOS_HTTP_protocol": {
+          "type": "object",
+          "properties": {
+            "port_index": {
+              "type": "number",
+              "description": "Specifies the port index in the ports array that is used for health requests.",
+              "default": 0
+            },
+            "advanced_health_checking_settings": {
+              "type": "object",
+              "properties": {
+                "grace_periods": {
+                  "type": "number",
+                  "description": "Health check failures are ignored within this number of seconds or until the instance becomes healthy for the first time.",
+                  "default": 300
+                },
+                "intervals": {
+                  "type": "number",
+                  "description": "Number of seconds to wait between health checks.",
+                  "default": 60
+                },
+                "timeout": {
+                  "type": "number",
+                  "description": "Number of seconds after which a health check is considered a failure regardless of the response.",
+                  "default": 20
+                },
+                "max_failures": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 3
+                },
+                "delay_seconds": {
+                  "type": "number",
+                  "description": "Number of consecutive health check failures after which the unhealthy instance should be killed. HTTP & TCP health checks: If this value is 0, instances will not be killed if they fail the health check.",
+                  "default": 15
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "PostgreSQL Parameters",
+      "properties": {
+        "POSTGRESQL_USERNAME": {
+          "description": "Postgres user name.",
+          "type": "string",
+          "default": "admin"
+        },
+        "POSTGRESQL_PASSWORD": {
+          "description": "Postgres password.",
+          "type": "string",
+          "default": "password"
+        },
+        "POSTGRESQL_DB_NAME": {
+          "description": "Name for the default database that is created when the image is first started.",
+          "type": "string",
+          "default": "defaultdb"
+        },
+        "POSTGRESQL_INIT_ARGS": {
+          "description": "Arguments to send to postgres initdb. The value is a space separated string of arguments as postgres initdb would expect them.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "POSTGRESQL_USERNAME",
+        "POSTGRESQL_PASSWORD"
+      ]
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

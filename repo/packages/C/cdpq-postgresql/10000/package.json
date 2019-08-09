@@ -1,0 +1,16 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [],
+  "downgradesTo": [],
+  "name": "cdpq-postgresql",
+  "version": "1.0.0-9.3",
+  "maintainer": "leo@cdpq.com",
+  "description": "A PostgreSQL service for DC/OS.",
+  "selected": true,
+  "framework": false,
+  "tags": ["PostgreSQL", "database", "sql", "db"],
+  "minDcosReleaseVersion": "1.12",
+  "preInstallNotes": "PostgreSQL",
+  "postInstallNotes": "PostgreSQL is being installed!",
+  "postUninstallNotes": "PostgreSQL has been uninstalled."
+}
