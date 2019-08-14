@@ -20,7 +20,7 @@
     "*"
   ],
   "container": {
-    "type": "DOCKER",
+    "type": "MESOS",
     "docker": {
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
@@ -29,6 +29,13 @@
     },
     "volumes":
       [
+      {{#volumes.volume_backup.container_path}}
+      {
+        "containerPath": "{{volumes.volume_backup.container_path}}",
+        "hostPath": "{{volumes.volume_backup.host_path}}",
+        "mode": "RW"
+      },
+      {{/volumes.volume_backup.container_path}}
       {{^volumes.volume_data.external_volume_name}}
     	{
     	  "containerPath": "data",
@@ -59,36 +66,6 @@
           "mode": "RW"
       },
     	{{/volumes.volume_data.external_volume_name}}
-      {{^volumes.volume_logs.external_volume_name}}
-    	{
-    	  "containerPath": "logs",
-    	  "mode": "RW",
-    	  "persistent": {
-    		"type": "{{volumes.volume_logs.type}}",
-        {{#volumes.volume_logs.profile}}
-    		"profileName": "{{volumes.volume_logs.profile}}",
-        {{/volumes.volume_logs.profile}}
-    		"size": {{volumes.volume_data.size}},
-    		"constraints": []
-    	  }
-    	},
-      {
-        "containerPath": "{{volumes.volume_logs.container_path}}",
-        "hostPath": "logs",
-        "mode": "RW"
-      }
-    	{{/volumes.volume_logs.external_volume_name}}
-    	{{#volumes.volume_logs.external_volume_name}}
-      {
-          "containerPath": "{{volumes.volume_logs.container_path}}",
-          "external": {
-            "name": "{{volumes.volume_logs.external_volume_name}}",
-            "provider": "dvdi",
-            "options": { "dvdi/driver": "rexray" }
-          },
-          "mode": "RW"
-      }
-    	{{/volumes.volume_logs.external_volume_name}}
       ],
     "portMappings": [
       {
@@ -128,10 +105,10 @@
       },
     {{/service.service_account_secret}}
      "postgresqlusername": {
-       "source": "{{environment.POSTGRESQL_USERNAME}}"
+       "source": "{{environment.POSTGRESQL_USERNAME_SECRET}}"
      },
      "postgresqlpassword": {
-       "source": "{{environment.POSTGRESQL_PASSWORD}}"
+       "source": "{{environment.POSTGRESQL_PASSWORD_SECRET}}"
      }
   },
   "labels": {

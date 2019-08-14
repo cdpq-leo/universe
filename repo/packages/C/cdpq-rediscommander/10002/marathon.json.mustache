@@ -15,7 +15,7 @@
       "mode": "container/bridge"
     }
   ],
-  "container": 
+  "container":
   {
     "type": "DOCKER",
     "docker": {
@@ -24,7 +24,7 @@
       "privileged": false,
       "parameters": []
     },
-    "portMappings": 
+    "portMappings":
     [
       {
         "containerPort": {{networking.service_endpoints.container_port}},
@@ -62,10 +62,10 @@
   },
   "secrets": {
     "rediscommanderusername": {
-      "source": "{{environment.REDISCOMMANDER_USERNAME}}"
+      "source": "{{environment.REDISCOMMANDER_USERNAME_SECRET}}"
     },
     "rediscommanderpassword": {
-      "source": "{{environment.REDISCOMMANDER_PASSWORD}}"
+      "source": "{{environment.REDISCOMMANDER_PASSWORD_SECRET}}"
     }
   },
   "healthChecks": [
@@ -92,7 +92,8 @@
       "executable": {{fetch.artifact_URI.executable}},
       "cache": {{fetch.artifact_URI.cache}}
     }
-    {{/fetch.artifact_URI.uri}}],
+    {{/fetch.artifact_URI.uri}}
+    ],
    "upgradeStrategy": {
      "maximumOverCapacity": 1,
      "minimumHealthCapacity": 1

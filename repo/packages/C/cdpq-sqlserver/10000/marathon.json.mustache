@@ -19,7 +19,7 @@
     "*"
   ],
   "container": {
-    "type": "DOCKER",
+    "type": "MESOS",
     "docker": {
     "forcePullImage": false,
     "image": "{{resource.assets.container.docker.image}}",
@@ -42,6 +42,13 @@
       }
     ],
     "volumes": [
+      {{#volumes.volume_backup.container_path}}
+      {
+        "containerPath": "{{volumes.volume_backup.container_path}}",
+        "hostPath": "{{volumes.volume_backup.host_path}}",
+        "mode": "RW"
+      },
+      {{/volumes.volume_backup.container_path}}
     	{{^volumes.volume_data.external_volume_name}}
     	{
     	  "containerPath": "mssql",
@@ -62,19 +69,24 @@
       }
     	{{/volumes.volume_data.external_volume_name}}
     	{{#volumes.volume_data.external_volume_name}}
-        {
-            "containerPath": "{{volumes.volume_data.container_path}}",
-            "external": {
-              "name": "{{volumes.volume_data.external_volume_name}}",
-              "provider": "dvdi",
-              "options": { "dvdi/driver": "rexray" }
-            },
-            "mode": "RW"
-        }
+      {
+          "containerPath": "{{volumes.volume_data.container_path}}",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+      }
     	{{/volumes.volume_data.external_volume_name}}
      ]
   },
   "env": {
+    {{#service.service_account_secret}}
+    "DCOS_SERVICE_ACCOUNT_CREDENTIAL": {"secret": "serviceCredential"},
+    "MESOS_MODULES": "{\"libraries\": [{\"file\": \"libdcos_security.so\", \"modules\": [{\"name\": \"com_mesosphere_dcos_ClassicRPCAuthenticatee\"}]}]}",
+    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
+    {{/service.service_account_secret}}
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
@@ -88,10 +100,20 @@
     "MSSQL_DUMP_DIR": "{{environment.MSSQL_DUMP_DIR}}",
     "MSSQL_DATA_DIR": "{{volumes.volume_data.container_path}}/data",
     "MSSQL_LOG_DIR": "{{volumes.volume_data.container_path}}/log",
+    {{^volumes.volume_backup.container_path}}
     "MSSQL_BACKUP_DIR": "{{volumes.volume_data.container_path}}/backup",
+    {{#volumes.volume_backup.container_path}}
+    {{#volumes.volume_backup.container_path}}
+    "MSSQL_BACKUP_DIR": "{{volumes.volume_backup.container_path}}",
+    {{#volumes.volume_backup.container_path}}
     "MSSQL_TEMPDB_DIR": "{{volumes.volume_data.container_path}}/tempdb"
   },
   "secrets": {
+    {{#service.service_account_secret}}
+      "serviceCredential": {
+        "source": "{{service.service_account_secret}}"
+      },
+    {{/service.service_account_secret}}
     "sapassword": {
       "source": "{{environment.SA_PASSWORD_SECRET}}"
     }

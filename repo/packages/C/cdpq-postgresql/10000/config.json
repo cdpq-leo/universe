@@ -10,6 +10,11 @@
           "type": "string",
           "default": "/postgresql"
         },
+        "instances": {
+            "description": "Number of instances of your service.",
+            "type": "number",
+            "default": 1.0
+        },
         "service_account": {
           "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
           "type": "string",
@@ -42,11 +47,6 @@
           "description": "Disk (MB) to allocate to the PostgreSQL instance.",
           "type": "number",
           "default": 0
-        },
-        "instances": {
-          "description": "Number of instances of PostgreSQL.",
-          "type": "number",
-          "default": 1.0
         },
         "cmd": {
           "description": "A shell command for your container to execute.",
@@ -186,36 +186,22 @@
             }
           }
         },
-        "volume_logs": {
-          "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-          "type": "object",
-          "properties": {
-            "container_path": {
-              "description": "The path of a volume on the container.",
-              "type": "string",
-              "default": "/opt/postgresql/logs"
-            },
-            "type": {
-              "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-              "type": "string",
-              "default": "root"
-            },
-            "profile": {
-              "type": "string",
-              "description": "Disk profile to be used for volume."
-            },
-            "size": {
-              "type": "number",
-              "description": "Disk size for the volume (Only applicable for ROOT and MOUNT).",
-              "default": 0
-            },
-            "external_volume_name": {
-              "type": "string",
-              "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-              "default": ""
-            }
-          }
-        }
+				"volume_backup": {
+					"description": "Volume configurations. Please read Pre-Install Notes for setup for volumes.",
+					"type": "object",
+					"properties": {
+						"container_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/var/opt/mssql"
+						},
+						"host_path": {
+							"description": "The path of a volume on the container.",
+							"type": "string",
+							"default": "/mnt/mssql"
+						}
+					}
+				}
       }
     },
     "health_checks": {
@@ -268,15 +254,15 @@
       "type": "object",
       "description": "PostgreSQL Parameters",
       "properties": {
-        "POSTGRESQL_USERNAME": {
-          "description": "Postgres user name.",
+        "POSTGRESQL_USERNAME_SECRET": {
+          "description": "Postgres UserName Secret",
           "type": "string",
-          "default": "admin"
+          "default": "postgresql-user"
         },
-        "POSTGRESQL_PASSWORD": {
-          "description": "Postgres password.",
+        "POSTGRESQL_PASSWORD_SECRET": {
+          "description": "Postgres Password Secret",
           "type": "string",
-          "default": "password"
+          "default": "postgresql-password"
         },
         "POSTGRESQL_DB_NAME": {
           "description": "Name for the default database that is created when the image is first started.",
@@ -289,8 +275,9 @@
         }
       },
       "required": [
-        "POSTGRESQL_USERNAME",
-        "POSTGRESQL_PASSWORD"
+        "POSTGRESQL_USERNAME_SECRET",
+        "POSTGRESQL_PASSWORD_SECRET",
+        "POSTGRESQL_DB_NAME"
       ]
     },
     "fetch": {

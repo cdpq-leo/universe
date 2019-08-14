@@ -64,7 +64,7 @@
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "KM_USERNAME": {"secret": "kmusername"},
-    "KM_PASSWORD ": {"secret": "kmpassword"},
+    "KM_PASSWORD": {"secret": "kmpassword"},
     "ZK_HOSTS": "{{environment.ZK_HOSTS}}",
     {{^networking.marathon_lb_proxy.enabled}}
     "PLAY_HTTP_CONTEXT": "/service/{{service.name}}/",
@@ -79,16 +79,16 @@
   },
   "secrets": {
     "kmusername": {
-      "source": "{{environment.KM_USERNAME}}"
+      "source": "{{environment.KM_USERNAME_SECRET}}"
     },
     "kmpassword": {
-      "source": "{{environment.KM_PASSWORD}}"
+      "source": "{{environment.KM_PASSWORD_SECRET}}"
     },
     "applicationkey": {
       "source": "{{environment.APPLICATION_SECRET}}"
     }
   },
-  "fetch": 
+  "fetch":
   [
     {{#fetch.artifact_URI.uri}}
     {

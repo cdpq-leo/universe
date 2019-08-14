@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/duplicates_remover"
+        "image": "cdpqleo/core-article-similarity-finder-svc:0.1.1"
       }
     }
   }

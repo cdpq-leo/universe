@@ -8,7 +8,7 @@
             "name": {
                 "description": "Name of application instance as seen in DC/OS.",
                 "type": "string",
-                "default": "partners-article-similarity-finder-svc"
+                "default": "core-article-similarity-finder-svc"
             },
             "instances": {
                 "description": "Number of instances of your service.",
@@ -127,7 +127,7 @@
             },
             "path": {
               "type": "string",
-              "default": "/partners-article-similarity-finder-svc"
+              "default": "/core-article-similarity-finder-svc"
             }
           }
         }

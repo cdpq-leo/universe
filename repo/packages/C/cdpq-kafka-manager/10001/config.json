@@ -167,11 +167,11 @@
           "description": "Word used to as key to compute hash",
           "type": "string"
         },
-        "KM_USERNAME": {
+        "KM_USERNAME_SECRET": {
           "description": "Name of the secret in the secret store containing the kafka-manager username",
           "type": "string"
         },
-        "KM_PASSWORD": {
+        "KM_PASSWORD_SECRET": {
           "description": "Name of the secret in the secret store containing the kafka-manager password",
           "type": "string"
         }

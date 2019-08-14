@@ -19,7 +19,7 @@
     "*"
   ],
   "container": {
-    "type": "DOCKER",
+    "type": "MESOS",
     "docker": {
       "forcePullImage": true,
       "image": "{{resource.assets.container.docker.image}}",
@@ -27,6 +27,13 @@
       "privileged": false
     },
     "volumes": [
+    {{#volumes.volume_backup.container_path}}
+    {
+      "containerPath": "{{volumes.volume_backup.container_path}}",
+      "hostPath": "{{volumes.volume_backup.host_path}}",
+      "mode": "RW"
+    },
+    {{/volumes.volume_backup.container_path}}
     {{^volumes.volume_data.external_volume_name}}
   	{
   	  "containerPath": "data",
@@ -75,6 +82,11 @@
     ]
   },
   "env": {
+    {{#service.service_account_secret}}
+    "DCOS_SERVICE_ACCOUNT_CREDENTIAL": {"secret": "serviceCredential"},
+    "MESOS_MODULES": "{\"libraries\": [{\"file\": \"libdcos_security.so\", \"modules\": [{\"name\": \"com_mesosphere_dcos_ClassicRPCAuthenticatee\"}]}]}",
+    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
+    {{/service.service_account_secret}}
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
@@ -85,6 +97,11 @@
     "ADMIN_PASSWORD": {"secret": "stardogadminpassword"}
   },
   "secrets": {
+    {{#service.service_account_secret}}
+      "serviceCredential": {
+        "source": "{{service.service_account_secret}}"
+      },
+    {{/service.service_account_secret}}
     "stardogadminpassword": {
       "source": "{{environment.ADMIN_PASSWORD_SECRET}}"
     }
