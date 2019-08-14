@@ -58,6 +58,47 @@
                 "instances"
           ]
     },
+    "environment": {
+      "type": "object",
+      "description": "Environment variables definitions.",
+      "properties": {
+        "mongo_db_name": {
+          "type": "string",
+          "description": "The name of the mongodb database to use",
+          "default": ""
+        },
+        "mongo_replica_name": {
+          "type": "string",
+          "description": "The mongodb replicat set name.",
+          "default": "rs"
+        },
+        "mongo_uri": {
+          "type": "string",
+          "description": "The URL of the mongodb database.",
+          "default": ""
+        },
+        "encoding_size": {
+          "type": "number",
+          "description": "The size of the resulting encoding.",
+          "default": 100
+        },
+        "encoding_seed": {
+          "type": "number",
+          "description": "The random seed to init the min hash algorithm.",
+          "default": 42
+        },
+        "log_level": {
+          "type": "string",
+          "description": "he loggers' level",
+          "default": "info"
+        },
+        "web_concurrency": {
+          "type": "string",
+          "description": "The number of distinct process to start. defaults to one per core * cores number.",
+          "default": ""
+        }
+      }
+    },
     "placement": {
       "type": "object",
       "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",

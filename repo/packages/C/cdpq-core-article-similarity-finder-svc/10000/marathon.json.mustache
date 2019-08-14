@@ -44,8 +44,17 @@
     "volumes": []
   },
   "env": {
+    "DATABASE_NAME": "{{environment.mongo_db_name}}",
+    "MONGO_URI": "{{environment.mongo_uri}}",
+    "REPLICA_NAME": "{{environment.mongo_replica_name}}",
+    "ENCODING_SIZE": "{{environment.encoding_size}}",
+    "ENCODING_SEED": "{{environment.encoding_seed}}",
+    "LOG_LEVEL": "{{environment.log_level}}"
+    {{#environment.web_concurrency}}
+    ,"WEB_CONCURRENCY": "{{environment.web_concurrency}}"
+    {{/environment.web_concurrency}}
     {{#placement.region}}
-    "SERVICE_REGION": "{{placement.region}}"
+    ,"SERVICE_REGION": "{{placement.region}}"
     {{/placement.region}}
   },
   "labels": {

@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-core-article-similarity-finder-svc",
-  "version": "1.0.0-0.1.1",
+  "version": "1.0.0-1.0.0",
   "maintainer": "leo@cdpq.com",
   "description": "core-article-similarity-finder-svc",
   "minDcosReleaseVersion": "1.9.0",
