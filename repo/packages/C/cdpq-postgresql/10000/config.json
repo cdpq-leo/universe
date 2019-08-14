@@ -208,7 +208,7 @@
       "type": "object",
       "description": "Health checks may be specified per application to be run against the application's instances.",
       "properties": {
-        "MESOS_HTTP_protocol": {
+        "TCP_protocol": {
           "type": "object",
           "properties": {
             "port_index": {

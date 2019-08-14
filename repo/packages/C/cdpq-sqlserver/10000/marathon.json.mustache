@@ -102,10 +102,10 @@
     "MSSQL_LOG_DIR": "{{volumes.volume_data.container_path}}/log",
     {{^volumes.volume_backup.container_path}}
     "MSSQL_BACKUP_DIR": "{{volumes.volume_data.container_path}}/backup",
-    {{#volumes.volume_backup.container_path}}
+    {{/volumes.volume_backup.container_path}}
     {{#volumes.volume_backup.container_path}}
     "MSSQL_BACKUP_DIR": "{{volumes.volume_backup.container_path}}",
-    {{#volumes.volume_backup.container_path}}
+    {{/volumes.volume_backup.container_path}}
     "MSSQL_TEMPDB_DIR": "{{volumes.volume_data.container_path}}/tempdb"
   },
   "secrets": {
