@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/kb-content-filter:1.0.0"
+        "image": "cdpqleo/content-filter-models-svc:1.0.2"
       }
     }
   }

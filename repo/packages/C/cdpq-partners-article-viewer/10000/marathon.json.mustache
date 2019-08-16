@@ -47,7 +47,21 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "ENDPOINT": "{{environment.ENDPOINT}}"
+    {{#placement.CLIENT_ID}}
+    "CLIENT_ID": "{{placement.CLIENT_ID}}",
+    {{/placement.CLIENT_ID}}
+    {{#placement.CLIENT_SECRET}}
+    "CLIENT_SECRET": "{{placement.CLIENT_SECRET}}",
+    {{/placement.CLIENT_SECRET}}
+    {{#placement.OPENID_ISSUER}}
+    "OPENID_ISSUER": "{{placement.OPENID_ISSUER}}",
+    {{/placement.OPENID_ISSUER}}
+    {{#placement.RATE_ARTICLES_ROLE}}
+    "RATE_ARTICLES_ROLE": "{{placement.RATE_ARTICLES_ROLE}}",
+    {{/placement.RATE_ARTICLES_ROLE}}
+    "ENDPOINT": "{{environment.ENDPOINT}}",
+    "BASE_URL": "{{environment.base_url}}",
+    "DISABLE_OPENID": "{{environment.DISABLE_OPENID}}"
   },
   "labels":{
     {{#networking.marathon_lb_proxy.enabled}}

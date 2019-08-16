@@ -138,7 +138,37 @@
       "properties": {
         "ENDPOINT": {
           "type": "string",
-          "default": ""
+          "description": "article-viewer service endpoint",
+          "default": "http://article-viewer-svc.marathon.l4lb.thisdcos.directory:8080"
+        },
+        "BASE_URL": {
+          "type": "string",
+          "description": "base url where the viewer is served",
+          "default": "https://leo-public.cdpq.ai/prod/projects/partners/article-viewer"
+        },
+        "DISABLE_OPENID": {
+          "type": "string",
+          "description": "1 to disable openid auth, 0 to enable openid auth",
+          "default": "0"
+        },
+        "CLIENT_ID": {
+          "type": "string",
+          "description": "OpenID client id",
+          "default": "partners-article-viewer"
+        },
+        "CLIENT_SECRET": {
+          "type": "string",
+          "description": "Client secret"
+        },
+        "OPENID_ISSUER": {
+          "type": "string",
+          "description": "openid issuer endpoint",
+          "default": "https://leo-public.cdpq.ai/keycloak/auth/realms/LEO"
+        },
+        "RATE_ARTICLES_ROLE": {
+          "type": "string",
+          "description": "Client role the user has to have to perform the article rate action",
+          "default": "rate_articles"
         }
       }
     },

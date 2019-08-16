@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/lavue:0.2"
+        "image": "cdpqleo/partners-article-viewer:1.0.0"
       }
     }
   }
