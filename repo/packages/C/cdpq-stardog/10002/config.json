@@ -220,6 +220,16 @@
           "type": "string",
           "default": "read_optimized"
         },
+        "STRICT_PARSING": {
+          "description": "Controls whether Stardog parses RDF strictly.",
+          "type": "string",
+          "default": "false"
+        },
+        "DISABLE_SECURITY": {
+          "description": "Disable security flag. If this flag is set to true, security for the server is completely disabled.",
+          "type": "string",
+          "default": "false"
+        },
         "ADMIN_PASSWORD_SECRET": {
           "description": "Administrator Password Secret",
           "type": "string",
