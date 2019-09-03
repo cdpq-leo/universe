@@ -169,6 +169,11 @@
           "type": "string",
           "description": "Client role the user has to have to perform the article rate action",
           "default": "rate_articles"
+        },
+        "NODE_SERVER_PORT": {
+          "type": "string",
+          "description": "Container port on which nodejs should listen",
+          "default": "8080"
         }
       }
     },
