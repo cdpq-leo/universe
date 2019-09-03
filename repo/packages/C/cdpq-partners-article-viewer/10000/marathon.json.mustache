@@ -62,7 +62,7 @@
     "ENDPOINT": "{{environment.ENDPOINT}}",
     "BASE_URL": "{{environment.BASE_URL}}",
     "DISABLE_OPENID": "{{environment.DISABLE_OPENID}}",
-    "NODE_SERVER_PORT": "{{environment.NODE_SERVER_PORT}}"
+    "NODE_SERVER_PORT": "{{networking.service_endpoints.container_port}}"
   },
   "labels":{
     {{#networking.marathon_lb_proxy.enabled}}
