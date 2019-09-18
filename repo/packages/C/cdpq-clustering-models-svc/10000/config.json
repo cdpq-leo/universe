@@ -150,7 +150,7 @@
             "host_path": {
               "description": "The path of a volume on the host.",
               "type": "string",
-              "default": "/mnt/azurefileshare/data/clustering"
+              "default": "/mnt/s3/leo-raw/clustering"
             },
             "type": {
               "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
@@ -291,4 +291,3 @@
     }
   }
 }
-  
