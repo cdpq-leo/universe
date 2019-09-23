@@ -116,11 +116,11 @@
           "type": "string"
         },
         "MASTER_HOST": {
-          "description": "If this service is meant to be a replica of the masster, you need to provide the master host (VIP)",
+          "description": "If this service is meant to be a replica of the master, you need to provide the master host (VIP)",
           "type": "string"
         },
         "MASTER_PORT": {
-          "description": "If this service is meant to be a replica of the masster, you need to provide the master load balance port",
+          "description": "If this service is meant to be a replica of the master, you need to provide the master load balance port",
           "type": "string",
           "default": "6379"
         }
