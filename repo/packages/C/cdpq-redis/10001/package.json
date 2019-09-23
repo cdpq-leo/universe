@@ -1,7 +1,7 @@
 {
   "packagingVersion": "4.0",
   "name": "cdpq-redis",
-  "version": "1.0.0-latest",
+  "version": "1.0.1-latest",
   "maintainer": "cconstantineau@cdpq.com",
   "description": "This is a single redis container, which is suited for HA setups. Redis is a popular in-memory data structure store, used as database, cache and message broker.. See documentation for more details: https://github.com/dcos/examples/tree/master/redis ",
   "website": "http://www.redis.io",

@@ -1,0 +1,142 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DC/OS service configuration properties",
+      "properties": {
+        "name": {
+          "description": "Name of this service instance. We suggest naming your instance, redis-sentinel-a, for clarity.",
+          "type": "string",
+          "default": "redis-sentinel"
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Redis-Sentinel instance.",
+          "type": "number",
+          "default": 1.0,
+          "minimum": 1.0
+        },
+        "mem": {
+          "description": "Memory to allocate to the Redis-Sentinel instance.",
+          "type": "number",
+          "default": 1024,
+          "minimum": 1024
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Redis-Sentinel instance.",
+          "type": "number",
+          "default": 65536,
+          "minimum": 2000
+        }
+      }
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region. ",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": ""
+            },
+            "load_balance_port": {
+              "type": "number",
+              "description": "This port will be used to load balance this service address internally",
+              "default": 26379
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Service Parameters",
+      "properties": {
+        "PASSWORD": {
+          "description": "Redis server password Secret",
+          "type": "string",
+          "default": "redis-password"
+        },
+        "MASTER_HOST": {
+          "description": "The master host (VIP)",
+          "type": "string"
+        },
+        "MASTER_PORT": {
+          "description": "The master load balance port",
+          "type": "string",
+          "default": "6379"
+        },
+        "QUORUM": {
+          "description": "Nmber of redis-sentinel instance that should agree on a decision. For a 3 sentinel setup, a quorum of 2 is a good option.",
+          "type": "string",
+          "default": "2"
+        },
+        "MASTER_NAME": {
+          "description": "The name of the redis database you want to monitor. This is an arbitrary name.",
+          "type": "string",
+          "default": "mymaster"
+        }
+      },
+      "required": [
+        "MASTER_HOST",
+        "MASTER_PORT",
+        "QUORUM",
+        "MASTER_NAME",
+        "PASSWORD"
+      ]
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
