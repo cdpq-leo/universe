@@ -116,14 +116,13 @@
           "type": "string"
         },
         "MASTER_HOST": {
-          "description": "Postgres Password Secret",
-          "type": "string",
-          "default": "postgresql-password"
+          "description": "If this service is meant to be a replica of the masster, you need to provide the master host (VIP)",
+          "type": "string"
         },
         "MASTER_PORT": {
-          "description": "Postgres Password Secret",
+          "description": "If this service is meant to be a replica of the masster, you need to provide the master load balance port",
           "type": "string",
-          "default": "postgresql-password"
+          "default": "6379"
         }
       },
       "required": ["IS_MASTER", "PASSWORD"]

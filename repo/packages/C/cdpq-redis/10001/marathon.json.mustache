@@ -50,6 +50,12 @@
     "PASSWORD": {"secret": "redis_password"},,
     "IS_MASTER": "{{environment.IS_MASTER}}",
     "ANNOUNCE_IP": "{{ service.name }}",
+    {{ #environment.MASTER_HOST }}
+    "MASTER_HOST": "{{ environment.MASTER_HOST }}",
+    {{ /environment.MASTER_HOST }}
+    {{ #environment.MASTER_PORT }}
+    "MASTER_PORT": "{{ environment.MASTER_PORT }}",
+    {{ /environment.MASTER_PORT }}
     "ANNOUNCE_PORT": "{{ networking.service_endpoints.load_balance_port }}"
   },
   "secrets": {
