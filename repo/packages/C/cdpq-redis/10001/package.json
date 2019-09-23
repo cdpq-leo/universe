@@ -1,0 +1,24 @@
+{
+  "packagingVersion": "4.0",
+  "name": "cdpq-redis",
+  "version": "1.0.0-latest",
+  "maintainer": "cconstantineau@cdpq.com",
+  "description": "This is a single redis container, which is suited for HA setups. Redis is a popular in-memory data structure store, used as database, cache and message broker.. See documentation for more details: https://github.com/dcos/examples/tree/master/redis ",
+  "website": "http://www.redis.io",
+  "framework": false,
+  "tags": [
+    "mesosphere",
+    "service",
+    "redis",
+    "storage"
+  ],
+  "licenses": [
+    {
+      "name": "BSD",
+      "url": "http://redis.io/topics/license"
+    }
+  ],
+  "postInstallNotes": "Redis installed!",
+  "preInstallNotes": "It is strongly recommended to use this service with replicas (2) and redis-sentinels (3).",
+  "postUninstallNotes": "Thank you for using Redis"
+}

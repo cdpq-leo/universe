@@ -1,0 +1,72 @@
+{
+ "id": "{{service.name}}",
+ "instances": 1,
+ "cpus": {{service.cpus}},
+ "mem": {{service.mem}},
+ "disk": {{service.disk}},
+ "fetch": [
+      {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+      {{/fetch.artifact_URI.uri}}
+   ],
+ "container": {
+   "type": "DOCKER",
+   "volumes": [
+      {{#volumes.local_persistant_volume.container_path}}
+      {
+         "persistent": {
+            "type": root,
+            "size": {{volumes.local_persistant_volume.size_MiB}},
+            "constraints": {{volumes.local_persistant_volume.constraints}}
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
+      }
+      {{/volumes.local_persistant_volume.container_path}}
+    ],
+  "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "parameters": [],
+      "privileged": false
+   }
+ },
+ "healthChecks": [
+   {
+   "protocol": "TCP",
+   "gracePeriodSeconds": 60,
+   "intervalSeconds": 5,
+   "portIndex": 0,
+   "timeoutSeconds": 5,
+   "maxConsecutiveFailures": 3
+   }
+ ],
+  "env": {
+    "PASSWORD": {"secret": "redis_password"},,
+    "IS_MASTER": "{{environment.IS_MASTER}}",
+    "ANNOUNCE_IP": "{{ service.name }}",
+    "ANNOUNCE_PORT": "{{ networking.service_endpoints.load_balance_port }}"
+  },
+  "secrets": {
+    "redis_password": {
+      "source": "{{ environment.PASSWORD }}"
+    }
+  },
+  "portDefinitions": [
+    {
+      "port": 0,
+      "labels": {
+        "VIP_0": "{{ service.name }}:{{ networking.service_endpoints.load_balance_port }}"
+      },
+      {{ #networking.service_endpoints.name }}
+      "name": "{{ networking.service_endpoints.name }}",
+      {{ /networking.service_endpoints.name }}
+      "protocol": "tcp"
+    }
+  ]
+}
