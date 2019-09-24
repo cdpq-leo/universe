@@ -1,0 +1,141 @@
+{
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "constraints": [["hostname", "UNIQUE"]],
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": []
+    },
+    "volumes":
+      [
+      {{#volumes.volume_backup.container_path}}
+      {
+        "containerPath": "{{volumes.volume_backup.container_path}}",
+        "hostPath": "{{volumes.volume_backup.host_path}}",
+        "mode": "RW"
+      },
+      {{/volumes.volume_backup.container_path}}
+      {{^volumes.volume_data.external_volume_name}}
+    	{
+    	  "containerPath": "data",
+    	  "mode": "RW",
+    	  "persistent": {
+    		"type": "{{volumes.volume_data.type}}",
+        {{#volumes.volume_data.profile}}
+    		"profileName": "{{volumes.volume_data.profile}}",
+        {{/volumes.volume_data.profile}}
+    		"size": {{volumes.volume_data.size}},
+    		"constraints": []
+    	  }
+    	},
+      {
+        "containerPath": "{{volumes.volume_data.container_path}}",
+        "hostPath": "data",
+        "mode": "RW"
+      }
+    	{{/volumes.volume_data.external_volume_name}}
+    	{{#volumes.volume_data.external_volume_name}}
+      {
+          "containerPath": "{{volumes.volume_data.container_path}}",
+          "external": {
+            "name": "{{volumes.volume_data.external_volume_name}}",
+            "provider": "dvdi",
+            "options": { "dvdi/driver": "rexray" }
+          },
+          "mode": "RW"
+      }
+    	{{/volumes.volume_data.external_volume_name}}
+      ],
+    "portMappings": [
+      {
+        {{#networking.service_endpoint.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoint.load_balance_port}}"
+        },
+        {{/networking.service_endpoint.load_balance_port}}
+        "containerPort": {{networking.service_endpoint.container_port}},
+        "hostPort": {{networking.service_endpoint.host_port}},
+        {{#networking.service_endpoint.name}}
+        "name": "{{networking.service_endpoint.name}}",
+        {{/networking.service_endpoint.name}}
+        "protocol": "{{networking.service_endpoint.protocol}}"
+      }
+    ]
+  },
+  "env": {
+    {{#service.service_account_secret}}
+    "DCOS_SERVICE_ACCOUNT_CREDENTIAL": {"secret": "serviceCredential"},
+    "MESOS_MODULES": "{\"libraries\": [{\"file\": \"libdcos_security.so\", \"modules\": [{\"name\": \"com_mesosphere_dcos_ClassicRPCAuthenticatee\"}]}]}",
+    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
+    {{/service.service_account_secret}}
+    {{#placement.region}}
+      "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "MODE": "{{environment.MODE}}"
+  },
+  "secrets": {
+  },
+  "labels": {
+    {{#networking.marathon_lb_proxy.enabled}}
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "{{networking.marathon_lb_proxy.vhost}}",
+    {{#networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_PATH": "{{networking.marathon_lb_proxy.path}}",
+    {{/networking.marathon_lb_proxy.path}}
+    "HAPROXY_0_BACKEND_HEAD": "backend {backend}\n  balance {balance}\n  mode {mode}\n  timeout server 30m\n  timeout client 30m\n",
+    {{/networking.marathon_lb_proxy.enabled}}
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.TCP_protocol.advanced_health_checking_settings.max_failures}},
+      "portIndex": {{health_checks.TCP_protocol.port_index}},
+      "protocol": "TCP",
+      "delaySeconds": {{health_checks.TCP_protocol.advanced_health_checking_settings.delay_seconds}}
+    }
+  ],
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
+  }
+  {{/fetch.artifact_URI.uri}}
+  ],
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  },
+  "killSelection": "YOUNGEST_FIRST"
+}
