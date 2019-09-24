@@ -36,7 +36,7 @@
  ],
   "env": {
     "PASSWORD": {"secret": "redis_password"},
-    "ANNOUNCE_IP": "{{ service.name }}",
+    "ANNOUNCE_IP": "{{environment.ANNOUNCE_IP}}",
     "ANNOUNCE_PORT": "{{ networking.service_endpoints.load_balance_port }}",
     "MASTER_HOST": "{{ environment.MASTER_HOST }}",
     "MASTER_PORT": "{{ environment.MASTER_PORT }}",
@@ -52,7 +52,7 @@
     {
       "port": 0,
       "labels": {
-        "VIP_0": "{{ service.name }}:{{ networking.service_endpoints.load_balance_port }}"
+        "VIP_0": "/{{ service.name }}:{{ networking.service_endpoints.load_balance_port }}"
       },
       {{ #networking.service_endpoints.name }}
       "name": "{{ networking.service_endpoints.name }}",

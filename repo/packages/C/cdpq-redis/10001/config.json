@@ -27,6 +27,11 @@
           "type": "number",
           "default": 65536,
           "minimum": 2000
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "minLength": 0
         }
       }
     },
@@ -75,33 +80,26 @@
       }
     },
     "volumes": {
-      "description": "By default, the volume type is host. If you enter a host path in the local_persistant_volume section, the volume type will be local persistant. Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
+      "description": "By default, the volume type is persistent. Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "local_persistant_volume": {
+        "persistent_volume": {
           "type": "object",
-          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+          "description": "An external persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
             "container_path": {
               "type": "string",
-              "description": "The path where your application will read and write data. This must be a single-level path relative to the container ; it cannot contain a forward slash.",
-              "default": "data"
+              "description": "The path where your application will read and write data.",
+              "default": "/data"
             },
-            "size_MiB": {
-              "type": "number",
-              "description": "The size of the persistent volume in MiBs."
-            },
-            "constraints": {
-              "type": "array",
-              "description": "Constraints restricting where new persistent volumes should be created. Currently, it is only possible to constrain the path of the disk resource by regular expression.",
-              "items": {
-                "type": "string"
-              }
+            "name": {
+              "description": "Name your external persistent volume.",
+              "type": "string"
             }
-          }
+          },
+          "required": ["container_path", "name"]
         }
-      },
-      "required": ["container_path", "size_MiB"]
+      }
     },
     "environment": {
       "type": "object",
@@ -124,9 +122,14 @@
           "description": "If this service is meant to be a replica of the master, you need to provide the master load balance port",
           "type": "string",
           "default": "6379"
+        },
+        "ANNOUNCE_IP": {
+          "description": "The VIP of thie service without the port. This is to announce to other redis instances that this is the address where it can be reached.",
+          "type": "string",
+          "default": "redis.marathon.l4lb.thisdcos.directory"
         }
       },
-      "required": ["IS_MASTER", "PASSWORD"]
+      "required": ["IS_MASTER", "PASSWORD", "ANNOUNCE_IP"]
     },
     "fetch": {
       "type": "object",

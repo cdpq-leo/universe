@@ -100,6 +100,11 @@
           "description": "The name of the redis database you want to monitor. This is an arbitrary name.",
           "type": "string",
           "default": "mymaster"
+        },
+        "ANNOUNCE_IP": {
+          "description": "The VIP of thie service without the port. This is to announce to other redis instances that this is the address where it can be reached.",
+          "type": "string",
+          "default": "redis.marathon.l4lb.thisdcos.directory"
         }
       },
       "required": [
@@ -107,7 +112,8 @@
         "MASTER_PORT",
         "QUORUM",
         "MASTER_NAME",
-        "PASSWORD"
+        "PASSWORD",
+        "ANNOUNCE_IP"
       ]
     },
     "fetch": {

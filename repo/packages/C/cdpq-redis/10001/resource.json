@@ -8,7 +8,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/redis-server:latest"
+        "image": "cdpqleo/redis-server:5.0.5"
       }
     }
   }

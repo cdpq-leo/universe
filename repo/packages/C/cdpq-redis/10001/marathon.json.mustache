@@ -4,6 +4,9 @@
  "cpus": {{service.cpus}},
  "mem": {{service.mem}},
  "disk": {{service.disk}},
+  {{#service.cmd}}
+   "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
  "fetch": [
     {{#fetch.artifact_URI.uri}}
     {
@@ -16,27 +19,22 @@
    ],
  "container": {
    "type": "DOCKER",
-   "volumes": [
-      {{#volumes.local_persistant_volume.container_path}}
-      {
-         "persistent": {
-            "type": root,
-            {{#volumes.local_persistant_volume.constraints}}
-            "constraints": {{volumes.local_persistant_volume.constraints}},
-            {{/volumes.local_persistant_volume.constraints}}
-            "size": {{volumes.local_persistant_volume.size_MiB}}
-         },
-         "mode": "RW",
-         "containerPath": "{{volumes.local_persistant_volume.container_path}}",
-      }
-      {{/volumes.local_persistant_volume.container_path}}
-    ],
-  "docker": {
+   "docker": {
       "image": "{{resource.assets.container.docker.image}}",
-      "forcePullImage": true,
-      "parameters": [],
-      "privileged": false
-   }
+      "network": "HOST",
+      "forcePullImage": true
+   },
+   "volumes": [
+     {
+        "containerPath": "{{volumes.persistent_volume.container_path}}",
+        "external": {
+          "name": "{{volumes.persistent_volume.name}}",
+          "provider": "dvdi",
+          "options": { "dvdi/driver": "rexray" }
+        },
+        "mode": "RW"
+      }
+    ]
  },
  "healthChecks": [
    {
@@ -51,7 +49,7 @@
   "env": {
     "PASSWORD": {"secret": "redis_password"},
     "IS_MASTER": "{{environment.IS_MASTER}}",
-    "ANNOUNCE_IP": "{{service.name}}",
+    "ANNOUNCE_IP": "{{environment.ANNOUNCE_IP}}",
     {{#environment.MASTER_HOST}}
     "MASTER_HOST": "{{environment.MASTER_HOST}}",
     {{/environment.MASTER_HOST}}
@@ -76,5 +74,9 @@
       {{/networking.service_endpoints.name}}
       "protocol": "tcp"
     }
-  ]
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 0
+  }
 }
