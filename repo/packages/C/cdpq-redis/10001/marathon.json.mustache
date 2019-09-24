@@ -26,13 +26,13 @@
    },
    "volumes": [
      {
-        "containerPath": "{{volumes.persistent_volume.container_path}}",
-        "external": {
-          "name": "{{volumes.persistent_volume.name}}",
-          "provider": "dvdi",
-          "options": { "dvdi/driver": "rexray" }
-        },
-        "mode": "RW"
+         "persistent": {
+            "type": "root",
+            "size": {{volumes.local_persistent_volume.size_MiB}},
+            "constraints": []
+         },
+         "mode": "RW",
+         "containerPath": "{{volumes.local_persistent_volume.container_path}}"
       }
     ]
  },

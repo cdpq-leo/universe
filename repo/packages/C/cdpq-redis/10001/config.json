@@ -83,21 +83,20 @@
       "description": "By default, the volume type is persistent. Create a stateful service by configuring a persistent volume. Persistent volumes enable instances to be restarted without data loss.",
       "type": "object",
       "properties": {
-        "persistent_volume": {
+        "local_persistent_volume": {
           "type": "object",
-          "description": "An external persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
+          "description": "A locally persistent volume based upon the physical disks installed in the agent which has the capabilities of a single disk.",
           "properties": {
             "container_path": {
               "type": "string",
-              "description": "The path where your application will read and write data.",
-              "default": "/data"
+              "description": "The path where your application will read and write data. This must be a single-level path relative to the container.",
+              "default": "data"
             },
-            "name": {
-              "description": "Name your external persistent volume.",
-              "type": "string"
+            "size_MiB": {
+              "type": "number"
             }
           },
-          "required": ["container_path", "name"]
+          "required": ["container_path", "size_MiB"]
         }
       }
     },
