@@ -100,7 +100,8 @@
             }
           }
         }
-      }
+      },
+      "required": ["container_path", "size_MiB"]
     },
     "environment": {
       "type": "object",
