@@ -107,8 +107,7 @@
       "properties": {
         "PASSWORD": {
           "description": "Redis server password Secret",
-          "type": "string",
-          "default": "redis-password"
+          "type": "string"
         },
         "IS_MASTER": {
           "description": "Is this instance the redis master, not a replica",

@@ -79,8 +79,7 @@
       "properties": {
         "PASSWORD": {
           "description": "Redis server password Secret",
-          "type": "string",
-          "default": "redis-password"
+          "type": "string"
         },
         "MASTER_HOST": {
           "description": "The master host (VIP)",
