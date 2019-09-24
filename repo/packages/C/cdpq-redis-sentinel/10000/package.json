@@ -11,8 +11,7 @@
     "service",
     "redis",
     "storage",
-    "sentinel",
-    "high availability"
+    "sentinel"
   ],
   "licenses": [
     {
