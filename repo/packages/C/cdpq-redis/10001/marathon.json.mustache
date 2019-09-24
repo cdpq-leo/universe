@@ -5,14 +5,14 @@
  "mem": {{service.mem}},
  "disk": {{service.disk}},
  "fetch": [
-      {{#fetch.artifact_URI.uri}}
+    {{#fetch.artifact_URI.uri}}
     {
       "uri": "{{fetch.artifact_URI.uri}}",
       "extract": {{fetch.artifact_URI.extract}},
       "executable": {{fetch.artifact_URI.executable}},
       "cache": {{fetch.artifact_URI.cache}}
     }
-      {{/fetch.artifact_URI.uri}}
+    {{/fetch.artifact_URI.uri}}
    ],
  "container": {
    "type": "DOCKER",
@@ -21,8 +21,10 @@
       {
          "persistent": {
             "type": root,
-            "size": {{volumes.local_persistant_volume.size_MiB}},
-            "constraints": {{volumes.local_persistant_volume.constraints}}
+            {{#volumes.local_persistant_volume.constraints}}
+            "constraints": {{volumes.local_persistant_volume.constraints}},
+            {{/volumes.local_persistant_volume.constraints}}
+            "size": {{volumes.local_persistant_volume.size_MiB}}
          },
          "mode": "RW",
          "containerPath": "{{volumes.local_persistant_volume.container_path}}",
@@ -49,26 +51,26 @@
   "env": {
     "PASSWORD": {"secret": "redis_password"},
     "IS_MASTER": "{{environment.IS_MASTER}}",
-    "ANNOUNCE_IP": "{{ service.name }}",
-    {{ #environment.MASTER_HOST }}
+    "ANNOUNCE_IP": "{{service.name}}",
+    {{#environment.MASTER_HOST}}
     "MASTER_HOST": "{{ environment.MASTER_HOST }}",
-    {{ /environment.MASTER_HOST }}
-    {{ #environment.MASTER_PORT }}
-    "MASTER_PORT": "{{ environment.MASTER_PORT }}",
-    {{ /environment.MASTER_PORT }}
-    "ANNOUNCE_PORT": "{{ networking.service_endpoints.load_balance_port }}"
+    {{/environment.MASTER_HOST}}
+    {{#environment.MASTER_PORT}}
+    "MASTER_PORT": "{{environment.MASTER_PORT}}",
+    {{/environment.MASTER_PORT}}
+    "ANNOUNCE_PORT": "{{networking.service_endpoints.load_balance_port}}"
   },
   "secrets": {
     "redis_password": {
-      "source": "{{ environment.PASSWORD }}"
+      "source": "{{environment.PASSWORD}}"
     }
   },
   "portDefinitions": [
     {
       "port": 0,
-      "labels": {
-        "VIP_0": "{{ service.name }}:{{ networking.service_endpoints.load_balance_port }}"
-      },
+       "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
       {{ #networking.service_endpoints.name }}
       "name": "{{ networking.service_endpoints.name }}",
       {{ /networking.service_endpoints.name }}
