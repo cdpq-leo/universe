@@ -147,7 +147,7 @@
             "container_path": {
               "description": "The path of a volume on the container.",
               "type": "string",
-              "default": "/opt/postgresql/data"
+              "default": "/var/lib/postgresql/"
             },
             "type": {
               "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",

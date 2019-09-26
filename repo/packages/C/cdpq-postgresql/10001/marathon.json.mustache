@@ -25,10 +25,15 @@
       "image": "{{resource.assets.container.docker.image}}",
       "forcePullImage": true,
       "privileged": false,
-      "parameters": []
+      "parameters": [
+        {
+          "key": "hostname",
+          "value": "labsleopostgresql-{{environment.MODE}}.marathon.l4lb.thisdcos.directory"
+        }
+      ]
     },
     "volumes":
-      [
+    [
       {{#volumes.volume_backup.container_path}}
       {
         "containerPath": "{{volumes.volume_backup.container_path}}",
@@ -41,12 +46,12 @@
     	  "containerPath": "data",
     	  "mode": "RW",
     	  "persistent": {
-    		"type": "{{volumes.volume_data.type}}",
-        {{#volumes.volume_data.profile}}
-    		"profileName": "{{volumes.volume_data.profile}}",
-        {{/volumes.volume_data.profile}}
-    		"size": {{volumes.volume_data.size}},
-    		"constraints": []
+          "type": "{{volumes.volume_data.type}}",
+          {{#volumes.volume_data.profile}}
+          "profileName": "{{volumes.volume_data.profile}}",
+          {{/volumes.volume_data.profile}}
+          "size": {{volumes.volume_data.size}},
+          "constraints": []
     	  }
     	},
       {
@@ -66,7 +71,7 @@
           "mode": "RW"
       }
     	{{/volumes.volume_data.external_volume_name}}
-      ],
+    ],
     "portMappings": [
       {
         {{#networking.service_endpoint.load_balance_port}}
