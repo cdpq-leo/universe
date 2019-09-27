@@ -239,7 +239,7 @@
       "description": "PostgreSQL Parameters",
       "properties": {
         "MODE": {
-          "description": "Node type : MONITOR, MASTER, SLAVE",
+          "description": "Node type : monitor, master, slave",
           "type": "string"
         }
       }
