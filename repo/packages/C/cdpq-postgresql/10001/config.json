@@ -241,6 +241,16 @@
         "MODE": {
           "description": "Node type : monitor, master, slave",
           "type": "string"
+        },
+        "POSTGRESQL_USERNAME_SECRET": {
+          "description": "Postgres UserName Secret",
+          "type": "string",
+          "default": "labs/leo/postgresql-user"
+        },
+        "POSTGRESQL_PASSWORD_SECRET": {
+          "description": "Postgres Password Secret",
+          "type": "string",
+          "default": "labs/leo/postgresql-password"
         }
       }
     },

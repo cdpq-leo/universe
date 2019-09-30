@@ -97,9 +97,22 @@
     {{#placement.region}}
       "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "MODE": "{{environment.MODE}}"
+    "MODE": "{{environment.MODE}}",
+    "POSTGRES_USER": {"secret": "postgresqlusername"},
+    "POSTGRES_PASSWORD": {"secret": "postgresqlpassword"}
   },
   "secrets": {
+    {{#service.service_account_secret}}
+    "serviceCredential": {
+      "source": "{{service.service_account_secret}}"
+    },
+    {{/service.service_account_secret}}
+    "postgresqlusername": {
+      "source": "{{environment.POSTGRESQL_USERNAME_SECRET}}"
+    },
+    "postgresqlpassword": {
+      "source": "{{environment.POSTGRESQL_PASSWORD_SECRET}}"
+    }
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
