@@ -1,0 +1,98 @@
+{
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+  {{#service.cmd}}
+  "cmd": "{{service.cmd}}",
+  {{/service.cmd}}
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container":{
+    "type": "DOCKER",
+    "docker":{
+      "image":"{{resource.assets.container.docker.image}}",
+      "forcePullImage":true,
+      "privileged": false,
+      "parameters": []
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ],
+    "volumes": [],
+  },
+  "env": {
+    {{#placement.region}}
+    "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "DB_HOST": "{{environment.DB_HOST}}",
+    "DB_NAME": "{{environment.DB_NAME}}",
+    "DB_USER":{"secret": "dbuser"},
+    "DB_PASSWORD": {"secret": "dbpassword"},
+    "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}",
+    "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
+    "SIMILARITY_ENDPOINT": "{{environment.SIMILARITY_ENDPOINT}}",
+    "LOG_REQUEST_BODIES": "{{environment.LOG_REQUEST_BODIES}}"
+  },
+  "secrets": {
+     "dbuser": {
+      "source": "{{environment.DB_USER_SECRET}}"
+    },
+    "dbpassword": {
+      "source": "{{environment.DB_PASSWORD_SECRET}}"
+    }
+  },
+  "labels":{
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_NAME": "{{service.name}}",
+    "DCOS_SERVICE_PORT_INDEX": "0"
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      "path": "/api/health",
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
+    }
+  ],
+  "fetch": [
+  {{#fetch.artifact_URI.uri}}
+  {
+    "uri": "{{fetch.artifact_URI.uri}}",
+    "extract": {{fetch.artifact_URI.extract}},
+    "executable": {{fetch.artifact_URI.executable}},
+    "cache": {{fetch.artifact_URI.cache}}
+  }
+  {{/fetch.artifact_URI.uri}}
+  ],
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  }
+}
