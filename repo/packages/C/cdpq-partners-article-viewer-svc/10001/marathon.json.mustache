@@ -41,13 +41,14 @@
         "protocol": "{{networking.service_endpoints.protocol}}"
       }
     ],
-    "volumes": [],
+    "volumes": []
   },
   "env": {
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "DB_HOST": "{{environment.DB_HOST}}",
+    "DB_PORT": "{{environment.DB_PORT}}",
     "DB_NAME": "{{environment.DB_NAME}}",
     "DB_USER":{"secret": "dbuser"},
     "DB_PASSWORD": {"secret": "dbpassword"},
