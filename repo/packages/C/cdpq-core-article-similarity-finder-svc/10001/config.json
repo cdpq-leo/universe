@@ -77,14 +77,14 @@
           "description": "The mongodb replicat set name.",
           "default": ""
         },
-        "MONGODB_USER": {
+        "MONGODB_USER_SECRET": {
           "type": "string",
-          "description": "The mongodb username.",
+          "description": "Secret containing the mongodb username.",
           "default": ""
         },
-        "MONGODB_PASSWORD": {
+        "MONGODB_PASSWORD_SECRET": {
           "type": "string",
-          "description": "The mongodb password.",
+          "description": "Secret containing the mongodb password.",
           "default": ""
         },
         "ENCODING_SIZE": {
