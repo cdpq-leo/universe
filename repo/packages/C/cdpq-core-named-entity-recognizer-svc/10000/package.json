@@ -1,0 +1,12 @@
+{
+    "packagingVersion": "4.0",
+    "name": "cdpq-core-named-entity-recognizer-svc",
+    "maintainer": "leo@cdpq.com",
+    "version": "1.0.0-1.1.0",
+    "description": "Takes as input as list of strings and returns entities spans and types for each strings. User can define which entity types are to be extracted amongst the list of supported entities.",
+    "minDcosReleaseVersion": "1.12.0",
+    "tags": ["cdpq", "core", "named", "entity", "recognizer", "svc"],
+    "preInstallNotes": "This DC/OS Service is currently in preview. There may be bugs, incomplete features, incorrect documentation, or other discrepancies. Preview packages should never be used in production!",
+    "postInstallNotes": "cdpq-core-named-entity-recognizer-svc installed!",
+    "postUninstallNotes": "cdpq-core-named-entity-recognizer-svc uninstalled!"
+}
