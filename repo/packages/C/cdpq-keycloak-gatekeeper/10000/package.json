@@ -1,0 +1,16 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [],
+  "downgradesTo": [],
+  "name": "cdpq-keycloak-gatekeeper",
+  "version": "1.0.0-6.0.1",
+  "maintainer": "leo@cdpq.com",
+  "description": "Keycloak Gatekeeper is an adapter which integrates with the Keycloak authentication service supporting both access tokens in browser cookie or bearer tokens.",
+  "selected": true,
+  "framework": false,
+  "tags": ["keycloak", "gatekeeper", "authentication"],
+  "minDcosReleaseVersion": "1.12",
+  "preInstallNotes": "Keycloak gatekeeper",
+  "postInstallNotes": "Keycloak gatekeeper is being installed!",
+  "postUninstallNotes": "Keycloak gatekeeper has been uninstalled."
+}

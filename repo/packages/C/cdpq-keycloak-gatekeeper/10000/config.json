@@ -1,0 +1,220 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "Keycloak gatekeeper service configuration properties.",
+      "properties": {
+        "name": {
+          "description": "Name of the service.",
+          "type": "string",
+          "default": "keycloak-gatekeeper"
+        },
+        "instances": {
+            "description": "Number of instances of your service.",
+            "type": "number",
+            "default": 1.0
+        },
+        "cpus": {
+          "description": "CPU shares to allocate to the Keycloak gatekeeper instance.",
+          "type": "number",
+          "default": 0.1,
+          "minimum": 0.1
+        },
+        "mem": {
+          "description": "Memory to allocate to the Keycloak gatekeeper instance.",
+          "type": "number",
+          "default": 512,
+          "minimum": 512
+        },
+        "disk": {
+          "description": "Disk (MB) to allocate to the Keycloak gatekeeper instance.",
+          "type": "number",
+          "default": 0
+        },
+        "cmd": {
+          "description": "A shell command for your container to execute.",
+          "type": "string",
+          "default": ""
+        },
+        "back_off_seconds": {
+          "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+          "type": "number",
+          "default": 1.0
+        },
+        "back_off_factor": {
+          "description": "The multiplicand to apply to the backoffSeconds value.",
+          "type": "number",
+          "default": 1.15
+        },
+        "max_launch_delay_seconds": {
+          "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+          "type": "number",
+          "default": 300
+        }
+      },
+      "required": [
+        "name",
+        "cpus",
+        "mem",
+        "disk",
+        "instances"
+      ]
+    },
+    "placement": {
+      "type": "object",
+      "description": "Constraints control where apps run to allow optimizing for either fault tolerance (by spreading a task out on multiple nodes) or locality (by running all of an applications tasks on the same node).",
+      "properties": {
+        "constraints": {
+          "type": "string",
+          "description": "Constraints have three parts: a field name, an operator, and an optional parameter. The field can be the hostname of the agent node or any attribute of the agent node. Example: [[\"rack_id\", \"LIKE\", \"rack-foo-.*\"], [\"rack_id\", \"MAX_PER\", \"2\"]]",
+          "default": "[[\"hostname\", \"UNIQUE\"]]",
+          "media": {
+            "type": "application/x-zone-constraints+json"
+          }
+        },
+        "region": {
+          "type": "string",
+          "description": "All application nodes will run in this region. When no region is specified the nodes are constrained to the local region.",
+          "default": "",
+          "media": {
+            "type": "application/x-region+string"
+          }
+        }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoint": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "container_port": {
+              "description": "Container port number",
+              "type": "number",
+              "default": 3000
+            },
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "proxy-port"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 0
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/keycloak-gatekeeper"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Keycloak environment variable",
+      "properties": {
+        "PROXY_BASE_URI": {
+          "description": "Common prefix for all URIs",
+          "type": "string"
+        },
+        "PROXY_CLIENT_ID": {
+          "description": "Rhe client id for the 'client' application",
+          "type": "string"
+        },
+        "PROXY_CLIENT_SECRET": {
+          "description": "The secret associated to the 'client' application",
+          "type": "string"
+        },
+        "PROXY_DISCOVERY_URL": {
+          "description": "The url to retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name>",
+          "type": "string",
+          "default": "https://leo-public.cdpq.ai/keycloak/auth/realms/LEO"
+        },
+        "PROXY_ENABLE_REFRESH_TOKEN": {
+          "description": "Whether to enable refresh tokens",
+          "type": "boolean",
+          "default": true
+        },
+        "PROXY_ENCRYPTION_KEY": {
+          "description": "The encryption key used to encode the session state",
+          "type": "string",
+          "default": "this_means_redis"
+        },
+        "PROXY_LISTEN": {
+          "description": "The interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH>",
+          "type": "string",
+          "default": "0.0.0.0:3000"
+        },
+        "PROXY_REDIRECTION_URL": {
+          "description": "The redirection url, essentially the site url, note: /oauth/callback is added at the end",
+          "type": "string",
+          "default": "https://leo-public.cdpq.ai"
+        },
+        "PROXY_UPSTREAM_URL": {
+          "description": "The upstream endpoint which we should proxy request",
+          "type": "string"
+        }
+      },
+      "required":[
+        "PROXY_BASE_URI",
+        "PROXY_CLIENT_ID",
+        "PROXY_CLIENT_SECRET",
+        "PROXY_DISCOVERY_URL",
+        "PROXY_ENABLE_REFRESH_TOKEN",
+        "PROXY_ENCRYPTION_KEY",
+        "PROXY_LISTEN",
+        "PROXY_REDIRECTION_URL",
+        "PROXY_UPSTREAM_URL"
+      ]
+    },
+    "fetch": {
+      "type": "object",
+      "description": "If your service requires additional files and/or archives of files, enter their URIs to download and, if necessary, extract these resources.",
+      "properties": {
+        "artifact_URI": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "default": "file:///opt/mesosphere/etc/mesos-scheduler-modules/docker.tar.gz"
+            },
+            "extract": {
+              "type": "boolean",
+              "default": true
+            },
+            "executable": {
+              "type": "boolean",
+              "default": false
+            },
+            "cache": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
