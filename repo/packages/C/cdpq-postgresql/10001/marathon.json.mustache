@@ -28,7 +28,7 @@
       "parameters": [
         {
           "key": "hostname",
-          "value": "labsleopostgresql-{{environment.MODE}}.marathon.l4lb.thisdcos.directory"
+          "value": "labsleopostgresql{{environment.MODE}}.marathon.l4lb.thisdcos.directory"
         }
       ]
     },
@@ -95,7 +95,7 @@
     "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
     {{/service.service_account_secret}}
     {{#placement.region}}
-      "SERVICE_REGION": "{{placement.region}}",
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
     "MODE": "{{environment.MODE}}",
     "POSTGRES_USER": {"secret": "postgresqlusername"},
@@ -141,14 +141,14 @@
     }
   ],
   "fetch": [
-  {{#fetch.artifact_URI.uri}}
-  {
-    "uri": "{{fetch.artifact_URI.uri}}",
-    "extract": {{fetch.artifact_URI.extract}},
-    "executable": {{fetch.artifact_URI.executable}},
-    "cache": {{fetch.artifact_URI.cache}}
-  }
-  {{/fetch.artifact_URI.uri}}
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
   ],
   "requirePorts": false,
   "upgradeStrategy": {

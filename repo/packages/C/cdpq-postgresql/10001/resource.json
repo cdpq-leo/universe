@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/postgresql:ha-11"
+        "image": "cdpqleo/postgresql:1.0.0-11.5-ha"
       }
     }
   }

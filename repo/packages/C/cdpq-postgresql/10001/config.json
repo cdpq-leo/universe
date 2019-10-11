@@ -245,12 +245,12 @@
         "POSTGRESQL_USERNAME_SECRET": {
           "description": "Postgres UserName Secret",
           "type": "string",
-          "default": "labs/leo/postgresql-user"
+          "default": "labs/leo/postgresql/postgresql-user"
         },
         "POSTGRESQL_PASSWORD_SECRET": {
           "description": "Postgres Password Secret",
           "type": "string",
-          "default": "labs/leo/postgresql-password"
+          "default": "labs/leo/postgresql/postgresql-password"
         }
       }
     },
