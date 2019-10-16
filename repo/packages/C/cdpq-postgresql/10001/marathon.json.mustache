@@ -34,13 +34,6 @@
     },
     "volumes":
     [
-      {{#volumes.volume_backup.container_path}}
-      {
-        "containerPath": "{{volumes.volume_backup.container_path}}",
-        "hostPath": "{{volumes.volume_backup.host_path}}",
-        "mode": "RW"
-      },
-      {{/volumes.volume_backup.container_path}}
       {{^volumes.volume_data.external_volume_name}}
     	{
     	  "containerPath": "data",
@@ -82,7 +75,7 @@
         "containerPort": {{networking.service_endpoint.container_port}},
         "hostPort": {{networking.service_endpoint.host_port}},
         {{#networking.service_endpoint.name}}
-        "name": "{{networking.service_endpoint.name}}",
+        "name": "{{networking.service_endpoint.name}}-{{environment.MODE}}",
         {{/networking.service_endpoint.name}}
         "protocol": "{{networking.service_endpoint.protocol}}"
       }

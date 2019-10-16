@@ -15,6 +15,22 @@
             "type": "number",
             "default": 1.0
         },
+        "service_account": {
+          "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+          "type": "string",
+          "default": "postgresql-monitor-principal",
+          "media": {
+            "type": "application/x-service-account+string"
+          }
+        },
+        "service_account_secret": {
+          "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+          "type": "string",
+          "default": "labs/leo/postgresql/monitor/service-account-secret",
+          "media": {
+            "type": "application/x-secret+string"
+          }
+        },
         "cpus": {
           "description": "CPU shares to allocate to the PostgreSQL instance.",
           "type": "number",
@@ -169,23 +185,7 @@
               "default": ""
             }
           }
-        },
-				"volume_backup": {
-					"description": "Volume configurations. Please read Pre-Install Notes for setup for volumes.",
-					"type": "object",
-					"properties": {
-						"container_path": {
-							"description": "The path of a volume on the container.",
-							"type": "string",
-							"default": "/var/opt/mssql"
-						},
-						"host_path": {
-							"description": "The path of a volume on the container.",
-							"type": "string",
-							"default": "/mnt/mssql"
-						}
-					}
-				}
+        }
       }
     },
     "health_checks": {
