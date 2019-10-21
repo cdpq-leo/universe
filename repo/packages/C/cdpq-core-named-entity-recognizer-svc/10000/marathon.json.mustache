@@ -45,8 +45,20 @@
   },
   "env": {
     {{#placement.region}}
-    "SERVICE_REGION": "{{placement.region}}"
+    "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
+    {{#service.service_account_secret}}
+    "DCOS_SERVICE_ACCOUNT_CREDENTIAL": {"secret": "serviceCredential"},
+    "MESOS_MODULES": "{\"libraries\": [{\"file\": \"libdcos_security.so\", \"modules\": [{\"name\": \"com_mesosphere_dcos_ClassicRPCAuthenticatee\"}]}]}",
+    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee"
+    {{/service.service_account_secret}}
+  },
+  "secrets": {
+    {{#service.service_account_secret}}
+    "serviceCredential": {
+      "source": "{{service.service_account_secret}}"
+    }
+    {{/service.service_account_secret}}
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
