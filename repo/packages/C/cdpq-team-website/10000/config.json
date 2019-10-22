@@ -15,6 +15,22 @@
                   "type": "number",
                   "default": 1.0
               },
+              "service_account": {
+                "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+                "type": "string",
+                "default": "team-website-principal",
+                "media": {
+                  "type": "application/x-service-account+string"
+                }
+              },
+              "service_account_secret": {
+                "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+                "type": "string",
+                "default": "labs/leo/team-website/service-account-secret",
+                "media": {
+                  "type": "application/x-secret+string"
+                }
+              },
               "cpus": {
                   "description": "Number of logical cores to allocate to each service instance.",
                   "type": "number",
@@ -132,37 +148,6 @@
                   }
               }
           }
-      },
-      "volumes": {
-        "type": "object",
-        "description": "SQL Server storage configuration properties",
-        "properties": {
-          "volume_data": {
-            "description": "Volume configurations (root, mount, external). Please read Pre-Install Notes for setup for volumes.",
-            "type": "object",
-            "properties": {
-              "container_path": {
-                  "description": "The path of a volume on the container.",
-                  "type": "string",
-                  "default": "/team-website"
-              },
-              "type": {
-                  "description": "The type of a volume (root, mount, external) on the host to be used for persisting your service configuration and data.",
-                  "type": "string",
-                  "default": "root"
-              },
-              "profile": {
-                  "type": "string",
-                  "description": "Disk profile to be used for volume."
-              },
-              "external_volume_name": {
-                  "type": "string",
-                  "description": "External volume name, not applicable for ROOT and MOUNT volume types.",
-                  "default": ""
-              }
-            }
-          }
-        }
       },
       "health_checks": {
         "type": "object",

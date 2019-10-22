@@ -26,45 +26,7 @@
       "parameters": [],
       "privileged": false
     },
-    "volumes": [
-    {{#volumes.volume_backup.container_path}}
-    {
-      "containerPath": "{{volumes.volume_backup.container_path}}",
-      "hostPath": "{{volumes.volume_backup.host_path}}",
-      "mode": "RW"
-    },
-    {{/volumes.volume_backup.container_path}}
-    {{^volumes.volume_data.external_volume_name}}
-  	{
-  	  "containerPath": "data",
-  	  "mode": "RW",
-  	  "persistent": {
-  		"type": "{{volumes.volume_data.type}}",
-      {{#volumes.volume_data.profile}}
-  		"profileName": "{{volumes.volume_data.profile}}",
-      {{/volumes.volume_data.profile}}
-  		"size": {{service.disk}},
-  		"constraints": []
-  	  }
-  	},
-  	{
-  	  "containerPath": "{{volumes.volume_data.container_path}}",
-  	  "hostPath": "data",
-  	  "mode": "RW"
-  	}
-  	{{/volumes.volume_data.external_volume_name}}
-  	{{#volumes.volume_data.external_volume_name}}
-    {
-      "containerPath": "{{volumes.volume_data.container_path}}",
-      "external": {
-        "name": "{{volumes.volume_data.external_volume_name}}",
-        "provider": "dvdi",
-        "options": { "dvdi/driver": "rexray" }
-      },
-      "mode": "RW"
-    }
-  	{{/volumes.volume_data.external_volume_name}}
-    ],
+    "volumes": [],
     "portMappings": [
       {
         {{#networking.service_endpoints.load_balance_port}}
@@ -85,13 +47,18 @@
     {{#service.service_account_secret}}
     "DCOS_SERVICE_ACCOUNT_CREDENTIAL": {"secret": "serviceCredential"},
     "MESOS_MODULES": "{\"libraries\": [{\"file\": \"libdcos_security.so\", \"modules\": [{\"name\": \"com_mesosphere_dcos_ClassicRPCAuthenticatee\"}]}]}",
-    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
+    "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee"
     {{/service.service_account_secret}}
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
   },
   "secrets": {
+    {{#service.service_account_secret}}
+    "serviceCredential": {
+      "source": "{{service.service_account_secret}}"
+    }
+    {{/service.service_account_secret}}
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}
