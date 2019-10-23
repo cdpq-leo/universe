@@ -7,7 +7,7 @@
   "assets": {
     "container": {
       "docker": {
-        "image": "cdpqleo/disambiguation-svc:1.0.1"
+        "image": "cdpqleo/disambiguation-svc:1.0.2"
       }
     }
   }

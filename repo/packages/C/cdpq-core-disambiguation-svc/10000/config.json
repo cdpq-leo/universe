@@ -15,6 +15,22 @@
                 "type": "number",
                 "default": 1.0
             },
+            "service_account": {
+              "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+              "type": "string",
+              "default": "core-disambiguation-svc-principal",
+              "media": {
+                "type": "application/x-service-account+string"
+              }
+            },
+            "service_account_secret": {
+              "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+              "type": "string",
+              "default": "labs/leo/core-disambiguation-svc/service-account-secret",
+              "media": {
+                "type": "application/x-secret+string"
+              }
+            },
             "cpus": {
                 "description": "Number of logical cores to allocate to each service instance.",
                 "type": "number",
@@ -23,7 +39,7 @@
             "mem": {
                 "description": "Memory in Mb to allocate to each service instance.",
                 "type": "number",
-                "default": 1048
+                "default": 8192
             },
             "disk": {
                 "description": "Number of disks to allocate to each service instance.",
