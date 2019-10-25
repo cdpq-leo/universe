@@ -1,0 +1,128 @@
+{
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "mem": {{service.mem}},
+  "container": {
+    "type": "MESOS",
+    "volumes": [
+      {
+        "containerPath": "secrets/krb5.keytab",
+        "secret": "keytab"
+      },
+      {
+        "containerPath": "secrets/dcos-ca.crt",
+        "secret": "ssl_ca"
+      },
+      {
+        "containerPath": "secrets/consumer.crt",
+        "secret": "ssl_certificate"
+      },
+      {
+        "containerPath": "secrets/consumer.key",
+        "secret": "ssl_key"
+      },
+      {
+        "containerPath": "secrets/jaas.conf",
+        "secret": "jaas_conf"
+      },
+      {
+        "containerPath": "secrets/consumer.properties",
+        "secret": "consumer_properties"
+      }
+    ],
+    "docker": {
+      "forcePullImage": true,
+      "image": "{{resource.assets.container.docker.image}}"
+    },
+    "portMappings": [
+      {
+        {{#networking.service_endpoints.load_balance_port}}
+        "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+        },
+        {{/networking.service_endpoints.load_balance_port}}
+        "containerPort": {{networking.service_endpoints.container_port}},
+        "hostPort": {{networking.service_endpoints.host_port}},
+        {{#networking.service_endpoints.name}}
+        "name": "{{networking.service_endpoints.name}}",
+        {{/networking.service_endpoints.name}}
+        "protocol": "{{networking.service_endpoints.protocol}}"
+      }
+    ]
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "healthChecks": [
+    {
+      "protocol": "MESOS_HTTP",
+      "ipProtocol": "IPv4",
+      "portIndex": {{health_checks.HTTP_protocol.port_index}},
+      "path": "/{{service.name}}/api/health",
+      "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
+      "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
+      "timeoutSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.timeout}},
+      "maxConsecutiveFailures": {{health_checks.HTTP_protocol.advanced_health_checking_settings.max_failures}},
+      "delaySeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.delay_seconds}}
+    }
+  ],
+  "env": {
+    {{#placement.region}}
+    "SERVICE_REGION": "{{placement.region}}",
+    {{/placement.region}}
+    "KAFKA_MANAGER_AUTH_ENABLED": "{{environment.KAFKA_MANAGER_AUTH_ENABLED}}",
+    "KAFKA_MANAGER_AUTH_EXCLUDED_PATHS": "/{{service.name}}/api/health",
+    "KAFKA_MANAGER_USERNAME": {"secret": "kmusername"},
+    "KAFKA_MANAGER_PASSWORD": {"secret": "kmpassword"},
+    "KAFKA_MANAGER_ARGS": "{{environment.KAFKA_MANAGER_ARGS}}",
+    "CONSUMER_PROPERTIES_FILE": "/mnt/mesos/sandbox/secrets/consumer.properties",
+    "ZK_HOSTS": "{{environment.ZK_HOSTS}}",
+    "BASE_ZK_PATH": "/{{service.name}}",
+    "HTTP_CONTEXT": "/{{service.name}}",
+    "HTTP_PORT": "{{networking.service_endpoints.container_port}}",
+    "APPLICATION_SECRET": {"secret": "applicationkey"}
+  },
+  "secrets": {
+    "kmusername": {
+      "source": "{{environment.KAFKA_MANAGER_USERNAME_SECRET}}"
+    },
+    "kmpassword": {
+      "source": "{{environment.KAFKA_MANAGER_PASSWORD_SECRET}}"
+    },
+    "applicationkey": {
+      "source": "{{environment.APPLICATION_SECRET}}"
+    },
+    "keytab": {
+      "source": "{{environment.KERBEROS_KEYTAB_SECRET}}"
+    },
+    "ssl_ca": {
+      "source": "{{environment.SSL_CA_SECRET}}"
+    },
+    "ssl_certificate": {
+      "source": "{{environment.SSL_CERTIFICATE_SECRET}}"
+    },
+    "ssl_key": {
+      "source": "{{environment.SSL_KEY_SECRET}}"
+    },
+    "jaas_conf": {
+      "source": "{{environment.JAAS_CONF_SECRET}}"
+    },
+    "consumer_properties": {
+      "source": "{{environment.CONSUMER_PROPERTIES_SECRET}}"
+    }
+  },
+  "fetch":
+  [
+    {{#fetch.artifact_URI.uri}}
+    {
+      "uri": "{{fetch.artifact_URI.uri}}",
+      "extract": {{fetch.artifact_URI.extract}},
+      "executable": {{fetch.artifact_URI.executable}},
+      "cache": {{fetch.artifact_URI.cache}}
+    }
+    {{/fetch.artifact_URI.uri}}
+  ]
+}
