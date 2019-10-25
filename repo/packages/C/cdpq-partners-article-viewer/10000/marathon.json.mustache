@@ -47,18 +47,18 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    {{#placement.CLIENT_ID}}
-    "CLIENT_ID": "{{placement.CLIENT_ID}}",
-    {{/placement.CLIENT_ID}}
-    {{#placement.CLIENT_SECRET}}
-    "CLIENT_SECRET": "{{placement.CLIENT_SECRET}}",
-    {{/placement.CLIENT_SECRET}}
-    {{#placement.OPENID_ISSUER}}
-    "OPENID_ISSUER": "{{placement.OPENID_ISSUER}}",
-    {{/placement.OPENID_ISSUER}}
-    {{#placement.RATE_ARTICLES_ROLE}}
-    "RATE_ARTICLES_ROLE": "{{placement.RATE_ARTICLES_ROLE}}",
-    {{/placement.RATE_ARTICLES_ROLE}}
+    {{#environment.CLIENT_ID}}
+    "CLIENT_ID": "{{environment.CLIENT_ID}}",
+    {{/environment.CLIENT_ID}}
+    {{#environment.CLIENT_SECRET}}
+    "CLIENT_SECRET": "{{environment.CLIENT_SECRET}}",
+    {{/environment.CLIENT_SECRET}}
+    {{#environment.OPENID_ISSUER}}
+    "OPENID_ISSUER": "{{environment.OPENID_ISSUER}}",
+    {{/environment.OPENID_ISSUER}}
+    {{#environment.RATE_ARTICLES_ROLE}}
+    "RATE_ARTICLES_ROLE": "{{environment.RATE_ARTICLES_ROLE}}",
+    {{/environment.RATE_ARTICLES_ROLE}}
     "ENDPOINT": "{{environment.ENDPOINT}}",
     "BASE_URL": "{{environment.BASE_URL}}",
     "DISABLE_OPENID": "{{environment.DISABLE_OPENID}}",
