@@ -168,16 +168,8 @@
           "description": "Name of the secret in the secret store containing the kerberos keytab file",
           "type": "string"
         },
-        "SSL_CA_SECRET": {
-          "description": "Name of the secret in the secret store containing the ssl ca certificate",
-          "type": "string"
-        },
-        "SSL_CERTIFICATE_SECRET": {
-          "description": "Name of the secret in the secret store containing the ssl certificate",
-          "type": "string"
-        },
-        "SSL_KEY_SECRET": {
-          "description": "Name of the secret in the secret store containing the ssl key",
+        "KRB5_CONF_SECRET": {
+          "description": "Name of the secret in the secret store containing the krb5.conf file",
           "type": "string"
         },
         "JAAS_CONF_SECRET": {

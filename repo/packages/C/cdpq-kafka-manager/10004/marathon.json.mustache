@@ -11,16 +11,8 @@
         "secret": "keytab"
       },
       {
-        "containerPath": "secrets/dcos-ca.crt",
-        "secret": "ssl_ca"
-      },
-      {
-        "containerPath": "secrets/consumer.crt",
-        "secret": "ssl_certificate"
-      },
-      {
-        "containerPath": "secrets/consumer.key",
-        "secret": "ssl_key"
+        "containerPath": "secrets/krb5.conf",
+        "secret": "krb5_conf"
       },
       {
         "containerPath": "secrets/jaas.conf",
@@ -78,6 +70,8 @@
     "KAFKA_MANAGER_USERNAME": {"secret": "kmusername"},
     "KAFKA_MANAGER_PASSWORD": {"secret": "kmpassword"},
     "KAFKA_MANAGER_ARGS": "{{environment.KAFKA_MANAGER_ARGS}}",
+    "KRB5_CONFIG": "/mnt/mesos/sandbox/secrets/krb5.conf",
+    "JAAS_CONFIG": "/mnt/mesos/sandbox/secrets/jaas.conf",
     "CONSUMER_PROPERTIES_FILE": "/mnt/mesos/sandbox/secrets/consumer.properties",
     "ZK_HOSTS": "{{environment.ZK_HOSTS}}",
     "BASE_ZK_PATH": "/{{service.name}}",
@@ -98,14 +92,8 @@
     "keytab": {
       "source": "{{environment.KERBEROS_KEYTAB_SECRET}}"
     },
-    "ssl_ca": {
-      "source": "{{environment.SSL_CA_SECRET}}"
-    },
-    "ssl_certificate": {
-      "source": "{{environment.SSL_CERTIFICATE_SECRET}}"
-    },
-    "ssl_key": {
-      "source": "{{environment.SSL_KEY_SECRET}}"
+    "krb5_conf": {
+      "source": "{{environment.KRB5_CONF_SECRET}}"
     },
     "jaas_conf": {
       "source": "{{environment.JAAS_CONF_SECRET}}"
