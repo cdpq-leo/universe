@@ -18,12 +18,12 @@
               "cpus": {
                   "description": "Number of logical cores to allocate to each service instance.",
                   "type": "number",
-                  "default": 0.3
+                  "default": 0.5
               },
               "mem": {
                   "description": "Memory in Mb to allocate to each service instance.",
                   "type": "number",
-                  "default": 1024
+                  "default": 2048
               },
               "disk": {
                   "description": "Disk size (MiB) to allocate to each service instance.",
@@ -96,7 +96,7 @@
                       "name": {
                         "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
                         "type": "string",
-                        "default": "website"
+                        "default": "cog-portal"
                       },
                       "host_port": {
                           "description": "Host port number",
@@ -132,6 +132,106 @@
                   }
               }
           }
+      },
+      "environment": {
+        "type": "object",
+        "properties": {
+          "BASE_URL": {
+            "type": "string",
+            "description": "Infra cog portal base URL.",
+            "default": ""
+          },
+          "CLIENT_ID": {
+            "type": "string",
+            "description": "Keycloak client ID.",
+            "default": "infra-cog"
+          },
+          "CLIENT_SECRET": {
+            "type": "string",
+            "description": "Keycloak client secret.",
+            "default": ""
+          },
+          "OPENID_ISSUER": {
+            "type": "string",
+            "description": "OpenID issuer.",
+            "default": "https://leo-public.cdpq.ai/keycloak/auth/realms/LEO"
+          },
+          "NODE_ENV": {
+            "type": "string",
+            "description": "Node environement.",
+            "default": ""
+          },
+          "ELASTIC_ENDPOINT": {
+            "type": "string",
+            "description": "Elasticsearch endpoint.",
+            "default": ""
+          },
+          "ELASTIC_PORT": {
+            "type": "number",
+            "description": "Elasticsearch endpoint.",
+            "default": 9200
+          },
+          "ELASTIC_INDEX": {
+            "type": "string",
+            "description": "Elasticsearch index.",
+            "default": ""
+          },
+          "ELASTIC_USERNAME": {
+            "type": "string",
+            "description": "Elasticsearch username.",
+            "default": ""
+          },
+          "ELASTIC_PASSWORD": {
+            "type": "string",
+            "description": "Elasticsearch password.",
+            "default": ""
+          },
+          "ELASTIC_TYPE": {
+            "type": "string",
+            "description": "Elasticsearch type.",
+            "default": "json"
+          },
+          "HTTP_PROTOCOL": {
+            "type": "string",
+            "description": "HTTP protocol. Either https or http.",
+            "default": "https"
+          },
+          "POSTGRES_DATABASE": {
+            "type": "string",
+            "description": "PostgreSQL database name.",
+            "default": "infra"
+          },
+          "POSTGRES_HOST": {
+            "type": "string",
+            "description": "PostgreSQL hostname.",
+            "default": ""
+          },
+          "POSTGRES_USERNAME": {
+            "type": "string",
+            "description": "PostgreSQL username.",
+            "default": ""
+          },
+          "POSTGRES_PASSWORD": {
+            "type": "string",
+            "description": "PostgreSQL password",
+            "default": ""
+          },
+          "POSTGRES_PORT": {
+            "type": "number",
+            "description": "PostgreSQL port.",
+            "default": 5432
+          },
+          "SIMILARITY_ENDPOINT": {
+            "type": "string",
+            "description": "Core-article-similarity-finder-svc endpoint.",
+            "default": ""
+          },          
+          "SIMILARITY_TIMEOUT_SECONDS": {
+            "type": "number",
+            "description": "Core-article-similarity-finder-svc service timeout in seconds.",
+            "default": 5
+          }
+        }
       },
       "health_checks": {
         "type": "object",

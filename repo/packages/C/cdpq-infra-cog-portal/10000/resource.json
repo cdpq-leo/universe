@@ -7,7 +7,7 @@
     "assets": {
       "container": {
         "docker": {
-          "image": "cdpqleo/infra-cog-portal:1.0.1"
+          "image": "cdpqleo/infra-cog-portal:1.0.9"
         }
       }
     }

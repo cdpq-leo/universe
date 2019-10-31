@@ -19,7 +19,7 @@
     "*"
   ],
   "container": {
-    "type": "MESOS",
+    "type": "DOCKER",
     "docker": {
       "forcePullImage": true,
       "image": "{{resource.assets.container.docker.image}}",
@@ -52,8 +52,47 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
+    "BASE_URL": "{{environment.BASE_URL}}",    
+    "CLIENT_ID": "{{environment.CLIENT_ID}}",
+    "CLIENT_SECRET": {"secret": "clientsecret"},
+    "OPENID_ISSUER": "{{environment.OPENID_ISSUER}}",
+    "NODE_ENV": "{{environment.NODE_ENV}}",
+    "ELASTIC_ENDPOINT": "{{environment.ELASTIC_ENDPOINT}}",
+    "ELASTIC_PORT": "{{environment.ELASTIC_PORT}}",
+    "ELASTIC_INDEX": "{{environment.ELASTIC_INDEX}}",
+    "ELASTIC_USERNAME": {"secret": "elasticusername"},
+    "ELASTIC_PASSWORD": {"secret": "elasticpassword"},
+    "ELASTIC_TYPE": "{{environment.ELASTIC_TYPE}}",
+    "HTTP_PROTOCOL": "{{environment.HTTP_PROTOCOL}}",
+    "POSTGRES_DATABASE": "{{environment.ELASTIC_INDEX}}",
+    "POSTGRES_HOST": "{{environment.POSTGRES_HOST}}",
+    "POSTGRES_USERNAME": {"secret": "postgresusername"},
+    "POSTGRES_PASSWORD": {"secret": "postgrespassword"},
+    "POSTGRES_PORT": "{{environment.POSTGRES_PORT}}",
+    "SIMILARITY_ENDPOINT": "{{environment.SIMILARITY_ENDPOINT}}",
+    "SIMILARITY_TIMEOUT_SECONDS": "{{environment.SIMILARITY_TIMEOUT_SECONDS}}"
   },
   "secrets": {
+    {{#service.service_account_secret}}
+    "serviceCredential": {
+      "source": "{{service.service_account_secret}}"
+    },
+    {{/service.service_account_secret}}
+    "clientsecret": {
+      "source": "{{environment.CLIENT_SECRET}}"
+    },
+    "elasticusername": {
+      "source": "{{environment.ELASTIC_USERNAME}}"
+    },
+    "elasticpassword": {
+      "source": "{{environment.ELASTIC_PASSWORD}}"
+    },
+    "postgresusername": {
+      "source": "{{environment.POSTGRES_USERNAME}}"
+    },
+    "postgrespassword": {
+      "source": "{{environment.POSTGRES_PASSWORD}}"
+    }
   },
   "labels": {
     {{#networking.marathon_lb_proxy.enabled}}

@@ -3,13 +3,13 @@
     "upgradesFrom": [],
     "downgradesTo": [],
     "name": "cdpq-infra-cog-portal",
-    "version": "1.1.0-1.0.2",
+    "version": "1.0.9-1.0.9",
     "maintainer": "leo@cdpq.com",
-    "description": "A website showcasing our data, algorithms, technology and solutions.",
-    "tags": ["team", "website", "team-website"],
+    "description": "Infra cog portal.",
+    "tags": ["infra", "cog", "portal"],
     "minDcosReleaseVersion": "1.12",
-    "preInstallNotes": "Simple website built using Flask, Jinja templates and a bit of CSS.",
-    "postInstallNotes": "Team website is being installed!",
-    "postUninstallNotes": "Team website has been uninstalled."
+    "preInstallNotes": "Infra cog portal.",
+    "postInstallNotes": "Infra cog portal is being installed!",
+    "postUninstallNotes": "Infra cog portal has been uninstalled."
   }
   

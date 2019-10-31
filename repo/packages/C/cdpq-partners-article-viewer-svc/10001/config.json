@@ -147,6 +147,10 @@
           "type": "string",
           "default": ""
         },
+        "ELASTIC_INDEX": {
+          "type": "string",
+          "default": "partners"
+        },
         "SIMILARITY_ENDPOINT": {
           "type": "string",
           "default": ""
