@@ -107,7 +107,7 @@
             "container_port": {
               "description": "Container port number",
               "type": "number",
-              "default": 8001
+              "default": 8000
             },
             "name": {
               "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
@@ -127,7 +127,7 @@
             "load_balance_port": {
               "type": "number",
               "description": "This port will be used to load balance this service address internally",
-              "default": 8001
+              "default": 8000
             }
           }
         },
