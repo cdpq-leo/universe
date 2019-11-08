@@ -94,7 +94,7 @@
     {{/placement.region}}
     "POSTGRES_USER": {"secret": "postgresqlusername"},
     "POSTGRES_PASSWORD": {"secret": "postgresqlpassword"},
-    "POSTGRES_PGDATA": "{{volumes.volume_data.container_path}}",
+    "PGDATA": "{{volumes.volume_data.container_path}}",
     "POSTGRES_DB": "{{environment.POSTGRESQL_DB_NAME}}",
     "POSTGRES_INITDB_ARGS": "{{environment.POSTGRESQL_INIT_ARGS}}"
   },
