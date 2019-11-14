@@ -127,7 +127,7 @@
                       "load_balance_port": {
                           "type": "number",
                           "description": "This port will be used to load balance this service address internally",
-                          "default": 5000
+                          BASE_URL"default": 5000
                       }
                   }
               },
@@ -148,6 +148,16 @@
                   }
               }
           }
+      },
+      "environment": {
+        "type": "object",
+        "properties": {
+          "BASE_URL": {
+            "type": "string",
+            "description": "base url",
+            "default": "https://leo-public.cdpq.ai/service/labs/leo/documentation/"
+          }
+        }
       },
       "health_checks": {
         "type": "object",
