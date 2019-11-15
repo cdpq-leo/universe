@@ -52,7 +52,7 @@
     {{#placement.region}}
     "SERVICE_REGION": "{{placement.region}}",
     {{/placement.region}}
-    "BASE_URL": "{{environement.BASE_URL}}"
+    "BASE_URL": "{{environment.BASE_URL}}"
   },
   "secrets": {
     {{#service.service_account_secret}}
@@ -85,7 +85,7 @@
       {{/networking.marathon_lb_proxy.path}}
       {{/networking.marathon_lb_proxy.enabled}}
       {{^networking.marathon_lb_proxy.enabled}}
-      "path": "/doc",
+      "path": "/documentation",
       {{/networking.marathon_lb_proxy.enabled}}
       "gracePeriodSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.grace_periods}},
       "intervalSeconds": {{health_checks.HTTP_protocol.advanced_health_checking_settings.intervals}},
