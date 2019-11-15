@@ -155,7 +155,7 @@
           "BASE_URL": {
             "type": "string",
             "description": "base url",
-            "default": "/documentation/"
+            "default": "/service/leo/team-website/documentation/"
           }
         }
       },
