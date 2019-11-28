@@ -1,0 +1,166 @@
+{
+  "type": "object",
+  "properties": {
+    "service": {
+        "type": "object",
+        "description": "DC/OS service specifications",
+        "properties": {
+            "name": {
+                "description": "Name of application instance as seen in DC/OS.",
+                "type": "string",
+                "default": "/labs/leo/doccano2"
+            },
+            "instances": {
+                "description": "Number of instances of your service.",
+                "type": "number",
+                "default": 0
+            },
+            "cpus": {
+                "description": "Number of logical cores to allocate to each service instance.",
+                "type": "number",
+                "default": 1
+            },
+            "gpus": {
+              "description": "Number of logical cores to allocate to each service instance.",
+              "type": "number",
+              "default": 0
+          },
+            "mem": {
+                "description": "Memory in Mb to allocate to each service instance.",
+                "type": "number",
+                "default": 512
+            },
+            "disk": {
+                "description": "Number of disks to allocate to each service instance.",
+                "type": "number",
+                "default": 0
+            },
+            "back_off_seconds": {
+                "description": "The amount of time (in seconds) before Marathon retries launching a failed task.",
+                "type": "number",
+                "default": 1.0
+            },
+            "back_off_factor": {
+                "description": "The multiplicand to apply to the backoffSeconds value.",
+                "type": "number",
+                "default": 1.15
+            },
+            "max_launch_delay_seconds": {
+                "description": "The maximum amount of time (in seconds) to wait, after applying the backoffSeconds and backoffFactor values, before attempting to restart failed tasks.",
+                "type": "number",
+                "default": 300
+            }
+          },
+          "required": [
+                "name",
+                "cpus",
+                "mem",
+                "instances"
+          ]
+    },
+    "networking": {
+      "type": "object",
+      "description": "Configure the networking for your service.",
+      "properties": {
+        "service_endpoints": {
+          "type": "object",
+          "description": "DC/OS can automatically generate a Service Address to connect to each of your load balanced endpoints.",
+          "properties": {
+            "name": {
+              "description": "Name your endpoint to search for it by a meaningful name, rather than the port number.",
+              "type": "string",
+              "default": "doccano"
+            },
+            "host_port": {
+              "description": "Host port number",
+              "type": "number",
+              "default": 9043
+            },
+            "protocol": {
+              "type": "string",
+              "description": "Protocol can be UDP, TCP or both. i.e. : \"udp\", \"tcp\", \"udp, tcp\". Most services will use TCP",
+              "default": "tcp"
+            }
+          }
+        },
+        "marathon_lb_proxy": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "vhost": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/doccano"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "doccano parameters",
+      "properties": {
+        "ALLOW_SIGNUP": {
+          "description": "allow signup",
+          "type": "string",
+          "default": "false"
+        },
+        "ADMIN_USERNAME_SECRET": {
+          "description": "Name of doccano secret username",
+          "type": "string",
+          "default": "labs/leo/doccano-user"
+        },
+        "ADMIN_PASSWORD_SECRET": {
+          "description": "Name of doccano secret password",
+          "type": "string",
+          "default": "labs/leo/doccano-password"
+        },
+        "ADMIN_EMAIL": {
+          "description": "doccano admin email",
+          "type": "string",
+          "default": "leo@cdpq.com"
+        }, 
+        "POSTGRESQL_USER_SECRET": {
+          "description": "postgresql user",
+          "type": "string",
+          "default": "labs/leo/postgresql-user"
+        }, 
+        "POSTGRESQL_PASSWORD_SECRET": {
+          "description": "postgresql password",
+          "type": "string",
+          "default": "labs/leo/postgresql-password"
+        }, 
+
+        "POSTGREDATABASEPORT": {
+          "description": "postgresql database port",
+          "type": "string",
+          "default": "5433"
+        }, 
+
+        "POSTGREDATABASE": {
+          "description": "postgresql database name",
+          "type": "string",
+          "default": "doccano"
+        }, 
+
+        "LEOPATH": {
+          "description": "lEO PATH  ",
+          "type": "string",
+          "default": "leo-public.cdpq.ai"
+        }
+      },
+
+      "required": [
+        "ADMIN_USERNAME_SECRET",
+        "ADMIN_PASSWORD_SECRET",
+        "POSTGRESQL_USER_SECRET",
+        "POSTGRESQL_PASSWORD_SECRET"
+      ]
+    }
+  }
+ }

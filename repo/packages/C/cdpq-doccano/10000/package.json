@@ -1,0 +1,17 @@
+{
+  "packagingVersion": "4.0",
+  "name": "cdpq-doccano",
+  "version": "1.0.0-1.0.0",
+  "maintainer": "leo@cdpq.com",
+  "description": "doccano",
+  "selected": false,
+  "framework": false,
+  "tags": [
+    "community",
+    "doccano"
+  ],
+  "minDcosReleaseVersion": "1.10",
+  "preInstallNotes": "doccano",
+  "postInstallNotes": "doccano is being installed!",
+  "postUninstallNotes": "doccano has been uninstalled."
+}

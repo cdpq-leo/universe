@@ -1,0 +1,14 @@
+{
+  "images": {
+    "icon-small": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Doccano/Images/doccano.png",
+    "icon-medium": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Doccano/Images/doccano.png",
+    "icon-large": "https://raw.githubusercontent.com/cdpq-leo/assets/master/Doccano/Images/doccano.png"
+  },
+  "assets": {
+    "container": {
+      "docker": {
+        "image": "cdpqleo/doccano:1.0.0"
+      }
+    }
+  }
+}

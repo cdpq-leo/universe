@@ -1,0 +1,72 @@
+{
+  "id": "{{service.name}}",
+  "instances": {{service.instances}},
+  "cpus": {{service.cpus}},
+  "gpus": {{service.gpus}},
+  "mem": {{service.mem}},
+  "disk": {{service.disk}},
+
+  "backoffSeconds": {{service.back_off_seconds}},
+  "backoffFactor": {{service.back_off_factor}},
+  "maxLaunchDelaySeconds": {{service.max_launch_delay_seconds}},
+  "networks": [
+    {
+      "mode": "host"
+    }
+  ],
+"portDefinitions": [
+      {
+        "hostPort": {{networking.service_endpoints.host_port}},
+        "protocol": "{{networking.service_endpoints.protocol}}",
+        "name": "{{networking.service_endpoints.name}}"
+      }
+],
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{resource.assets.container.docker.image}}",
+      "forcePullImage": true,
+      "parameters": []
+    }
+  },
+  "env": {
+    "ADMIN_USERNAME": {"secret": "doccanoadminuser"},
+    "ADMIN_PASSWORD": {"secret": "doccanoadminpassword"},
+
+    "POSTGREUSER": {"secret": "doccanoadminuser"},
+    "POSTGREPASSWORD": {"secret": "doccanoadminpassword"},
+
+    "POSTGREDATABASEPORT": "{{environment.POSTGREDATABASEPORT}}",
+    "POSTGREDATABASE": "{{environment.POSTGREDATABASE}}",
+    "LEOPATH": "{{environment.LEOPATH}}",
+  
+    "ADMIN_EMAIL": "{{environment.ADMIN_EMAIL}}",
+    "ALLOW_SIGNUP": "{{environment.ALLOW_SIGNUP}}"
+  },
+   "secrets": {
+    "doccanoadminuser": {
+     "source": "{{environment.ADMIN_USERNAME_SECRET}}"
+    },
+    "doccanoadminpassword": {
+      "source": "{{environment.ADMIN_PASSWORD_SECRET}}"
+    },
+
+    "postgresqluser": {
+      "source": "{{environment.POSTGRESQL_USER_SECRET}}"
+    },
+
+    "postgresqlpassword": {
+      "source": "{{environment.POSTGRESQL_PASSWORD_SECRET}}"
+    } 
+    
+  },
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0
+  },
+  "killSelection": "YOUNGEST_FIRST"
+}
