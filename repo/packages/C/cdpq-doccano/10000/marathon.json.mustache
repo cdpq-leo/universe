@@ -16,9 +16,15 @@
   ],
 "portDefinitions": [
       {
+        {{#networking.service_endpoints.load_balance_port}}
+          "labels": {
+            "VIP_0": "/{{service.name}}:{{networking.service_endpoints.load_balance_port}}"
+          },
+        {{/networking.service_endpoints.load_balance_port}}
         "hostPort": {{networking.service_endpoints.host_port}},
         "protocol": "{{networking.service_endpoints.protocol}}",
         "name": "{{networking.service_endpoints.name}}"
+        
       }
 ],
   "acceptedResourceRoles": [
@@ -36,8 +42,8 @@
     "ADMIN_USERNAME": {"secret": "doccanoadminuser"},
     "ADMIN_PASSWORD": {"secret": "doccanoadminpassword"},
 
-    "POSTGREUSER": {"secret": "doccanoadminuser"},
-    "POSTGREPASSWORD": {"secret": "doccanoadminpassword"},
+    "POSTGREUSER": {"secret": "postgresqluser"},
+    "POSTGREPASSWORD": {"secret": "postgresqlpassword"},
 
     "POSTGREDATABASEPORT": "{{environment.POSTGREDATABASEPORT}}",
     "POSTGREDATABASE": "{{environment.POSTGREDATABASE}}",
