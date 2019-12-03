@@ -2,7 +2,7 @@
     "packagingVersion": "4.0",
     "name": "cdpq-disambiguation",
     "maintainer": "leo@cdpq.com",
-    "version": "1.0.0-1.0.0",
+    "version": "1.0.1-1.0.1",
     "description": "Service de disambiguation",
     "minDcosReleaseVersion": "1.12.0",
     "tags": ["cdpq", "disambiguation", "ui"],

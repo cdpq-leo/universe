@@ -156,6 +156,10 @@
         "DISAMBIGUATION_ENDPOINT": {
           "description": "Endpoint for core-disambiguation-svc.",
           "type": "string"
+        },
+        "BASE_URL": {
+          "description": "Base url core-disambiguation-svc.",
+          "type": "string"
         }
       }
     },
