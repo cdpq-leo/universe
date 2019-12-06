@@ -183,6 +183,11 @@
       "type": "object",
       "description": "SII pattern recognition environment variable",
       "properties": {
+        "HOME": {
+          "description": "Common prefix for all URIs",
+          "type": "string",
+          "default": "/home/"
+        },
         "BASE_URL": {
           "description": "Common prefix for all URIs",
           "type": "string"
